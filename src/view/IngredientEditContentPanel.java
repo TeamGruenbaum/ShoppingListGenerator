@@ -1,6 +1,7 @@
 package view;
 
 import controller.SwingHelper;
+import model.Ingredient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,37 +12,34 @@ public class IngredientEditContentPanel extends JPanel
     private JTextField store;
     private JSpinner shelf;
 
-    public IngredientEditContentPanel(String name, String store, int shelf)
+    private Ingredient ingredient;
+
+    public IngredientEditContentPanel(Ingredient ingredient)
     {
+        this.ingredient=ingredient;
+
+
         setLayout(new GridBagLayout());
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        this.name=new JTextField(name);
-        this.store=new JTextField(store);
-        this.shelf=new JSpinner(new SpinnerNumberModel(shelf,0,100,1));
-
+        this.name=new JTextField(ingredient.getName());
         add(new JLabel("Name:"), SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
         add(this.name, SwingHelper.getGridBagConstraints(1, 0, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
 
-        add(new JLabel("Store:"), SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.store, SwingHelper.getGridBagConstraints(1, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
-
+        this.store=new JTextField(ingredient.getStore());
         add(new JLabel("Shelf:"), SwingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.shelf, SwingHelper.getGridBagConstraints(1, 2, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(this.shelf, SwingHelper.getGridBagConstraints(1, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+
+        this.shelf=new JSpinner(new SpinnerNumberModel(ingredient.getShelf(),0,100,1));
+        add(new JLabel("Store:"), SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
+        add(this.store, SwingHelper.getGridBagConstraints(1, 2, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+
     }
 
-
-    public String getIngredientName()
+    public void updateIngredient()
     {
-        return name.getText();
-    }
-
-    public String getStore()
-    {
-        return store.getText();
-    }
-
-    public int getShelf()
-    {
-        return (Integer) shelf.getModel().getValue();
+        ingredient.setName(name.getText());
+        ingredient.setStore(store.getText());
+        ingredient.setShelf((Integer) shelf.getModel().getValue());
     }
 }
