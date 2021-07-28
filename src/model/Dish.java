@@ -12,7 +12,7 @@ public class Dish
     public Dish(String name)
     {
         this.name = name;
-        ingredients=new ArrayList<>();
+        this.ingredients=new ArrayList<>();
     }
 
 
@@ -29,6 +29,6 @@ public class Dish
 
     public List<Ingredient> getIngredients()
     {
-        return new ArrayList<Ingredient>(this.ingredients);
+        return ingredients;
     }
 }
