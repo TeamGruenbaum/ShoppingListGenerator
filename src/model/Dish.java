@@ -31,4 +31,10 @@ public class Dish
     {
         return ingredients;
     }
+
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }
