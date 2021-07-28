@@ -24,7 +24,6 @@ public class EditWindow<T extends JComponent> extends JDialog
 
         add(content, BorderLayout.CENTER);
         this.content = content;
-        content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 
         quitButton=new JButton("Quit");
@@ -59,12 +58,5 @@ public class EditWindow<T extends JComponent> extends JDialog
             action.accept(content);
             dispose();
         });
-    }
-
-
-    public static void main(String[] args)
-    {
-        EditWindow<IngredientEditContentPanel> ew=new EditWindow<>("Change Ingredient", new IngredientEditContentPanel("Ananas", "Edeka", 4), new Dimension(300, 200));
-        ew.onApplyClick((content)-> System.out.println(content.getShelf()));
     }
 }
