@@ -43,4 +43,10 @@ public class Ingredient
     {
         this.shelf = shelf;
     }
+
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

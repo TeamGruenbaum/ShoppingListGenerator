@@ -31,4 +31,10 @@ public class Dish
     {
         return new ArrayList<Ingredient>(this.ingredients);
     }
+
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }
