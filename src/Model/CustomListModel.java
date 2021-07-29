@@ -14,24 +14,28 @@ public class CustomListModel<T> extends AbstractListModel<T> implements Sortable
     public void sort(Comparator<T> criterion)
     {
         Collections.sort(elements, criterion);
+        fireContentsChanged(this, 0, elements.size()-1);
     }
 
     @Override
     public void addElement(T element)
     {
         elements.add(element);
+        fireIntervalAdded(this, elements.size()-1, elements.size()-1);
     }
 
     @Override
     public void load(List<T> data)
     {
         elements=data;
+        fireContentsChanged(this, 0, elements.size()-1);
     }
 
     @Override
     public void remove(int index)
     {
         elements.remove(index);
+        fireContentsChanged(this, 0, elements.size()-1);
     }
 
     @Override
