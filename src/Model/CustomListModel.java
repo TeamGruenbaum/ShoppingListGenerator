@@ -1,13 +1,14 @@
 package model;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class CustomListModel<T> extends AbstractListModel<T> implements Sortable<T>, Fillable<T>
 {
-    private List<T> elements;
+    private List<T> elements=new ArrayList<>();
 
     @Override
     public void sort(Comparator<T> criterion)
