@@ -5,5 +5,5 @@ import javax.swing.*;
 public interface WindowContentProvider
 {
     JComponent getContent();
-    String geTitle();
+    String getTitle();
 }
