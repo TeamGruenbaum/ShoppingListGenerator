@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CustomListModel<T> extends AbstractListModel implements Sortable<T>, Fillable<T>
+public class CustomListModel<T> extends AbstractListModel<T> implements Sortable<T>, Fillable<T>
 {
     private List<T> elements;
 
@@ -40,7 +40,7 @@ public class CustomListModel<T> extends AbstractListModel implements Sortable<T>
     }
 
     @Override
-    public Object getElementAt(int index)
+    public T getElementAt(int index)
     {
         return elements.get(index);
     }
