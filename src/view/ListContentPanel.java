@@ -1,29 +1,28 @@
 package view;
 
-import model.Fillable;
-import model.Sortable;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class ListContentPanel<U,T extends ListModel<U> & Sortable<U> & Fillable<U>> extends JPanel
+import java.util.List;
+
+public class ListContentPanel<U> extends JPanel
 {
     private JList<U> elements;
-    private T listModel;
+    private ListModel<U> listModel;
     private int lastClickedListItemIndex;
     private JButton addButton;
     private JButton sortButton;
     private JPopupMenu contextMenu;
 
 
-    public ListContentPanel(T listModel)
+    public ListContentPanel(ListModel<U> listModel)
     {
         this.listModel=listModel;
         contextMenu=new JPopupMenu();
@@ -33,17 +32,23 @@ public class ListContentPanel<U,T extends ListModel<U> & Sortable<U> & Fillable<
         add(createContentPanel(),BorderLayout.CENTER);
     }
 
-    public void onSortClick(Consumer<T> action)
+    public void onSortClick(Consumer<ListModel<U>> action)
     {
         sortButton.addActionListener((ActionEvent event)->action.accept(listModel));
     }
 
-    public void onAddClick(Consumer<T> action)
+    public void onAddClick(Consumer<ListModel<U>> action)
     {
         addButton.addActionListener((ActionEvent event)->action.accept(listModel));
     }
 
-    public void addMenuItem(String label, BiConsumer<T, Integer> action)
+    public List<Integer> getUnmodifiableSelectedItems()
+    {
+        List selectedItemsList=Arrays.asList(elements.getSelectedIndices());
+        return Collections.unmodifiableList(selectedItemsList);
+    }
+
+    public void addMenuItem(String label, BiConsumer<ListModel<U>, Integer> action)
     {
         JMenuItem menuItem=new JMenuItem(label);
         menuItem.addActionListener((ActionEvent event)->action.accept(listModel,lastClickedListItemIndex));
