@@ -44,12 +44,12 @@ public class ListContentPanel<U> extends JPanel
         addButton.addActionListener((ActionEvent event)->action.accept(listModel));
     }
 
-    }
-        return Collections.unmodifiableList(elements.getSelectedValuesList());
-    {
     public List<U> getUnmodifiableSelectedItems()
-    public void addMenuItem(String label, BiConsumer<ListModel<U>, Integer> action)
+    {
+        return Collections.unmodifiableList(elements.getSelectedValuesList());
+    }
 
+    public void addMenuItem(String label, BiConsumer<ListModel<U>, Integer> action)
     {
         JMenuItem menuItem=new JMenuItem(label);
         menuItem.addActionListener((ActionEvent event)->action.accept(listModel,lastClickedListItemIndex));
