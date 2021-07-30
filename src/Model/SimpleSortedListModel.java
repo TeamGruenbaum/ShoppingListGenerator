@@ -5,24 +5,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiConsumer;
 
-public abstract class SimpleSortedListModel<T> extends AbstractListModel<T>
+public class SimpleSortedListModel<T> extends AbstractListModel<T>
 {
-    protected List<T> elements;
+    private List<T> elements;
+    private BiConsumer<List<T>, T> addAction;
+    private BiConsumer<List<T>, T> removeAction;
 
 
-
-    public SimpleSortedListModel(List<T> elements)
+    public SimpleSortedListModel(List<T> elements, BiConsumer<List<T>, T> addAction, BiConsumer<List<T>, T> removeAction)
     {
         this.elements=new ArrayList<>();
         this.elements.addAll(elements);
         fireContentsChanged(this, 0, elements.size()-1);
+
+        this.addAction=addAction;
+        this.removeAction=removeAction;
     }
 
 
-    public abstract void add(T element);
+    public void add(T element)
+    {
+        addAction.accept(elements, element);
+    }
 
-    public abstract void remove(int index);
+    public void remove(T element)
+    {
+        removeAction.accept(elements, element);
+    }
 
 
     public void sort(Comparator<T> criterion)
