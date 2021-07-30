@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.List;
+
 
 import java.util.List;
 
@@ -42,13 +44,12 @@ public class ListContentPanel<U> extends JPanel
         addButton.addActionListener((ActionEvent event)->action.accept(listModel));
     }
 
-    public List<Integer> getUnmodifiableSelectedItems()
-    {
-        List selectedItemsList=Arrays.asList(elements.getSelectedIndices());
-        return Collections.unmodifiableList(selectedItemsList);
     }
-
+        return Collections.unmodifiableList(elements.getSelectedValuesList());
+    {
+    public List<U> getUnmodifiableSelectedItems()
     public void addMenuItem(String label, BiConsumer<ListModel<U>, Integer> action)
+
     {
         JMenuItem menuItem=new JMenuItem(label);
         menuItem.addActionListener((ActionEvent event)->action.accept(listModel,lastClickedListItemIndex));
@@ -61,6 +62,7 @@ public class ListContentPanel<U> extends JPanel
     {
         return contextMenu.getSubElements().length;
     }
+
 
     private JPanel createHeaderPanel()
     {

@@ -28,11 +28,11 @@ public class IngredientEditContentPanel extends JPanel
 
         this.store=new JTextField(ingredient.getStore());
         add(new JLabel("Shelf:"), SwingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.shelf, SwingHelper.getGridBagConstraints(1, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(this.store, SwingHelper.getGridBagConstraints(1, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
 
         this.shelf=new JSpinner(new SpinnerNumberModel(ingredient.getShelf(),0,100,1));
         add(new JLabel("Store:"), SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.store, SwingHelper.getGridBagConstraints(1, 2, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(this.shelf, SwingHelper.getGridBagConstraints(1, 2, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
 
     }
 

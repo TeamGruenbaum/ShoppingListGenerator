@@ -1,8 +1,5 @@
 package model;
 
-import model.Ingredient;
-import model.SimpleSortedListModel;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
