@@ -1,8 +1,5 @@
 package model;
 
-import model.Ingredient;
-import model.SimpleSortedListModel;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,15 @@ public class Dish implements Serializable
     public Dish(String name)
     {
         this.name = name;
-        this.ingredients= new SimpleSortedListModel<Ingredient>(new ArrayList<Ingredient>(), (List<Ingredient> list, Ingredient item) -> list.add(item), (list, item) -> list.remove(item));
+        this.ingredients= new SimpleSortedListModel<Ingredient>(new ArrayList<Ingredient>(), (List<Ingredient> list, Ingredient item) ->
+        {
+            item.getDishesContainedBy().add(this);
+            list.add(item);
+        },
+        (list, item) ->
+        {
+            list.remove(item);
+        });
     }
 
 
