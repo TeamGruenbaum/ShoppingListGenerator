@@ -5,6 +5,7 @@ import model.SimpleSortedListModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Dish implements Serializable
 {
@@ -15,7 +16,7 @@ public class Dish implements Serializable
     public Dish(String name)
     {
         this.name = name;
-        this.ingredients= new SimpleSortedListModel<Ingredient>(new ArrayList<Ingredient>(), (list, item) -> list.add(item), (list, item) -> list.remove(item));
+        this.ingredients= new SimpleSortedListModel<Ingredient>(new ArrayList<Ingredient>(), (List<Ingredient> list, Ingredient item) -> list.add(item), (list, item) -> list.remove(item));
     }
 
 
