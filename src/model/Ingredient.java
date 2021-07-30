@@ -5,6 +5,7 @@ public class Ingredient
     private String name;
     private String store;
     private int shelf;
+    private SimpleSortedListModel<Dish> dishesContainedBy;
 
 
     public Ingredient(String name, String store, int shelf)
@@ -12,6 +13,12 @@ public class Ingredient
         this.name = name;
         this.store = store;
         this.shelf = shelf;
+    }
+
+    @Override
+    public String toString()
+    {
+        return name;
     }
 
     public String getName()
@@ -44,9 +51,8 @@ public class Ingredient
         this.shelf = shelf;
     }
 
-    @Override
-    public String toString()
+    public SimpleSortedListModel<Dish> getDishesContainedBy()
     {
-        return name;
+        return dishesContainedBy;
     }
 }
