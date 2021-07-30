@@ -2,25 +2,26 @@ package model;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable
+public class Ingredient
 {
+    private int id;
     private String name;
     private String store;
     private int shelf;
-    private SimpleSortedListModel<Dish> dishesContainedBy;
 
 
-    public Ingredient(String name, String store, int shelf)
+    public Ingredient(int id, String name, String store, int shelf)
     {
-        this.name = name;
-        this.store = store;
-        this.shelf = shelf;
+        this.id=id;
+        this.name=name;
+        this.store=store;
+        this.shelf=shelf;
     }
 
-    @Override
-    public String toString()
+
+    public int getId()
     {
-        return name;
+        return id;
     }
 
     public String getName()
@@ -53,8 +54,9 @@ public class Ingredient implements Serializable
         this.shelf = shelf;
     }
 
-    public SimpleSortedListModel<Dish> getDishesContainedBy()
+    @Override
+    public String toString()
     {
-        return dishesContainedBy;
+        return name;
     }
 }

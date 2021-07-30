@@ -4,26 +4,25 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dish implements Serializable
+public class Dish
 {
+    private int id;
     private String name;
-    private SimpleSortedListModel<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
 
 
-    public Dish(String name)
+    public Dish(int id, String name, List<Ingredient> ingredients)
     {
-        this.name = name;
-        this.ingredients= new SimpleSortedListModel<Ingredient>(new ArrayList<Ingredient>(), (List<Ingredient> list, Ingredient item) ->
-        {
-            item.getDishesContainedBy().add(this);
-            list.add(item);
-        },
-        (list, item) ->
-        {
-            list.remove(item);
-        });
+        this.id=id;
+        this.name=name;
+        this.ingredients=ingredients;
     }
 
+
+    public int getId()
+    {
+        return id;
+    }
 
     public String getName()
     {
@@ -35,12 +34,10 @@ public class Dish implements Serializable
         this.name = name;
     }
 
-
-    public SimpleSortedListModel<Ingredient> getIngredientsSimpleSortedListModel()
+    public List<Ingredient> getIngredients()
     {
         return ingredients;
     }
-
 
     @Override
     public String toString()
