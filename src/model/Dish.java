@@ -1,18 +1,20 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import model.Ingredient;
+import model.SimpleSortedListModel;
 
-public class Dish
+import java.io.Serializable;
+
+public class Dish implements Serializable
 {
     private String name;
-    private List<Ingredient> ingredients;
+    private SimpleSortedListModel<Ingredient> ingredients;
 
 
     public Dish(String name)
     {
         this.name = name;
-        this.ingredients=new ArrayList<>();
+        this.ingredients=new Ingredient;
     }
 
 
@@ -27,10 +29,11 @@ public class Dish
     }
 
 
-    public List<Ingredient> getIngredients()
+    public SimpleSortedListModel<Ingredient> getIngredientsSimpleSortedListModel()
     {
         return ingredients;
     }
+
 
     @Override
     public String toString()
