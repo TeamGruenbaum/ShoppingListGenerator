@@ -1,19 +1,19 @@
 package view;
 
-import model.Fillable;
-import model.Sortable;
+import model.SimpleSortedListModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
+import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.List;
 
-public class ListContentPanel<U,T extends ListModel<U> & Sortable<U> & Fillable<U>> extends JPanel
+
+public class ListContentPanel<U,T extends SimpleSortedListModel<U>> extends JPanel
 {
     private JList<U> elements;
     private T listModel;
@@ -43,6 +43,13 @@ public class ListContentPanel<U,T extends ListModel<U> & Sortable<U> & Fillable<
         addButton.addActionListener((ActionEvent event)->action.accept(listModel));
     }
 
+
+    public List<U> getUnmodifiableSelectedItems()
+    {
+        return Collections.unmodifiableList(elements.getSelectedValuesList());
+    }
+
+
     public void addMenuItem(String label, BiConsumer<T, Integer> action)
     {
         JMenuItem menuItem=new JMenuItem(label);
@@ -56,6 +63,7 @@ public class ListContentPanel<U,T extends ListModel<U> & Sortable<U> & Fillable<
     {
         return contextMenu.getSubElements().length;
     }
+
 
     private JPanel createHeaderPanel()
     {
