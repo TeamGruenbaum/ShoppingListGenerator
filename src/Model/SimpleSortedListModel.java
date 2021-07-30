@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class SimpleSortedListModel<T> extends AbstractListModel<T>
 {
-    private List<T> elements;
+    protected List<T> elements;
 
 
 
