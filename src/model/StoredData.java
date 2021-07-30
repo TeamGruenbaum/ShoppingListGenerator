@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class StoredData
+public class StoredData implements Serializable
 {
     private List<Dish> dishes;
     private List<Ingredient> ingredients;
