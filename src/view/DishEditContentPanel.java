@@ -6,6 +6,7 @@ import model.Ingredient;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -38,28 +39,29 @@ public class DishEditContentPanel extends JPanel
             @Override
             public void setSelectionInterval(int index0, int index1)
             {
-                if(super.isSelectedIndex(index0))
-                {
-                    super.removeSelectionInterval(index0, index1);
-                }
-                else
-                {
-                    super.addSelectionInterval(index0, index1);
-                }
+            if(super.isSelectedIndex(index0))
+            {
+                super.removeSelectionInterval(index0, index1);
+            }
+            else
+            {
+                super.addSelectionInterval(index0, index1);
+            }
             }
         });
         setSelectedIngredients();
-
-
+        
         add(new JScrollPane(this.ingredients), BorderLayout.CENTER);
     }
 
-
-    public void updateDish()
+    public String getUpdatedName()
     {
-        dish.setName(name.getText());
-        dish.getIngredients().clear();
-        dish.getIngredients().addAll(ingredients.getSelectedValuesList());
+        return name.getText();
+    }
+
+    public List<Ingredient> getUnmodifiableSelectedItems()
+    {
+        return Collections.unmodifiableList(ingredients.getSelectedValuesList());
     }
 
 
