@@ -16,6 +16,7 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
 
         Statement statement=connection.createStatement();
         statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key, name text unique not null)");
+        statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key , name text not null, store text not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
         statement.execute("CREATE TABLE IF NOT EXISTS IsNeededFor(dishID integer, ingredientID integer, CONSTRAINT primaryKey PRIMARY KEY (dishID, ingredientID))");
     }
 
@@ -34,9 +35,7 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
 
     private List<Ingredient> getIngredientsNeededForDish(int dishID) throws SQLException
     {
-        Connection helperConnection=DriverManager.getConnection("jdbc:sqlite:IsNeededFor.db");
-
-        PreparedStatement joinStatement=helperConnection.prepareStatement("SELECT i.id, i.name, i.shelf, i.store FROM Ingredients i JOIN IsNeededFor n ON i.id=n.ingredientID WHERE n.dishID=?;");
+        PreparedStatement joinStatement=connection.prepareStatement("SELECT i.id, i.name, i.shelf, i.store FROM Ingredients i JOIN IsNeededFor n ON i.id=n.ingredientID WHERE n.dishID=?;");
         joinStatement.setInt(1,dishID);
         ResultSet ingredientsResultSet=joinStatement.executeQuery();
 
@@ -50,28 +49,59 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
     }
 
     @Override
-    public int update(Dish dishToReplace) throws SQLException
+    public int update(Dish item) throws SQLException
     {
-        PreparedStatement updateStatement=connection.prepareStatement("UPDATE Dishes SET name=? WHERE id=?");
-        updateStatement.setString(1, dishToReplace.getName());
-        updateStatement.setInt(2, dishToReplace.getId());
-        return updateStatement.executeUpdate();
+        if(item.getId()==-1) throw new SQLException("Invalid ID (-1)");
 
+        removeFromIsNeededFor(item.getId());
+        addToIsNeededFor(item);
+
+        PreparedStatement updateDishesStatement=connection.prepareStatement("UPDATE Dishes SET name=? WHERE id=?");
+        updateDishesStatement.setString(1, item.getName());
+        updateDishesStatement.setInt(2, item.getId());
+        return updateDishesStatement.executeUpdate();
     }
 
     @Override
-    public void add(Dish dishToAdd) throws SQLException
+    public void add(Dish item) throws SQLException
     {
-        PreparedStatement insertStatement=connection.prepareStatement("INSERT INTO Dishes(name) VALUES(?)");
-        insertStatement.setString(1, dishToAdd.getName());
-        insertStatement.execute();
+        PreparedStatement insertIntoDishesStatement=connection.prepareStatement("INSERT INTO Dishes(name) VALUES(?)");
+        insertIntoDishesStatement.setString(1, item.getName());
+        insertIntoDishesStatement.execute();
+
+        PreparedStatement idQuery = connection.prepareStatement("SELECT id FROM Dishes WHERE name=?");
+        idQuery.setString(1, item.getName());
+        ResultSet dishIdResultSet = idQuery.executeQuery();
+        item.setId(dishIdResultSet.getInt("id"));
+
+        addToIsNeededFor(item);
     }
 
     @Override
-    public void remove(Dish dishToBeDeleted) throws SQLException
+    public void remove(int id) throws SQLException
     {
-        PreparedStatement insertStatement=connection.prepareStatement("DELETE FROM Dishes WHERE id=?");
-        insertStatement.setInt(1, dishToBeDeleted.getId());
-        insertStatement.execute();
+        removeFromIsNeededFor(id);
+
+        PreparedStatement deleteFromDishesStatement=connection.prepareStatement("DELETE FROM Dishes WHERE id=?");
+        deleteFromDishesStatement.setInt(1, id);
+        deleteFromDishesStatement.execute();
+    }
+
+    private void addToIsNeededFor(Dish item) throws SQLException
+    {
+        PreparedStatement insertIntoIsNeededForStatement=connection.prepareStatement("INSERT INTO IsNeededFor(dishID, IngredientID) VALUES(?,?)");
+        insertIntoIsNeededForStatement.setInt(1,item.getId());;
+        for (Ingredient ingredient:item.getIngredients())
+        {
+            insertIntoIsNeededForStatement.setInt(2,ingredient.getId());
+            insertIntoIsNeededForStatement.execute();
+        }
+    }
+
+    private void removeFromIsNeededFor(int id) throws SQLException
+    {
+        PreparedStatement deleteFromIsNeededForStatement=connection.prepareStatement("DELETE FROM IsNeededFor WHERE dishID=?");
+        deleteFromIsNeededForStatement.setInt(1, id);
+        deleteFromIsNeededForStatement.execute();
     }
 }
