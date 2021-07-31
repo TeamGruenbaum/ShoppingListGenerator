@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 
-public interface WindowContentProvider
+public interface WindowContentProvider<T extends JComponent>
 {
-    JComponent getContent();
+    T getContent();
     String getTitle();
     Optional<List<Integer>> getSelectedItemIds();
 }
