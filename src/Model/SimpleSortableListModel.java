@@ -6,13 +6,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SimpleSortedListModel<T> extends AbstractListModel<T>
+public class SimpleSortableListModel<T> extends AbstractListModel<T> implements SortableListModel<T>
 {
     private List<T> elements;
 
 
-    public SimpleSortedListModel(List<T> elements) {
-        this.elements = new ArrayList<>();
+    public SimpleSortableListModel(List<T> elements) {
+        this.elements=new ArrayList<>();
         this.elements.addAll(elements);
         fireContentsChanged(this, 0, elements.size() - 1);
     }
