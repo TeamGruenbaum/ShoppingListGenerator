@@ -24,7 +24,7 @@ public class WindowBuilder
         }
 
         currentContentIndex=0;
-        window=new MainWindow(contents.get(currentContentIndex).getKey(),contents.get(currentContentIndex).getValue(), new Dimension(400, 400), new Dimension(1000, 1000));
+        window=new MainWindow("ShoppingListGenerator",contents.get(currentContentIndex).getValue(), new Dimension(400, 400));
         window.setBackVisible(false);
 
         setSettingsFunctionality();
@@ -51,14 +51,22 @@ public class WindowBuilder
             @Override
             public void accept(JButton forwardButton)
             {
-                if(++currentContentIndex>contents.size()-1)
+                if(currentContentIndex+1>contents.size()-1)
                 {
-                    //TODO: forward-Button action for ResultWindow
+                    JPopupMenu lastActionsMenu=new JPopupMenu();
+
+                    lastActionsMenu.add("Test1");
+                    lastActionsMenu.add("Test2");
+
+                    lastActionsMenu.show(forwardButton, forwardButton.getWidth()/2, forwardButton.getHeight()/2);
                 }
                 else
                 {
+                    ++currentContentIndex;
                     updateWindowContent();
                 }
+
+                window.setBackVisible(true);
             }
         });
     }
