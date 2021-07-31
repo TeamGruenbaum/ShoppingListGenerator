@@ -12,13 +12,8 @@ public class IngredientEditContentPanel extends JPanel
     private JTextField store;
     private JSpinner shelf;
 
-    private Ingredient ingredient;
-
     public IngredientEditContentPanel(Ingredient ingredient)
     {
-        this.ingredient=ingredient;
-
-
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -36,10 +31,16 @@ public class IngredientEditContentPanel extends JPanel
 
     }
 
-    public void updateIngredient()
-    {
-        ingredient.setName(name.getText());
-        ingredient.setStore(store.getText());
-        ingredient.setShelf((Integer) shelf.getModel().getValue());
+
+    public String getIngredientName() {
+        return name.getText();
+    }
+
+    public String getStore() {
+        return store.getText();
+    }
+
+    public int getShelf() {
+        return (Integer) shelf.getModel().getValue();
     }
 }

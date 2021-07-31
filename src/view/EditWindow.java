@@ -37,10 +37,8 @@ public class EditWindow<T extends JComponent> extends JDialog
 
         add(bottomBar, BorderLayout.SOUTH);
 
-
-        setVisible(true);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
-
 
     public void onQuitClick(Consumer<T> action)
     {
@@ -58,5 +56,11 @@ public class EditWindow<T extends JComponent> extends JDialog
             action.accept(content);
             dispose();
         });
+    }
+
+    public void showWindow()
+    {
+        setModalityType(ModalityType.APPLICATION_MODAL);
+        setVisible(true);
     }
 }

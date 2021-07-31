@@ -1,5 +1,6 @@
 package view;
 
+import controller.SortableListModel;
 import model.Dish;
 import model.Ingredient;
 
@@ -20,7 +21,7 @@ public class DishEditContentPanel extends JPanel
 
 
 
-    public <T extends ListModel<Ingredient>> DishEditContentPanel(Dish dish, T listModel)
+    public DishEditContentPanel(Dish dish, SortableListModel<Ingredient> ingredientsSortableListModel)
     {
         this.dish=dish;
 
@@ -32,9 +33,9 @@ public class DishEditContentPanel extends JPanel
         add(this.name, BorderLayout.NORTH);
 
 
-        ingredients =new JList<>();
-        ingredients.setModel(listModel);
-        ingredients.setSelectionModel(new DefaultListSelectionModel()
+        this.ingredients =new JList<>();
+        this.ingredients.setModel(ingredientsSortableListModel);
+        this.ingredients.setSelectionModel(new DefaultListSelectionModel()
         {
             @Override
             public void setSelectionInterval(int index0, int index1)
@@ -72,13 +73,14 @@ public class DishEditContentPanel extends JPanel
         {
             for (int j = 0; j < ingredients.getModel().getSize(); j++)
             {
-                if(ingredient== ingredients.getModel().getElementAt(j))
+                if(ingredient.getId()== ingredients.getModel().getElementAt(j).getId())
                 {
                     indices.add(j);
                     break;
                 }
             }
         }
+
         ingredients.setSelectedIndices(indices.stream().mapToInt(i -> i).toArray());
     }
 }
