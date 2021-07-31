@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
 
-public class EditWindow<T extends JComponent> extends JDialog
+public final class EditWindow<T extends JComponent> extends JDialog
 {
     private T content;
     private JButton quitButton;
@@ -21,21 +21,9 @@ public class EditWindow<T extends JComponent> extends JDialog
 
         setLayout(new BorderLayout());
 
-
-        add(content, BorderLayout.CENTER);
         this.content = content;
-
-
-        quitButton=new JButton("Quit");
-        quitButton.addActionListener((actionEvent)->dispose());
-        applyButton=new JButton("Apply");
-
-        JPanel bottomBar=new JPanel();
-
-        bottomBar.add(quitButton, BorderLayout.WEST);
-        bottomBar.add(applyButton, BorderLayout.EAST);
-
-        add(bottomBar, BorderLayout.SOUTH);
+        add(content, BorderLayout.CENTER);
+        add(createFooterPanel(), BorderLayout.SOUTH);
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -62,5 +50,19 @@ public class EditWindow<T extends JComponent> extends JDialog
     {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setVisible(true);
+    }
+
+    private JPanel createFooterPanel()
+    {
+        quitButton=new JButton("Quit");
+        quitButton.addActionListener((actionEvent)->dispose());
+        applyButton=new JButton("Apply");
+
+        JPanel footerPanel=new JPanel();
+
+        footerPanel.add(quitButton, BorderLayout.WEST);
+        footerPanel.add(applyButton, BorderLayout.EAST);
+
+        return footerPanel;
     }
 }
