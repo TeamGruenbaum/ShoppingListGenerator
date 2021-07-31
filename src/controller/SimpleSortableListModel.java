@@ -20,8 +20,8 @@ public class SimpleSortableListModel<T> extends AbstractListModel<T> implements 
 
     public void setElements(List<T> elements)
     {
-        elements.clear();
-        elements.addAll(elements);
+        this.elements.clear();
+        this.elements.addAll(elements);
         fireContentsChanged(this, 0, elements.size() - 1);
     }
 
