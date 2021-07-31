@@ -10,7 +10,15 @@ public class Ingredient
     private int shelf;
 
 
-    public Ingredient(int id, String name, String store, int shelf)
+    public Ingredient(String name, String store, int shelf)
+    {
+        this.id=-1;
+        this.name=name;
+        this.store=store;
+        this.shelf=shelf;
+    }
+
+    Ingredient(int id, String name, String store, int shelf)
     {
         this.id=id;
         this.name=name;
