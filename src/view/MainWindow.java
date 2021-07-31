@@ -11,16 +11,17 @@ public final class MainWindow extends JFrame
     private JButton settingsButton;
     private JButton backButton;
     private JButton forwardButton;
-
+    private JComponent currentContent;
 
     public MainWindow (String windowTitle, JComponent content, Dimension minimumSize, Dimension maximumSize)
     {
         setTitle(windowTitle);
         setMinimumSize(minimumSize);
         setMaximumSize(maximumSize);
-        setLocation(0,0);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        this.currentContent=content;
         setLayout(new BorderLayout());
         add(createHeaderPanel(), BorderLayout.NORTH);
         add(content,BorderLayout.CENTER);
@@ -40,6 +41,7 @@ public final class MainWindow extends JFrame
 
     public void setContent(JComponent content)
     {
+        remove(this.currentContent);
         add(content,BorderLayout.CENTER);
         revalidate();
         repaint();
