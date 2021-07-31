@@ -1,7 +1,4 @@
-package controller;
-
-import model.Dish;
-import model.Ingredient;
+package model;
 
 import java.sql.*;
 import java.util.ArrayList;

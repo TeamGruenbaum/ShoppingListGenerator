@@ -1,19 +1,15 @@
 package view;
 
-import model.SortableListModel;
+import controller.SortableListModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.List;
-
-
 import java.util.List;
 
 public class ListContentPanel<T> extends JPanel
