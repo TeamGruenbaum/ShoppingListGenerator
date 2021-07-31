@@ -52,7 +52,6 @@ public class ListContentPanel<T> extends JPanel
         JMenuItem menuItem=new JMenuItem(label);
         menuItem.addActionListener((ActionEvent event)->action.accept(listModel,lastClickedListItemIndex));
 
-        if (getMenuSize()>0) contextMenu.addSeparator();
         contextMenu.add(menuItem);
     }
 
@@ -65,7 +64,9 @@ public class ListContentPanel<T> extends JPanel
     private JPanel createHeaderPanel()
     {
         addButton=new JButton("Add");
+        addButton.setPreferredSize(new Dimension(100, addButton.getPreferredSize().height));
         sortButton=new JButton("Sort");
+        sortButton.setPreferredSize(new Dimension( 100, sortButton.getPreferredSize().height));
 
         JPanel headerPanel=new JPanel();
         headerPanel.add(addButton);
