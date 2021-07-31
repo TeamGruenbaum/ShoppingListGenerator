@@ -4,6 +4,9 @@ import view.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -55,8 +58,34 @@ public class WindowBuilder
                 {
                     JPopupMenu lastActionsMenu=new JPopupMenu();
 
-                    lastActionsMenu.add("Test1");
-                    lastActionsMenu.add("Test2");
+                    JMenuItem copyMenuItem=new JMenuItem("Copy to Clipboard");
+                    copyMenuItem.addActionListener((event)->
+                    {
+                        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("Text für die Zwischenablage"), null);
+                    });
+
+                    JMenuItem saveMenuItem=new JMenuItem("Save on your Computer");
+                    saveMenuItem.addActionListener((event)->
+                    {
+                        String test = "Habe heute keine Lust zum einkaufen :D";
+                        JFileChooser chooser = new JFileChooser();
+                        int retrival = chooser.showSaveDialog(null);
+
+                        if (retrival == JFileChooser.APPROVE_OPTION) {
+                            try {
+                                FileWriter fileWriter=new FileWriter(chooser.getSelectedFile()+".txt");
+                                fileWriter.write(test);
+                                fileWriter.close();
+                            }
+                            catch (Exception ex) 
+                            {
+                                JOptionPane.showMessageDialog(new JFrame(), "The file could not be saved.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+
+                    lastActionsMenu.add(copyMenuItem);
+                    lastActionsMenu.add(saveMenuItem);
 
                     lastActionsMenu.show(forwardButton, forwardButton.getWidth()/2, forwardButton.getHeight()/2);
                 }
