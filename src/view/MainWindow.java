@@ -1,11 +1,8 @@
 package view;
 
-import model.Ingredient;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public final class MainWindow extends JFrame
