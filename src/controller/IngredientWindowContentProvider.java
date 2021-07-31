@@ -6,16 +6,11 @@ import model.Ingredient;
 import view.EditWindow;
 import view.IngredientEditContentPanel;
 import view.ListContentPanel;
-import view.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class IngredientWindowContentProvider implements WindowContentProvider<ListContentPanel<Ingredient>>
 {
@@ -34,6 +29,32 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
         content=new ListContentPanel<Ingredient>(sortableListModel);
 
+        setSortFunctionality();
+        setAddFunctionality();
+        setUpContextMenu();
+    }
+
+    @Override
+    public ListContentPanel<Ingredient> getContent()
+    {
+        return content;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Ingredients";
+    }
+
+    private void setSortFunctionality()
+    {
+        content.onSortClick((listModel)->
+        {
+            listModel.sort(Comparator.comparing(Ingredient::getName));
+        });
+    }
+
+    private void setAddFunctionality()
+    {
         content.onAddClick((sortableListModel)->
         {
             Ingredient emptyIngredient=new Ingredient("", "", 0);
@@ -44,14 +65,14 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                 if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStore().isBlank())
                 {
                     editWindow.dispose();
-                    JOptionPane.showMessageDialog(editWindow, "All field must be filled out", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(editWindow, "All fields must be filled in", "Information", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else
                 {
                     try
                     {
                         databaseTableAccessor.add(new Ingredient(ingredientEditContentPanel.getIngredientName(), ingredientEditContentPanel.getStore(), ingredientEditContentPanel.getShelf()));
-                        refillListModel();
+                        updateListModel();
                     } catch (SQLException throwables)
                     {
                         editWindow.dispose();
@@ -62,12 +83,10 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
             editWindow.showWindow();
         });
+    }
 
-        content.onSortClick((lm)->
-        {
-            lm.sort(Comparator.comparing(Ingredient::getName));
-        });
-
+    private void setUpContextMenu()
+    {
         content.addMenuItem("Change", ((sortableListModel, index) ->
         {
             Ingredient ingredientToChange=sortableListModel.getElementAt(index);
@@ -81,7 +100,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                 if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStore().isBlank())
                 {
                     editWindow.dispose();
-                    JOptionPane.showMessageDialog(editWindow, "All field must be filled out", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(editWindow, "All fields must be filled in", "Information", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else
                 {
@@ -92,7 +111,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                         ingredientToChange.setShelf(ingredientEditContentPanel.getShelf());
 
                         databaseTableAccessor.update(ingredientToChange);
-                        refillListModel();
+                        updateListModel();
                     }
                     catch (SQLException throwables)
                     {
@@ -111,7 +130,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             try
             {
                 databaseTableAccessor.remove(currentChoosenIngredient.getId());
-                refillListModel();
+                updateListModel();
             }
             catch (SQLException throwables)
             {
@@ -120,33 +139,16 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         });
     }
 
-    private void refillListModel()
+    private void updateListModel()
     {
         try
         {
             sortableListModel.setElements(databaseTableAccessor.getAll());
-        } catch (SQLException throwables)
+        }
+        catch (SQLException throwables)
         {
             JOptionPane.showMessageDialog(new JFrame(), "During a data update something went wrong", "Alert", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
-    }
-
-
-    @Override
-    public ListContentPanel<Ingredient> getContent()
-    {
-        return content;
-    }
-
-    @Override
-    public String getTitle() {
-        return "Ingredients";
-    }
-
-    @Override
-    public Optional<List<Integer>> getSelectedItemIds()
-    {
-        return Optional.of(Collections.unmodifiableList(content.getUnmodifiableSelectedItems().stream().map(ingredient->{return ingredient.getId();}).collect(Collectors.toList())));
     }
 }
