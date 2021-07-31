@@ -13,11 +13,10 @@ public final class MainWindow extends JFrame
     private JButton forwardButton;
     private JComponent currentContent;
 
-    public MainWindow (String windowTitle, JComponent content, Dimension minimumSize, Dimension maximumSize)
+    public MainWindow (String windowTitle, JComponent content, Dimension minimumSize)
     {
         setTitle(windowTitle);
         setMinimumSize(minimumSize);
-        setMaximumSize(maximumSize);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -43,8 +42,9 @@ public final class MainWindow extends JFrame
     {
         remove(this.currentContent);
         add(content,BorderLayout.CENTER);
-        revalidate();
         repaint();
+        revalidate();
+        currentContent=content;
     }
 
     public void onSettingsClick(Runnable action)
@@ -75,11 +75,12 @@ public final class MainWindow extends JFrame
     private JPanel createHeaderPanel()
     {
         currentTitle=new JLabel("Dishes");
+        currentTitle.setFont(new Font(currentTitle.getFont().getFontName(), currentTitle.getFont().getStyle(), 17));
         settingsButton=new JButton("Settings");
 
         JPanel headerPanel=new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel,BoxLayout.X_AXIS));
-        headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         headerPanel.add(currentTitle);
         headerPanel.add(Box.createHorizontalGlue());
         headerPanel.add(settingsButton);
@@ -90,12 +91,15 @@ public final class MainWindow extends JFrame
     private JPanel createFooterPanel()
     {
         backButton=new JButton("Back");
+        backButton.setPreferredSize(new Dimension(100, backButton.getPreferredSize().height));
         forwardButton=new JButton("Forward");
+        forwardButton.setPreferredSize(new Dimension(100, forwardButton.getPreferredSize().height));
 
         JPanel footerPanel=new JPanel();
-        footerPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        footerPanel.add(backButton);
-        footerPanel.add(forwardButton);
+        footerPanel.setLayout(new BorderLayout());
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        footerPanel.add(backButton, BorderLayout.WEST);
+        footerPanel.add(forwardButton, BorderLayout.EAST);
 
         return footerPanel;
     }
