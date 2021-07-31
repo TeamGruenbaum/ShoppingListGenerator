@@ -8,5 +8,4 @@ public interface WindowContentProvider<T extends JComponent>
 {
     T getContent();
     String getTitle();
-    Optional<List<Integer>> getSelectedItemIds();
 }

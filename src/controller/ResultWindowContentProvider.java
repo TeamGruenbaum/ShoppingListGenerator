@@ -28,10 +28,4 @@ public class ResultWindowContentProvider implements WindowContentProvider<TextCo
     {
         return "Result";
     }
-
-    @Override
-    public Optional<List<Integer>> getSelectedItemIds()
-    {
-        return Optional.empty();
-    }
 }
