@@ -47,9 +47,9 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
     private void setSortFunctionality()
     {
-        content.onSortClick((listModel)->
+        content.onSortClick((sortableListModel)->
         {
-            listModel.sort(Comparator.comparing(Ingredient::getName));
+            sortableListModel.sort(Comparator.comparing(Ingredient::getName));
         });
     }
 
@@ -93,7 +93,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
             System.out.println(ingredientToChange.getId());
 
-            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>("Change ingredient", new IngredientEditContentPanel(ingredientToChange), new Dimension(300, 200));
+            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>("Edit Ingredient", new IngredientEditContentPanel(ingredientToChange), new Dimension(300, 200));
 
             editWindow.onApplyClick((ingredientEditContentPanel ->
             {
