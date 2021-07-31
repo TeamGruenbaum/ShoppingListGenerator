@@ -1,5 +1,7 @@
 package view;
 
+import model.SortableListModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,17 +16,17 @@ import java.util.List;
 
 import java.util.List;
 
-public class ListContentPanel<U> extends JPanel
+public class ListContentPanel<T> extends JPanel
 {
-    private JList<U> elements;
-    private ListModel<U> listModel;
+    private JList<T> elements;
+    private SortableListModel<T> listModel;
     private int lastClickedListItemIndex;
     private JButton addButton;
     private JButton sortButton;
     private JPopupMenu contextMenu;
 
 
-    public ListContentPanel(ListModel<U> listModel)
+    public ListContentPanel(SortableListModel<T> listModel)
     {
         this.listModel=listModel;
         contextMenu=new JPopupMenu();
@@ -34,22 +36,22 @@ public class ListContentPanel<U> extends JPanel
         add(createContentPanel(),BorderLayout.CENTER);
     }
 
-    public void onSortClick(Consumer<ListModel<U>> action)
+    public void onSortClick(Consumer<SortableListModel<T>> action)
     {
         sortButton.addActionListener((ActionEvent event)->action.accept(listModel));
     }
 
-    public void onAddClick(Consumer<ListModel<U>> action)
+    public void onAddClick(Consumer<SortableListModel<T>> action)
     {
         addButton.addActionListener((ActionEvent event)->action.accept(listModel));
     }
 
-    public List<U> getUnmodifiableSelectedItems()
+    public List<T> getUnmodifiableSelectedItems()
     {
         return Collections.unmodifiableList(elements.getSelectedValuesList());
     }
 
-    public void addMenuItem(String label, BiConsumer<ListModel<U>, Integer> action)
+    public void addMenuItem(String label, BiConsumer<SortableListModel<T>, Integer> action)
     {
         JMenuItem menuItem=new JMenuItem(label);
         menuItem.addActionListener((ActionEvent event)->action.accept(listModel,lastClickedListItemIndex));
@@ -78,7 +80,7 @@ public class ListContentPanel<U> extends JPanel
 
     private JScrollPane createContentPanel()
     {
-        elements=new JList<U>(listModel);
+        elements=new JList<T>(listModel);
         setListSelectionModel();
         setListMouseListener();
 
