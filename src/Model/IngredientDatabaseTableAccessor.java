@@ -15,7 +15,7 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
     public IngredientDatabaseTableAccessor() throws SQLException, ClassNotFoundException
     {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:test.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:Database.db");
 
         Statement statement=connection.createStatement();
 

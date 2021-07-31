@@ -33,21 +33,6 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
         return dishesList;
     }
 
-    private List<Ingredient> getIngredientsNeededForDish(int dishID) throws SQLException
-    {
-        PreparedStatement joinStatement=connection.prepareStatement("SELECT i.id, i.name, i.shelf, i.store FROM Ingredients i JOIN IsNeededFor n ON i.id=n.ingredientID WHERE n.dishID=?;");
-        joinStatement.setInt(1,dishID);
-        ResultSet ingredientsResultSet=joinStatement.executeQuery();
-
-        List<Ingredient> ingredientsList=new ArrayList<>();
-        while(ingredientsResultSet.next())
-        {
-            ingredientsList.add(new Ingredient(ingredientsResultSet.getInt("id"), ingredientsResultSet.getString("name"), ingredientsResultSet.getString("store"), ingredientsResultSet.getInt("shelf")));
-        }
-
-        return ingredientsList;
-    }
-
     @Override
     public int update(Dish item) throws SQLException
     {
@@ -85,6 +70,21 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
         PreparedStatement deleteFromDishesStatement=connection.prepareStatement("DELETE FROM Dishes WHERE id=?");
         deleteFromDishesStatement.setInt(1, id);
         deleteFromDishesStatement.execute();
+    }
+
+    private List<Ingredient> getIngredientsNeededForDish(int dishID) throws SQLException
+    {
+        PreparedStatement joinStatement=connection.prepareStatement("SELECT i.id, i.name, i.shelf, i.store FROM Ingredients i JOIN IsNeededFor n ON i.id=n.ingredientID WHERE n.dishID=?;");
+        joinStatement.setInt(1,dishID);
+        ResultSet ingredientsResultSet=joinStatement.executeQuery();
+
+        List<Ingredient> ingredientsList=new ArrayList<>();
+        while(ingredientsResultSet.next())
+        {
+            ingredientsList.add(new Ingredient(ingredientsResultSet.getInt("id"), ingredientsResultSet.getString("name"), ingredientsResultSet.getString("store"), ingredientsResultSet.getInt("shelf")));
+        }
+
+        return ingredientsList;
     }
 
     private void addToIsNeededFor(Dish item) throws SQLException
