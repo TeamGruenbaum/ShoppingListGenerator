@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class DishWindowContentProvider implements WindowContentProvider
+public class DishWindowContentProvider implements WindowContentProvider<ListContentPanel<Dish>>
 {
     private ListContentPanel<Dish> content;
     private EditWindow<DishEditContentPanel> editWindow;
@@ -52,7 +52,7 @@ public class DishWindowContentProvider implements WindowContentProvider
     }
 
     @Override
-    public JComponent getContent()
+    public ListContentPanel getContent()
     {
         return content;
     }
