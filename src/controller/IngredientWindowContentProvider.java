@@ -18,17 +18,32 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
     private SortableListModel<Ingredient> sortableListModel;
     private DatabaseTableAccessor<Ingredient> databaseTableAccessor;
 
-    public IngredientWindowContentProvider() throws SQLException, ClassNotFoundException
+    public IngredientWindowContentProvider()
     {
-        databaseTableAccessor=new IngredientDatabaseTableAccessor();
+        try
+        {
+            databaseTableAccessor=new IngredientDatabaseTableAccessor();
+        }
+        catch (SQLException sqlException)
+        {
+            JOptionPane.showMessageDialog(new JFrame(), "Could not connect to database.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+            catch (ClassNotFoundException classNotFoundException)
+        {
+            JOptionPane.showMessageDialog(new JFrame(), "Could not find JDBC class.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
+        try
+        {
+            sortableListModel=new SimpleSortableListModel<>(databaseTableAccessor.getAll());
+        }
+        catch(SQLException sqlException)
+        {
 
-        sortableListModel=new SimpleSortableListModel<>(databaseTableAccessor.getAll());
+        }
+
         sortableListModel.sort(Comparator.comparing(Ingredient::getName));
-
-
-        content=new ListContentPanel<Ingredient>(sortableListModel);
-
+        content=new ListContentPanel<Ingredient>(sortableListModel, ((ingredient1, ingredient2) -> {return ingredient1.getId()== ingredient2.getId();}));
         setSortFunctionality();
         setAddFunctionality();
         setUpContextMenu();
