@@ -1,14 +1,17 @@
 package view;
 
 import controller.SortableListModel;
+import model.Ingredient;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.List;
 
@@ -20,12 +23,15 @@ public class ListContentPanel<T> extends JPanel
     private JButton addButton;
     private JButton sortButton;
     private JPopupMenu contextMenu;
+    private BiFunction<T, T, Boolean> selectionFunctionality;
 
 
-    public ListContentPanel(SortableListModel<T> listModel)
+    public ListContentPanel(SortableListModel<T> listModel, BiFunction<T, T, Boolean> selectionFunctionality)
     {
         this.listModel=listModel;
         contextMenu=new JPopupMenu();
+
+        this.selectionFunctionality=selectionFunctionality;
 
         setLayout(new BorderLayout());
         add(createHeaderPanel(),BorderLayout.NORTH);
@@ -40,6 +46,25 @@ public class ListContentPanel<T> extends JPanel
     public void onAddClick(Consumer<SortableListModel<T>> action)
     {
         addButton.addActionListener((ActionEvent event)->action.accept(listModel));
+    }
+
+    public void setSelectedItems(List<T> itemsToSelect)
+    {
+        List<Integer> indices=new ArrayList<>();
+
+        for (T currentItem:itemsToSelect)
+        {
+            for (int j = 0; j < elements.getModel().getSize(); j++)
+            {
+                if(selectionFunctionality.apply(currentItem, elements.getModel().getElementAt(j)))
+                {
+                    indices.add(j);
+                    break;
+                }
+            }
+        }
+
+        elements.setSelectedIndices(indices.stream().mapToInt(i -> i).toArray());
     }
 
     public List<T> getUnmodifiableSelectedItems()
