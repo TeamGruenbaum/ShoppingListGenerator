@@ -12,8 +12,11 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class WindowBuilder
 {
@@ -95,10 +98,71 @@ public class WindowBuilder
             {
                 ++currentContentIndex;
                 updateWindowContent();
+
+                if(currentContentIndex==contents.size()-2)
+                {
+                    ingredientWindowContentProvider.getContent().setSelectedItems(dishWindowContentProvider.getContent().getUnmodifiableSelectedItems().stream().map((Dish dish)->{return dish.getIngredients();}).flatMap(list->{return list.stream();}).collect(Collectors.toList()));
+                }
+                if(currentContentIndex==contents.size()-1)
+                {
+                    resultWindowContentProvider.getContent().setText(generateShoppingList(ingredientWindowContentProvider.getContent().getUnmodifiableSelectedItems()));
+                }
             }
 
             window.setBackVisible(true);
         });
+    }
+
+    private String generateShoppingList(List<Ingredient> ingredientsToBuy)
+    {
+        String shoppingList="";
+
+        List<PairedValue<String, ArrayList<Ingredient>>> ingredientsAndStores=new ArrayList<>();
+        for(String storeName:ingredientsToBuy.stream().map(ingredient -> {return ingredient.getStore();}).collect(Collectors.toList()))
+        {
+            if(!(ingredientsAndStores.stream().map(pair->pair.getKey()).anyMatch(item->item.equals(storeName))))
+            {
+                ingredientsAndStores.add(new Pair<>(storeName, new ArrayList<>()));
+            }
+        }
+        ingredientsAndStores.sort(Comparator.comparing(PairedValue::getKey));
+
+        for (PairedValue<String, ArrayList<Ingredient>> storeIngredientsPair:ingredientsAndStores)
+        {
+            shoppingList=addItemsOfStore(shoppingList,ingredientsToBuy,storeIngredientsPair);
+        }
+
+        return shoppingList;
+    }
+
+    private String addItemsOfStore(String shoppingList, List<Ingredient> ingredientsToBuy, PairedValue<String, ArrayList<Ingredient>> storeIngredientsPair)
+    {
+        for(Ingredient ingredient:ingredientsToBuy)
+        {
+            if(ingredient.getStore().equals(storeIngredientsPair.getKey()))
+            {
+                storeIngredientsPair.getValue().add(ingredient);
+            }
+        }
+        storeIngredientsPair.getValue().sort(Comparator.comparingInt(Ingredient::getShelf));
+
+        int currentShelfNumber=storeIngredientsPair.getValue().get(0).getShelf();
+        shoppingList+="# "+storeIngredientsPair.getKey()+"\n## Regal "+currentShelfNumber;
+
+        for(int index=0; index<storeIngredientsPair.getValue().size(); index++)
+        {
+            if(storeIngredientsPair.getValue().get(index).getShelf()==currentShelfNumber)
+            {
+                shoppingList+="\n- [ ] "+storeIngredientsPair.getValue().get(index).getName();
+            }
+            else
+            {
+                currentShelfNumber=storeIngredientsPair.getValue().get(index).getShelf();
+                shoppingList+="\n\n## Regal "+currentShelfNumber;
+                index--;
+            }
+        }
+        return shoppingList+"\n\n";
     }
 
     private void setBackwardFunctionality()
