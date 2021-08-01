@@ -14,7 +14,10 @@ public class TextContentPanel extends JPanel
         this.text.setEditable(false);
         this.text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setLayout(new BorderLayout());
-        add(this.text, BorderLayout.CENTER);
+
+        JScrollPane scrollPane=new JScrollPane(this.text);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        add(scrollPane, BorderLayout.CENTER);
     }
 
 
