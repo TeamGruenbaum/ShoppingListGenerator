@@ -1,6 +1,10 @@
 package controller;
 
+import model.Dish;
+import model.Ingredient;
+import view.ListContentPanel;
 import view.MainWindow;
+import view.TextContentPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,15 +20,22 @@ public class WindowBuilder
     private MainWindow window;
     private List<PairedValue<String, JComponent>> contents;
     private int currentContentIndex;
+    private WindowContentProvider<ListContentPanel<Dish>> dishWindowContentProvider;
+    private WindowContentProvider<ListContentPanel<Ingredient>> ingredientWindowContentProvider;
+    private WindowContentProvider<TextContentPanel> resultWindowContentProvider;
 
-    public WindowBuilder(WindowContentProvider... windowSetuper)
+    public WindowBuilder()
     {
         contents=new ArrayList<>();
 
-        for(WindowContentProvider windowContentProvider:windowSetuper)
-        {
-            contents.add(new Pair<>(windowContentProvider.getTitle(), windowContentProvider.getContent()));
-        }
+        dishWindowContentProvider=new DishWindowContentProvider();
+        contents.add(new Pair<>(dishWindowContentProvider.getTitle(), dishWindowContentProvider.getContent()));
+
+        ingredientWindowContentProvider=new IngredientWindowContentProvider();
+        contents.add(new Pair<>(ingredientWindowContentProvider.getTitle(), ingredientWindowContentProvider.getContent()));
+
+        resultWindowContentProvider=new ResultWindowContentProvider();
+        contents.add(new Pair<>(resultWindowContentProvider.getTitle(), resultWindowContentProvider.getContent()));
 
         currentContentIndex=0;
         window=new MainWindow("ShoppingListGenerator",contents.get(currentContentIndex).getValue(), new Dimension(400, 400));
@@ -37,86 +48,72 @@ public class WindowBuilder
 
     private void setSettingsFunctionality()
     {
-        window.onSettingsClick(new Runnable()
+        window.onSettingsClick(() ->
         {
-            @Override
-            public void run()
-            {
-                //TODO: settings action
-            }
+            //TODO: settings action
         });
     }
 
     private void setForwardFunctionality()
     {
-        window.onForwardClick(new Consumer<JButton>()
+        window.onForwardClick((JButton forwardButton) ->
         {
-            @Override
-            public void accept(JButton forwardButton)
+            if(currentContentIndex+1>contents.size()-1)
             {
-                if(currentContentIndex+1>contents.size()-1)
+                JPopupMenu lastActionsMenu=new JPopupMenu();
+                String shoppinglist = resultWindowContentProvider.getContent().getText();
+
+                JMenuItem copyMenuItem=new JMenuItem("Copy to Clipboard");
+                copyMenuItem.addActionListener((event)->
                 {
-                    JPopupMenu lastActionsMenu=new JPopupMenu();
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(shoppinglist), null);
+                });
 
-                    JMenuItem copyMenuItem=new JMenuItem("Copy to Clipboard");
-                    copyMenuItem.addActionListener((event)->
-                    {
-                        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("Text für die Zwischenablage"), null);
-                    });
-
-                    JMenuItem saveMenuItem=new JMenuItem("Save on your Computer");
-                    saveMenuItem.addActionListener((event)->
-                    {
-                        String test = "Habe heute keine Lust zum einkaufen :D";
-                        JFileChooser chooser = new JFileChooser();
-                        int retrival = chooser.showSaveDialog(null);
-
-                        if (retrival == JFileChooser.APPROVE_OPTION) {
-                            try {
-                                FileWriter fileWriter=new FileWriter(chooser.getSelectedFile()+".txt");
-                                fileWriter.write(test);
-                                fileWriter.close();
-                            }
-                            catch (Exception ex) 
-                            {
-                                JOptionPane.showMessageDialog(new JFrame(), "The file could not be saved.", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
+                JMenuItem saveMenuItem=new JMenuItem("Save on your Computer");
+                saveMenuItem.addActionListener((event)->
+                {
+                    JFileChooser fileChooser = new JFileChooser();
+                    if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            FileWriter fileWriter=new FileWriter(fileChooser.getSelectedFile()+".txt");
+                            fileWriter.write(shoppinglist);
+                            fileWriter.close();
                         }
-                    });
+                        catch (Exception ex)
+                        {
+                            JOptionPane.showMessageDialog(new JFrame(), "The file could not be saved.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
 
-                    lastActionsMenu.add(copyMenuItem);
-                    lastActionsMenu.add(saveMenuItem);
+                lastActionsMenu.add(copyMenuItem);
+                lastActionsMenu.add(saveMenuItem);
 
-                    lastActionsMenu.show(forwardButton, forwardButton.getWidth()/2, forwardButton.getHeight()/2);
-                }
-                else
-                {
-                    ++currentContentIndex;
-                    updateWindowContent();
-                }
-
-                window.setBackVisible(true);
+                lastActionsMenu.show(forwardButton, forwardButton.getWidth()/2, forwardButton.getHeight()/2);
             }
+            else
+            {
+                ++currentContentIndex;
+                updateWindowContent();
+            }
+
+            window.setBackVisible(true);
         });
     }
 
     private void setBackwardFunctionality()
     {
-        window.onBackClick(new Consumer<JButton>()
+        window.onBackClick((JButton backButton)->
         {
-            @Override
-            public void accept(JButton backButton)
+            if(currentContentIndex--==1)
             {
-                if(currentContentIndex--==1)
-                {
-                    window.setBackVisible(false);
-                }
-                else
-                {
-                    window.setBackVisible(true);
-                }
-                updateWindowContent();
+                window.setBackVisible(false);
             }
+            else
+            {
+                window.setBackVisible(true);
+            }
+            updateWindowContent();
         });
     }
 
