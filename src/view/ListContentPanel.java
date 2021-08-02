@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+
 
 public class ListContentPanel<T extends Identifiable> extends JPanel
 {
@@ -25,6 +26,7 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
     private JButton addButton;
     private JButton sortButton;
     private JPopupMenu contextMenu;
+
 
 
     public ListContentPanel()
@@ -74,6 +76,20 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
         }
     }
 
+    public void setSelectedItems(List<T> items)
+    {
+        jList.clearSelection();
+
+        List<Integer> ids=items.stream().map((item) -> item.getId()).collect(Collectors.toList());
+
+        for(int i = 0; i< jList.getModel().getSize(); i++)
+        {
+            if(ids.contains(jList.getModel().getElementAt(i).getId()))
+            {
+                jList.setSelectedIndex(i);
+            }
+        }
+    }
 
     public T getElementAt(int index)
     {
