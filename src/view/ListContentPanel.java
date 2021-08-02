@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -38,9 +39,9 @@ public class ListContentPanel<T> extends JPanel
         add(createContentPanel(),BorderLayout.CENTER);
     }
 
-    public void onSortClick(Consumer<SortableListModel<T>> action)
+    public void onSortClick(BiConsumer<JList<T>, SortableListModel<T>> action)
     {
-        sortButton.addActionListener((ActionEvent event)->action.accept(listModel));
+        sortButton.addActionListener((ActionEvent event)->action.accept(elements, listModel));
     }
 
     public void onAddClick(Consumer<SortableListModel<T>> action)
