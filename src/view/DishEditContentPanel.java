@@ -1,6 +1,5 @@
 package view;
 
-import controller.SortableListModel;
 import model.Dish;
 import model.Ingredient;
 
@@ -21,7 +20,7 @@ public class DishEditContentPanel extends JPanel
 
 
 
-    public DishEditContentPanel(Dish dish, SortableListModel<Ingredient> ingredientsSortableListModel)
+    public DishEditContentPanel(Dish dish, ListModel<Ingredient> ingredientsSortableListModel)
     {
         this.dish=dish;
 

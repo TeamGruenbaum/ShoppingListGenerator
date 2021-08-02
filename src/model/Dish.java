@@ -1,11 +1,12 @@
 package model;
 
+import controller.Identifiable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dish
-{
+public class Dish implements Identifiable {
     private int id;
     private String name;
     private List<Ingredient> ingredients;

@@ -1,7 +1,7 @@
 package view;
 
-import controller.SortableListModel;
-import model.Ingredient;
+import controller.Identifiable;
+import controller.SimpleListModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,70 +13,94 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-public class ListContentPanel<T> extends JPanel
+public class ListContentPanel<T extends Identifiable> extends JPanel
 {
-    private JList<T> elements;
-    private SortableListModel<T> listModel;
+    private JList<T> jList;
+    private List<T> elements;
     private int lastClickedListItemIndex;
     private JButton addButton;
     private JButton sortButton;
     private JPopupMenu contextMenu;
-    private BiFunction<T, T, Boolean> selectionFunctionality;
 
 
-    public ListContentPanel(SortableListModel<T> listModel, BiFunction<T, T, Boolean> selectionFunctionality)
+    public ListContentPanel()
     {
-        this.listModel=listModel;
-        contextMenu=new JPopupMenu();
+        jList=new JList<>();
+        setElements(new ArrayList<>());
 
-        this.selectionFunctionality=selectionFunctionality;
+        contextMenu=new JPopupMenu();
 
         setLayout(new BorderLayout());
         add(createHeaderPanel(),BorderLayout.NORTH);
         add(createContentPanel(),BorderLayout.CENTER);
     }
 
-    public void onSortClick(BiConsumer<JList<T>, SortableListModel<T>> action)
+    public void setElements(List<T> elements)
     {
-        sortButton.addActionListener((ActionEvent event)->action.accept(elements, listModel));
-    }
+        List<Integer> selectedBeforeSorting= jList.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
+        jList.clearSelection();
 
-    public void onAddClick(Consumer<SortableListModel<T>> action)
-    {
-        addButton.addActionListener((ActionEvent event)->action.accept(listModel));
-    }
+        this.jList.setModel(new SimpleListModel<>(elements));
+        this.elements = elements;
 
-    public void setSelectedItems(List<T> itemsToSelect)
-    {
-        List<Integer> indices=new ArrayList<>();
-
-        for (T currentItem:itemsToSelect)
+        for(int i = 0; i< jList.getModel().getSize(); i++)
         {
-            for (int j = 0; j < elements.getModel().getSize(); j++)
+            if(selectedBeforeSorting.contains(jList.getModel().getElementAt(i).getId()))
             {
-                if(selectionFunctionality.apply(currentItem, elements.getModel().getElementAt(j)))
-                {
-                    indices.add(j);
-                    break;
-                }
+                jList.setSelectedIndex(i);
             }
         }
+    }
 
-        elements.setSelectedIndices(indices.stream().mapToInt(i -> i).toArray());
+    public void sortElements(Comparator<T> comparator)
+    {
+        List<Integer> selectedBeforeSorting= jList.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
+        jList.clearSelection();
+
+        elements.sort(comparator);
+
+        setElements(elements);
+
+        for(int i = 0; i< jList.getModel().getSize(); i++)
+        {
+            if(selectedBeforeSorting.contains(jList.getModel().getElementAt(i).getId()))
+            {
+                jList.setSelectedIndex(i);
+            }
+        }
+    }
+
+
+    public T getElementAt(int index)
+    {
+        return elements.get(index);
     }
 
     public List<T> getUnmodifiableSelectedItems()
     {
-        return Collections.unmodifiableList(elements.getSelectedValuesList());
+        return Collections.unmodifiableList(jList.getSelectedValuesList());
     }
 
-    public void addMenuItem(String label, BiConsumer<SortableListModel<T>, Integer> action)
+
+    public void onSortClick(Consumer<ListContentPanel<T>> action)
+    {
+        sortButton.addActionListener((ActionEvent event)->action.accept(this));
+    }
+
+    public void onAddClick(Consumer<ListContentPanel<T>> action)
+    {
+        addButton.addActionListener((ActionEvent event)->action.accept(this));
+    }
+
+
+    public void addMenuItem(String label, BiConsumer<ListContentPanel<T>, Integer> action)
     {
         JMenuItem menuItem=new JMenuItem(label);
-        menuItem.addActionListener((ActionEvent event)->action.accept(listModel,lastClickedListItemIndex));
+        menuItem.addActionListener((ActionEvent event)->action.accept(this, lastClickedListItemIndex));
 
         contextMenu.add(menuItem);
     }
@@ -103,19 +127,20 @@ public class ListContentPanel<T> extends JPanel
 
     private JScrollPane createContentPanel()
     {
-        elements=new JList<T>(listModel);
+        jList =new JList<T>();
+        jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setListSelectionModel();
         setListMouseListener();
 
         JScrollPane contentPanel=new JScrollPane();
-        contentPanel.setViewportView(elements);
+        contentPanel.setViewportView(jList);
 
         return contentPanel;
     }
 
     private void setListSelectionModel()
     {
-        elements.setSelectionModel(new DefaultListSelectionModel()
+        jList.setSelectionModel(new DefaultListSelectionModel()
         {
             @Override
             public void setSelectionInterval(int index0, int index1) {
@@ -131,14 +156,14 @@ public class ListContentPanel<T> extends JPanel
 
     private void setListMouseListener()
     {
-        elements.addMouseListener((new MouseListener()
+        jList.addMouseListener((new MouseListener()
         {
             @Override
             public void mouseClicked(MouseEvent event)
             {
                 if(SwingUtilities.isRightMouseButton(event))
                 {
-                    lastClickedListItemIndex=elements.locationToIndex(event.getPoint());
+                    lastClickedListItemIndex= jList.locationToIndex(event.getPoint());
                     contextMenu.show(event.getComponent(), event.getX(), event.getY());
                 }
             }

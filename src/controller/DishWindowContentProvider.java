@@ -14,15 +14,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.BiConsumer;
+
 
 public class DishWindowContentProvider implements WindowContentProvider<ListContentPanel<Dish>>
 {
     private ListContentPanel<Dish> content;
-    private SortableListModel<Dish> sortableListModel;
+    private List<Dish> sortableListModel;
     private DatabaseTableAccessor<Dish> dishDatabaseTableAccessor;
     private DatabaseTableAccessor<Ingredient> ingredientDatabaseTableAccessor;
+    private List<Comparator<Dish>> comparators;
+    private int currentComparatorIndex;
 
 
     public DishWindowContentProvider()
@@ -41,20 +42,17 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
             JOptionPane.showMessageDialog(new JFrame(), "Could not connect to database.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        try
-        {
-            sortableListModel=new SimpleSortableListModel<Dish>(dishDatabaseTableAccessor.getAll());
-            sortableListModel.sort(Comparator.comparing(Dish::getName));
-            content=new ListContentPanel<Dish>(sortableListModel, ((dish1, dish2) -> {return dish1.getId()== dish2.getId();}));
+        currentComparatorIndex=0;
 
-            setAddFunctionality();
-            setSortFunctionality();
-            setUpContextMenu();
-        }
-        catch (SQLException sqlException)
-        {
-            JOptionPane.showMessageDialog(new JFrame(), "Could not access dishes in database.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        comparators=new ArrayList<>();
+        comparators.addAll(List.of(Comparator.comparing(dish -> dish.getName().toLowerCase())));
+
+        content=new ListContentPanel<>();
+
+        updateListModel();
+        setAddFunctionality();
+        setSortFunctionality();
+        setUpContextMenu();
     }
 
     @Override
@@ -71,28 +69,49 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
 
     private void setSortFunctionality()
     {
-        content.onSortClick((sortableListModel)->
+        content.onSortClick(listContentPanel ->
         {
-            sortableListModel.sort(Comparator.comparing(Dish::getName));
+            changeCurrentComparator();
+            updateListModel();
         });
     }
 
     private void setAddFunctionality()
     {
-        content.onAddClick((SortableListModel<Dish> sortableListModel)->
+        content.onAddClick((listContentPanel)->
         {
-            addDish(new Dish("", new ArrayList<Ingredient>()), sortableListModel);
+            Dish newDish=new Dish("", new ArrayList<Ingredient>());
+
+            EditWindow<DishEditContentPanel> editWindow=new EditWindow<>("Create Dish", new DishEditContentPanel(newDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,200));
+            editWindow.onApplyClick((DishEditContentPanel dishEditContentPanel)->
+            {
+                if (updateDish(newDish, dishEditContentPanel, editWindow))
+                {
+                    try
+                    {
+                        dishDatabaseTableAccessor.add(newDish);
+                        updateListModel();
+                    }
+                    catch (SQLException sqlException)
+                    {
+                        editWindow.dispose();
+                        JOptionPane.showMessageDialog(new JFrame(), "Could not add dish to database.", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            });
+
+            editWindow.showWindow();
         });
     }
 
     private void setUpContextMenu()
     {
-        content.addMenuItem("Change", (SortableListModel<Dish> sortableListModel, Integer lastClickedListItemIndex)->
+        content.addMenuItem("Change", (sortableListModel, lastClickedListItemIndex)->
         {
-            editDish(sortableListModel.getElementAt(lastClickedListItemIndex), sortableListModel);
+            editDish(sortableListModel.getElementAt(lastClickedListItemIndex));
         });
 
-        content.addMenuItem("Remove", (SortableListModel<Dish> sortableListModel, Integer lastClickedListItemIndex)->
+        content.addMenuItem("Remove", (sortableListModel, lastClickedListItemIndex)->
         {
             try
             {
@@ -106,31 +125,9 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         });
     }
 
-    private void addDish(Dish newDish, SortableListModel<Dish> sortableListModel)
+    private void editDish(Dish currentDish)
     {
-        EditWindow<DishEditContentPanel> editWindow=new EditWindow<>("Create Dish", new DishEditContentPanel(newDish, new SimpleSortableListModel<>(getIngredientList())), new Dimension(300,200));
-        editWindow.onApplyClick((DishEditContentPanel dishEditContentPanel)->
-        {
-            if (updateDish(newDish, dishEditContentPanel, editWindow))
-            {
-                try
-                {
-                    dishDatabaseTableAccessor.add(newDish);
-                    updateListModel();
-                }
-                catch (SQLException sqlException)
-                {
-                    editWindow.dispose();
-                    JOptionPane.showMessageDialog(new JFrame(), "Could not add dish to database.", "Alert", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-        editWindow.showWindow();
-    }
-
-    private void editDish(Dish currentDish, SortableListModel<Dish> sortableListModel)
-    {
-        EditWindow<DishEditContentPanel> editWindow=new EditWindow<>("Edit Dish", new DishEditContentPanel(currentDish, new SimpleSortableListModel<>(getIngredientList())), new Dimension(300,200));
+        EditWindow<DishEditContentPanel> editWindow=new EditWindow<>("Edit Dish", new DishEditContentPanel(currentDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,200));
         editWindow.onApplyClick((DishEditContentPanel dishEditContentPanel)->
         {
             if(updateDish(currentDish, dishEditContentPanel, editWindow))
@@ -193,12 +190,18 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
     {
         try
         {
-            sortableListModel.setElements(dishDatabaseTableAccessor.getAll());
+            content.setElements(dishDatabaseTableAccessor.getAll());
+            content.sortElements(comparators.get(currentComparatorIndex));
         }
-        catch (SQLException sqlException)
+        catch (SQLException throwables)
         {
-            JOptionPane.showMessageDialog(new JFrame(), "During a data update something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), "During a data update something went wrong", "Alert", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
+    }
+
+    private void changeCurrentComparator()
+    {
+        currentComparatorIndex=(currentComparatorIndex+1)%comparators.size();
     }
 }

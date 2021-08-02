@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class IngredientWindowContentProvider implements WindowContentProvider<ListContentPanel<Ingredient>>
 {
     private ListContentPanel<Ingredient> content;
-    private SortableListModel<Ingredient> sortableListModel;
     private DatabaseTableAccessor<Ingredient> databaseTableAccessor;
     private List<Comparator<Ingredient>> comparators;
     private int currentComparatorIndex;
@@ -41,11 +40,11 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         currentComparatorIndex=0;
 
         comparators=new ArrayList<>();
-        comparators.addAll(List.of(Comparator.comparing(Ingredient::getName), Comparator.comparing(Ingredient::getStore), Comparator.comparing(Ingredient::getShelf)));
+        comparators.addAll(List.of(Comparator.comparing(ingredient -> ingredient.getName().toLowerCase()), Comparator.comparing(ingredient -> ingredient.getStore().toLowerCase()), Comparator.comparing(Ingredient::getShelf)));
+
+        content=new ListContentPanel<>();
 
         updateListModel();
-
-        content=new ListContentPanel<Ingredient>(sortableListModel, ((ingredient1, ingredient2) -> {return ingredient1.getId()== ingredient2.getId();}));
         setSortFunctionality();
         setAddFunctionality();
         setUpContextMenu();
@@ -65,27 +64,16 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
     private void setSortFunctionality()
     {
-        content.onSortClick(((ingredientJList, sortableListModel) ->
+        content.onSortClick(listContentPanel ->
         {
-            List<Integer> selectedBeforeSorting=ingredientJList.getSelectedValuesList().stream().map(item -> {return item.getId();}).collect(Collectors.toList());
-
             changeCurrentComparator();
             updateListModel();
-
-            ingredientJList.clearSelection();
-            for(int i=0; i<sortableListModel.getSize(); i++)
-            {
-                if(selectedBeforeSorting.contains(sortableListModel.getElementAt(i).getId()))
-                {
-                    ingredientJList.setSelectedIndex(i);
-                }
-            }
-        }));
+        });
     }
 
     private void setAddFunctionality()
     {
-        content.onAddClick((sortableListModel)->
+        content.onAddClick(listContentPanel ->
         {
             Ingredient emptyIngredient=new Ingredient("", "", 0);
 
@@ -117,9 +105,9 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
     private void setUpContextMenu()
     {
-        content.addMenuItem("Change", ((sortableListModel, index) ->
+        content.addMenuItem("Change", (listContentPanel, index) ->
         {
-            Ingredient ingredientToChange=sortableListModel.getElementAt(index);
+            Ingredient ingredientToChange=listContentPanel.getElementAt(index);
 
             System.out.println(ingredientToChange.getId());
 
@@ -152,7 +140,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             }));
 
             editWindow.showWindow();
-        }));
+        });
 
         content.addMenuItem("Remove", (sortableListModel, index)->
         {
@@ -173,13 +161,8 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
     {
         try
         {
-            if(sortableListModel==null)
-            {
-                sortableListModel=new SimpleSortableListModel<>(databaseTableAccessor.getAll());
-            }
-
-            sortableListModel.setElements(databaseTableAccessor.getAll());
-            sortableListModel.sort(comparators.get(currentComparatorIndex));
+            content.setElements(databaseTableAccessor.getAll());
+            content.sortElements(comparators.get(currentComparatorIndex));
         }
         catch (SQLException throwables)
         {

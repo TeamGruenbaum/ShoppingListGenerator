@@ -1,8 +1,10 @@
 package model;
 
+import controller.Identifiable;
+
 import java.io.Serializable;
 
-public class Ingredient
+public class Ingredient implements Identifiable
 {
     private int id;
     private String name;
