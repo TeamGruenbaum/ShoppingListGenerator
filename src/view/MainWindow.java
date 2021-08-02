@@ -42,8 +42,7 @@ public final class MainWindow extends JFrame
     {
         remove(this.currentContent);
         add(content,BorderLayout.CENTER);
-        repaint();
-        revalidate();
+        SwingUtilities.updateComponentTreeUI(this);
         currentContent=content;
     }
 
