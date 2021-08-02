@@ -6,16 +6,15 @@ import view.ListContentPanel;
 import view.MainWindow;
 import view.TextContentPanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class WindowBuilder
@@ -47,13 +46,26 @@ public class WindowBuilder
         setSettingsFunctionality();
         setForwardFunctionality();
         setBackwardFunctionality();
+
+        Desktop.getDesktop().setAboutHandler((e)->JOptionPane.showMessageDialog(null, "ShoppingListGenerator"));
+
+        try
+        {
+            Image taskImage= ImageIO.read(getClass().getResource("Icon.png"));
+            Taskbar.getTaskbar().setIconImage(taskImage);
+            window.setIconImage(taskImage);
+        }
+        catch (IOException exception)
+        {
+            exception.printStackTrace();
+        }
     }
 
     private void setSettingsFunctionality()
     {
         window.onSettingsClick(() ->
         {
-            //TODO: settings action
+            Taskbar.getTaskbar().requestUserAttention(true, true);
         });
     }
 
@@ -101,6 +113,11 @@ public class WindowBuilder
 
                 if(currentContentIndex==contents.size()-2)
                 {
+                    System.out.println(dishWindowContentProvider.getContent().getUnmodifiableSelectedItems().stream().map((Dish dish) -> {
+                        return dish.getIngredients();
+                    }).flatMap(list -> {
+                        return list.stream();
+                    }).collect(Collectors.toList()));
                     ingredientWindowContentProvider.getContent().setSelectedItems(dishWindowContentProvider.getContent().getUnmodifiableSelectedItems().stream().map((Dish dish)->{return dish.getIngredients();}).flatMap(list->{return list.stream();}).collect(Collectors.toList()));
                 }
                 if(currentContentIndex==contents.size()-1)
