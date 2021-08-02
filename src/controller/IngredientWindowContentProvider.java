@@ -10,13 +10,18 @@ import view.ListContentPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class IngredientWindowContentProvider implements WindowContentProvider<ListContentPanel<Ingredient>>
 {
     private ListContentPanel<Ingredient> content;
     private SortableListModel<Ingredient> sortableListModel;
     private DatabaseTableAccessor<Ingredient> databaseTableAccessor;
+    private List<Comparator<Ingredient>> comparators;
+    private int currentComparatorIndex;
 
     public IngredientWindowContentProvider()
     {
@@ -28,21 +33,18 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         {
             JOptionPane.showMessageDialog(new JFrame(), "Could not connect to database.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-            catch (ClassNotFoundException classNotFoundException)
+        catch (ClassNotFoundException classNotFoundException)
         {
             JOptionPane.showMessageDialog(new JFrame(), "Could not find JDBC class.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        try
-        {
-            sortableListModel=new SimpleSortableListModel<>(databaseTableAccessor.getAll());
-        }
-        catch(SQLException sqlException)
-        {
+        currentComparatorIndex=0;
 
-        }
+        comparators=new ArrayList<>();
+        comparators.addAll(List.of(Comparator.comparing(Ingredient::getName), Comparator.comparing(Ingredient::getStore), Comparator.comparing(Ingredient::getShelf)));
 
-        sortableListModel.sort(Comparator.comparing(Ingredient::getName));
+        updateListModel();
+
         content=new ListContentPanel<Ingredient>(sortableListModel, ((ingredient1, ingredient2) -> {return ingredient1.getId()== ingredient2.getId();}));
         setSortFunctionality();
         setAddFunctionality();
@@ -56,16 +58,29 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
     }
 
     @Override
-    public String getTitle() {
+    public String getTitle()
+    {
         return "Ingredients";
     }
 
     private void setSortFunctionality()
     {
-        content.onSortClick((sortableListModel)->
+        content.onSortClick(((ingredientJList, sortableListModel) ->
         {
-            sortableListModel.sort(Comparator.comparing(Ingredient::getName));
-        });
+            List<Integer> selectedBeforeSorting=ingredientJList.getSelectedValuesList().stream().map(item -> {return item.getId();}).collect(Collectors.toList());
+
+            changeCurrentComparator();
+            updateListModel();
+
+            ingredientJList.clearSelection();
+            for(int i=0; i<sortableListModel.getSize(); i++)
+            {
+                if(selectedBeforeSorting.contains(sortableListModel.getElementAt(i).getId()))
+                {
+                    ingredientJList.setSelectedIndex(i);
+                }
+            }
+        }));
     }
 
     private void setAddFunctionality()
@@ -158,12 +173,23 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
     {
         try
         {
+            if(sortableListModel==null)
+            {
+                sortableListModel=new SimpleSortableListModel<>(databaseTableAccessor.getAll());
+            }
+
             sortableListModel.setElements(databaseTableAccessor.getAll());
+            sortableListModel.sort(comparators.get(currentComparatorIndex));
         }
         catch (SQLException throwables)
         {
             JOptionPane.showMessageDialog(new JFrame(), "During a data update something went wrong", "Alert", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
+    }
+
+    private void changeCurrentComparator()
+    {
+        currentComparatorIndex=(currentComparatorIndex+1)%comparators.size();
     }
 }
