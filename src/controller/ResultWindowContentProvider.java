@@ -26,6 +26,6 @@ public class ResultWindowContentProvider implements WindowContentProvider<TextCo
     @Override
     public String getTitle()
     {
-        return "Shopping List";
+        return Localisator.getInstance().getString("shopping_list");
     }
 }

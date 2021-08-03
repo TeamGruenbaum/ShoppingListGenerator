@@ -30,12 +30,12 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         }
         catch (SQLException sqlException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), "Could not connect to database.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("connection_to_database_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
             sqlException.printStackTrace();
         }
         catch (ClassNotFoundException classNotFoundException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), "Could not find JDBC class.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("no_database_driver_available"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
         }
 
         currentComparatorIndex=0;
@@ -60,7 +60,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
     @Override
     public String getTitle()
     {
-        return "Ingredients";
+        return Localisator.getInstance().getString("ingredients");
     }
 
     private void setSortFunctionality()
@@ -78,13 +78,13 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         {
             Ingredient emptyIngredient=new Ingredient("", "", 0);
 
-            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>("Create ingredient", new IngredientEditContentPanel(emptyIngredient), new Dimension(300, 200));
+            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new IngredientEditContentPanel(emptyIngredient), new Dimension(300, 200));
             editWindow.onApplyClick(ingredientEditContentPanel ->
             {
                 if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStore().isBlank())
                 {
                     editWindow.dispose();
-                    JOptionPane.showMessageDialog(editWindow, "All fields must be filled in", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(editWindow, Localisator.getInstance().getString("all_fields_must_be_filled"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
                 }
                 else
                 {
@@ -95,7 +95,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                     } catch (SQLException throwables)
                     {
                         editWindow.dispose();
-                        JOptionPane.showMessageDialog(new JFrame(), "The ingredient is already available", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("element_already_available"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
                         throwables.printStackTrace();
                     }
                 }
@@ -107,20 +107,20 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
     private void setUpContextMenu()
     {
-        content.addMenuItem("Change", (listContentPanel, index) ->
+        content.addMenuItem(Localisator.getInstance().getString("edit"), (listContentPanel, index) ->
         {
             Ingredient ingredientToChange=listContentPanel.getElementAt(index);
 
             System.out.println(ingredientToChange.getId());
 
-            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>("Edit Ingredient", new IngredientEditContentPanel(ingredientToChange), new Dimension(300, 200));
+            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new IngredientEditContentPanel(ingredientToChange), new Dimension(300, 200));
 
             editWindow.onApplyClick((ingredientEditContentPanel ->
             {
                 if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStore().isBlank())
                 {
                     editWindow.dispose();
-                    JOptionPane.showMessageDialog(editWindow, "All fields must be filled in", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(editWindow, Localisator.getInstance().getString("all_fields_must_be_filled"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
                 }
                 else
                 {
@@ -136,7 +136,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                     catch (SQLException throwables)
                     {
                         editWindow.dispose();
-                        JOptionPane.showMessageDialog(new JFrame(), "The ingredient is already available", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("element_already_available"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
                         throwables.printStackTrace();
                     }
                 }
@@ -145,7 +145,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             editWindow.showWindow();
         });
 
-        content.addMenuItem("Remove", (sortableListModel, index)->
+        content.addMenuItem(Localisator.getInstance().getString("remove"), (sortableListModel, index)->
         {
             Ingredient currentChoosenIngredient=sortableListModel.getElementAt(index);
             try
@@ -155,6 +155,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             }
             catch (SQLException throwables)
             {
+                JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("removing_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
                 throwables.printStackTrace();
             }
         });
@@ -169,7 +170,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         }
         catch (SQLException throwables)
         {
-            JOptionPane.showMessageDialog(new JFrame(), "During a data update something went wrong", "Alert", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("changing_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
             throwables.printStackTrace();
             System.exit(0);
         }

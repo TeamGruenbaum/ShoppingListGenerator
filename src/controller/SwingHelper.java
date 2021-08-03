@@ -41,7 +41,7 @@ public class SwingHelper
                 }
                 catch(IOException | URISyntaxException exception)
                 {
-                    JOptionPane.showMessageDialog(new JFrame(), "The URI could not be opened.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("uri_can_not_be_opened"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
                 }
             }
             @Override
