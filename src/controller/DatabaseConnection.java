@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,6 +17,13 @@ public final class DatabaseConnection
         if(connection==null)
         {
             PathHelper pathHelper=new PathHelper();
+
+            File directory=new File(pathHelper.getSavePath());
+            if(!directory.exists())
+            {
+                directory.mkdir();
+            }
+
             connection=DriverManager.getConnection("jdbc:sqlite:"+pathHelper.getSavePath()+pathHelper.getDatabaseName());
         }
         return connection;
