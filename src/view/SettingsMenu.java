@@ -75,7 +75,7 @@ public class SettingsMenu extends JPopupMenu
         JPanel header=new JPanel(new GridBagLayout());
         header.setBorder(BorderFactory.createEmptyBorder(8, 0, 5, 0));
 
-        ImageIcon imageIcon=new ImageIcon(new ImageIcon("src/controller/icon_small.png").getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
+        ImageIcon imageIcon=new ImageIcon(new ImageIcon("src/resources/icon_small.png").getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
 
         JLabel applicationName=new JLabel(Localisator.getInstance().getString("application_name"));
         applicationName.setBorder(BorderFactory.createEmptyBorder(8,0,4,0));
