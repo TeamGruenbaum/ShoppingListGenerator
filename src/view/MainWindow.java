@@ -76,7 +76,7 @@ public final class MainWindow extends JFrame
     private JPanel createHeaderPanel(String contentTitle)
     {
         currentTitle=new JLabel(contentTitle);
-        currentTitle.setFont(new Font(currentTitle.getFont().getFontName(), currentTitle.getFont().getStyle(), 17));
+        currentTitle.setFont(new Font(currentTitle.getFont().getFontName(), Font.BOLD, 17));
         settingsButton=new JButton(Localisator.getInstance().getString("settings"));
 
         JPanel headerPanel=new JPanel();

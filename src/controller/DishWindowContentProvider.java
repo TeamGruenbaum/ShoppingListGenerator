@@ -88,7 +88,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         {
             Dish newDish=new Dish("", new ArrayList<Ingredient>());
 
-            EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("add"), new DishEditContentPanel(newDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,200));
+            EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("add"), new DishEditContentPanel(newDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,400));
             editWindow.onApplyClick((DishEditContentPanel dishEditContentPanel)->
             {
                 if (updateDish(newDish, dishEditContentPanel, editWindow))
@@ -135,7 +135,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
 
     private void editDish(Dish currentDish)
     {
-        EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new DishEditContentPanel(currentDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,200));
+        EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new DishEditContentPanel(currentDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,400));
         editWindow.onApplyClick((DishEditContentPanel dishEditContentPanel)->
         {
             if(updateDish(currentDish, dishEditContentPanel, editWindow))

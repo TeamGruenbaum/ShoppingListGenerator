@@ -61,6 +61,7 @@ public final class EditWindow<T extends JComponent> extends JDialog
         applyButton=new JButton(Localisator.getInstance().getString("apply"));
 
         JPanel footerPanel=new JPanel();
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
 
         footerPanel.add(quitButton, BorderLayout.WEST);
         footerPanel.add(applyButton, BorderLayout.EAST);

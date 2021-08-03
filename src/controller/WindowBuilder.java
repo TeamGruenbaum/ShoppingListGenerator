@@ -11,12 +11,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -47,7 +43,7 @@ public class WindowBuilder
         contents.add(new Pair<>(resultWindowContentProvider.getTitle(), resultWindowContentProvider.getContent()));
 
         currentContentIndex=0;
-        window=new MainWindow("ShoppingListGenerator",dishWindowContentProvider.getTitle() ,contents.get(currentContentIndex).getValue(), new Dimension(400, 400));
+        window=new MainWindow("ShoppingListGenerator",dishWindowContentProvider.getTitle() ,contents.get(currentContentIndex).getValue(), new Dimension(500, 500));
         window.setBackVisible(false);
 
         settingsMenu=new SettingsMenu(window);

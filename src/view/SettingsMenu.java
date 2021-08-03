@@ -5,9 +5,11 @@ import controller.PathHelper;
 import controller.SwingHelper;
 import controller.Themer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class SettingsMenu extends JPopupMenu
@@ -54,10 +56,10 @@ public class SettingsMenu extends JPopupMenu
     public JDialog getAboutDialog(MainWindow window)
     {
         JDialog aboutDialog=new JDialog(window, Localisator.getInstance().getString("about"), Dialog.ModalityType.APPLICATION_MODAL);
-        aboutDialog.setBounds(132, 132, 300, 300);
+        aboutDialog.setBounds(132, 132, 280, 250);
         aboutDialog.setLocationRelativeTo(null);
-        aboutDialog.setMinimumSize(new Dimension(300, 300));
-        aboutDialog.setMaximumSize(new Dimension(300, 300));
+        aboutDialog.setMinimumSize(new Dimension(280, 250));
+        aboutDialog.setMaximumSize(new Dimension(280, 250));
 
         Container dialogContainer=aboutDialog.getContentPane();
         dialogContainer.setLayout(new BoxLayout(dialogContainer, BoxLayout.Y_AXIS));
@@ -73,19 +75,22 @@ public class SettingsMenu extends JPopupMenu
     private JPanel createAboutHeaderPanel()
     {
         JPanel header=new JPanel(new GridBagLayout());
-        header.setBorder(BorderFactory.createEmptyBorder(8, 0, 5, 0));
+        header.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
-        ImageIcon imageIcon=new ImageIcon(new ImageIcon("src/resources/icon_small.png").getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
+        //System.setProperty("sun.java2d.uiScale", "1.0");
+        ImageIcon imageIcon=new ImageIcon(new ImageIcon("src/resources/icon_small.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+        JLabel icon=new JLabel(imageIcon);
+        icon.setBorder(BorderFactory.createEmptyBorder(0,0,6,0));
 
         JLabel applicationName=new JLabel(Localisator.getInstance().getString("application_name"));
-        applicationName.setBorder(BorderFactory.createEmptyBorder(8,0,4,0));
-        applicationName.setFont(new Font(applicationName.getFont().getFontName(), applicationName.getFont().getStyle(), 17));
+        applicationName.setBorder(BorderFactory.createEmptyBorder(0,0,4,0));
+        applicationName.setFont(new Font(applicationName.getFont().getFontName(), Font.BOLD, 17));
 
         JLabel version=new JLabel(Localisator.getInstance().getString("version"));
-        version.setBorder(BorderFactory.createEmptyBorder(4,0,5,0));
+        version.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         version.setFont(new Font(version.getFont().getFontName(), version.getFont().getStyle(), 11));
 
-        header.add(new JLabel(imageIcon), SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 1, GridBagConstraints.VERTICAL));
+        header.add(icon, SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
         header.add(applicationName, SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
         header.add(version, SwingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
 
@@ -95,7 +100,7 @@ public class SettingsMenu extends JPopupMenu
     private JPanel createAboutCenterPanel()
     {
         JPanel center=new JPanel(new GridBagLayout());
-        center.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
+        center.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
         center.add(SwingHelper.getLinkedJLabel((Localisator.getInstance().getString("steven_solleder")).toUpperCase(), Localisator.getInstance().getString("steven_solleder_link")), SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
         center.add(SwingHelper.getLinkedJLabel(Localisator.getInstance().getString("isabell_waas").toUpperCase(), Localisator.getInstance().getString("isabell_waas_link")), SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));

@@ -29,7 +29,7 @@ public class SwingHelper
     {
         JLabel linkedLabel=new JLabel(text);
         linkedLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        linkedLabel.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+        linkedLabel.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
         linkedLabel.addMouseListener(new MouseListener()
         {
             @Override
