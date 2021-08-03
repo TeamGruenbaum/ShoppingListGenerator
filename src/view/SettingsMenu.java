@@ -84,7 +84,6 @@ public class SettingsMenu extends JPopupMenu
         JLabel version=new JLabel(Localisator.getInstance().getString("version"));
         version.setBorder(BorderFactory.createEmptyBorder(4,0,5,0));
         version.setFont(new Font(version.getFont().getFontName(), version.getFont().getStyle(), 11));
-        version.setForeground(Color.DARK_GRAY);
 
         header.add(new JLabel(imageIcon), SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 1, GridBagConstraints.VERTICAL));
         header.add(applicationName, SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
