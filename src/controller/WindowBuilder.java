@@ -4,14 +4,19 @@ import model.Dish;
 import model.Ingredient;
 import view.ListContentPanel;
 import view.MainWindow;
+import view.SettingsMenu;
 import view.TextContentPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,8 +25,10 @@ import java.util.stream.Collectors;
 public class WindowBuilder
 {
     private MainWindow window;
+    private SettingsMenu settingsMenu;
     private List<PairedValue<String, JComponent>> contents;
     private int currentContentIndex;
+
     private WindowContentProvider<ListContentPanel<Dish>> dishWindowContentProvider;
     private WindowContentProvider<ListContentPanel<Ingredient>> ingredientWindowContentProvider;
     private WindowContentProvider<TextContentPanel> resultWindowContentProvider;
@@ -47,7 +54,7 @@ public class WindowBuilder
         setForwardFunctionality();
         setBackwardFunctionality();
 
-        Desktop.getDesktop().setAboutHandler((e)->JOptionPane.showMessageDialog(null, "ShoppingListGenerator"));
+        Desktop.getDesktop().setAboutHandler((e)->settingsMenu.getAboutDialog(window));
 
         try
         {
@@ -63,9 +70,9 @@ public class WindowBuilder
 
     private void setSettingsFunctionality()
     {
-        window.onSettingsClick(() ->
+        window.onSettingsClick((JButton settingsButton) ->
         {
-            Taskbar.getTaskbar().requestUserAttention(true, true);
+            settingsMenu=new SettingsMenu(window, settingsButton);
         });
     }
 
