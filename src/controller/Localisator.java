@@ -12,7 +12,7 @@ public class Localisator
 
     private Localisator()
     {
-        this.resourceBundle = ResourceBundle.getBundle("resources.string");
+        this.resourceBundle = ResourceBundle.getBundle("resources.strings");
     }
 
     public String getString(String key)
