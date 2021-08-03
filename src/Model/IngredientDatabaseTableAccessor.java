@@ -1,5 +1,7 @@
 package model;
 
+import controller.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
     public IngredientDatabaseTableAccessor() throws SQLException, ClassNotFoundException
     {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:Database.db");
+        connection=DatabaseConnection.getInstance().getConnection();
 
         Statement statement=connection.createStatement();
 

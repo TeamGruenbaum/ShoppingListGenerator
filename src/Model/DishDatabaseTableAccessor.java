@@ -1,5 +1,7 @@
 package model;
 
+import controller.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +15,7 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
     public DishDatabaseTableAccessor() throws SQLException, ClassNotFoundException
     {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:Database.db");
+        connection=DatabaseConnection.getInstance().getConnection();
 
         Statement statement=connection.createStatement();
 
