@@ -10,10 +10,10 @@ public class Localisator
     private ResourceBundle resourceBundle;
 
 
-    
+
     private Localisator()
     {
-        this.resourceBundle = ResourceBundle.getBundle("resource.string");
+        this.resourceBundle = ResourceBundle.getBundle("resources.string");
     }
 
     public String getString(String key)
