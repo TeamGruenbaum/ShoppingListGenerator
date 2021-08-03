@@ -40,6 +40,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         catch (SQLException sqlException)
         {
             JOptionPane.showMessageDialog(new JFrame(), "Could not connect to database.", "Error", JOptionPane.ERROR_MESSAGE);
+            sqlException.printStackTrace();
         }
 
         currentComparatorIndex=0;
@@ -96,6 +97,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
                     {
                         editWindow.dispose();
                         JOptionPane.showMessageDialog(new JFrame(), "Could not add dish to database.", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                        sqlException.printStackTrace();
                     }
                 }
             });
@@ -121,6 +123,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
             catch (SQLException sqlException)
             {
                 JOptionPane.showMessageDialog(new JFrame(), "Could not remove dish from database.", "Error", JOptionPane.ERROR_MESSAGE);
+                sqlException.printStackTrace();
             }
         });
     }
@@ -141,6 +144,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
                 {
                     editWindow.dispose();
                     JOptionPane.showMessageDialog(new JFrame(), "Could not edit dish in database.", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                    sqlException.printStackTrace();
                 }
             }
         });
@@ -181,6 +185,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         catch (SQLException sqlException)
         {
             JOptionPane.showMessageDialog(new JFrame(), "Could not load ingredient list.", "Error", JOptionPane.ERROR_MESSAGE);
+            sqlException.printStackTrace();
             System.exit(0);
             return null;
         }
@@ -196,6 +201,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         catch (SQLException throwables)
         {
             JOptionPane.showMessageDialog(new JFrame(), "During a data update something went wrong", "Alert", JOptionPane.INFORMATION_MESSAGE);
+            throwables.printStackTrace();
             System.exit(0);
         }
     }

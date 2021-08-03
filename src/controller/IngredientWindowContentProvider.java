@@ -31,6 +31,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         catch (SQLException sqlException)
         {
             JOptionPane.showMessageDialog(new JFrame(), "Could not connect to database.", "Error", JOptionPane.ERROR_MESSAGE);
+            sqlException.printStackTrace();
         }
         catch (ClassNotFoundException classNotFoundException)
         {
@@ -95,6 +96,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                     {
                         editWindow.dispose();
                         JOptionPane.showMessageDialog(new JFrame(), "The ingredient is already available", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                        throwables.printStackTrace();
                     }
                 }
             });
@@ -135,6 +137,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                     {
                         editWindow.dispose();
                         JOptionPane.showMessageDialog(new JFrame(), "The ingredient is already available", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                        throwables.printStackTrace();
                     }
                 }
             }));
@@ -167,6 +170,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         catch (SQLException throwables)
         {
             JOptionPane.showMessageDialog(new JFrame(), "During a data update something went wrong", "Alert", JOptionPane.INFORMATION_MESSAGE);
+            throwables.printStackTrace();
             System.exit(0);
         }
     }

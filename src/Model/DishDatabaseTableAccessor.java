@@ -2,6 +2,7 @@ package model;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
@@ -15,9 +16,14 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
         connection = DriverManager.getConnection("jdbc:sqlite:Database.db");
 
         Statement statement=connection.createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key, name text unique not null)");
-        statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key , name text not null, store text not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
-        statement.execute("CREATE TABLE IF NOT EXISTS IsNeededFor(dishID integer, ingredientID integer, CONSTRAINT primaryKey PRIMARY KEY (dishID, ingredientID))");
+
+        if(!(connection.getMetaData().getTables(null, null, "Dishes", null).next()))
+        {
+            statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key, name text unique not null)");
+            statement.execute("CREATE TABLE IF NOT EXISTS IsNeededFor(dishID integer, ingredientID integer, CONSTRAINT primaryKey PRIMARY KEY (dishID, ingredientID))");
+            statement.execute("INSERT INTO Dishes(name) VALUES ('Spaghetti'), ('Pizza')");
+            statement.execute("INSERT INTO IsNeededFor(dishID, ingredientID) VALUES (1, 1), (1, 4), (1, 5), (2, 2), (2, 6), (2, 7), (2, 8)");
+        }
     }
 
     @Override

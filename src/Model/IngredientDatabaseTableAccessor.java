@@ -19,11 +19,12 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
 
         Statement statement=connection.createStatement();
 
-        statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key , name text unique not null)");
-        statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key , name text not null, store text not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
-        statement.execute("CREATE TABLE IF NOT EXISTS IsNeededFor(dishID integer, ingredientID integer, CONSTRAINT uniqueIsNeededFor PRIMARY KEY (dishID, ingredientID))");
+        if(!(connection.getMetaData().getTables(null, null, "Ingredients", null).next()))
+        {
+            statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key , name text not null, store text not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
+            statement.execute("INSERT INTO Ingredients(name, store, shelf) VALUES ('Bolognese Sauce', 'Kaufland', 4), ('Grated Cheese', 'Lidl', 2), ('Lemonade', 'Kaufland', 5), ('Noodles', 'Kaufland', 4), ('Parmesan', 'Kaufland', 2), ('Pizza Dough', 'Kaufland', 3), ('Tomato Paste', 'Lidl', 4), ('Broccoli', 'Lidl', 0)");
+        }
     }
-
 
     @Override
     public List<Ingredient> getAll() throws SQLException
