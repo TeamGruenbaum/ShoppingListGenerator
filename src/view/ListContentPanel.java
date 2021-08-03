@@ -1,6 +1,7 @@
 package view;
 
 import controller.Identifiable;
+import controller.Localisator;
 import controller.SimpleListModel;
 
 import javax.swing.*;
@@ -129,9 +130,9 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
 
     private JPanel createHeaderPanel()
     {
-        addButton=new JButton("Add");
+        addButton=new JButton(Localisator.getInstance().getString("add"));
         addButton.setPreferredSize(new Dimension(100, addButton.getPreferredSize().height));
-        sortButton=new JButton("Sort");
+        sortButton=new JButton(Localisator.getInstance().getString("sort"));
         sortButton.setPreferredSize(new Dimension( 100, sortButton.getPreferredSize().height));
 
         JPanel headerPanel=new JPanel();

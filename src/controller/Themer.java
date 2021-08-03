@@ -34,7 +34,7 @@ public class Themer
         }
         catch (UnsupportedLookAndFeelException e)
         {
-            JOptionPane.showMessageDialog(null, "Theme could not be changed", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, Localisator.getInstance().getString("loadling_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
         }
     }
 

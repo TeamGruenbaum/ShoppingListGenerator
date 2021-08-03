@@ -1,5 +1,7 @@
 package view;
 
+import controller.Localisator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
@@ -54,9 +56,9 @@ public final class EditWindow<T extends JComponent> extends JDialog
 
     private JPanel createFooterPanel()
     {
-        quitButton=new JButton("Quit");
+        quitButton=new JButton(Localisator.getInstance().getString("quit"));
         quitButton.addActionListener((actionEvent)->dispose());
-        applyButton=new JButton("Apply");
+        applyButton=new JButton(Localisator.getInstance().getString("apply"));
 
         JPanel footerPanel=new JPanel();
 

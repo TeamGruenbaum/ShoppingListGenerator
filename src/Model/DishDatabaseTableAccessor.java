@@ -1,6 +1,7 @@
 package model;
 
 import controller.DatabaseConnection;
+import controller.Localisator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
         {
             statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key, name text unique not null)");
             statement.execute("CREATE TABLE IF NOT EXISTS IsNeededFor(dishID integer, ingredientID integer, CONSTRAINT primaryKey PRIMARY KEY (dishID, ingredientID))");
-            statement.execute("INSERT INTO Dishes(name) VALUES ('Spaghetti'), ('Pizza')");
+            statement.execute("INSERT INTO Dishes(name) VALUES ('"+ Localisator.getInstance().getString("spaghetti") +"'), ('"+ Localisator.getInstance().getString("pizza")+"')");
             statement.execute("INSERT INTO IsNeededFor(dishID, ingredientID) VALUES (1, 1), (1, 4), (1, 5), (2, 2), (2, 6), (2, 7), (2, 8)");
         }
     }
