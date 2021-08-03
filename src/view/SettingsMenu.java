@@ -1,5 +1,6 @@
 package view;
 
+import controller.Localisator;
 import controller.PathHelper;
 import controller.SwingHelper;
 import controller.Themer;
@@ -76,11 +77,11 @@ public class SettingsMenu extends JPopupMenu
 
         ImageIcon imageIcon=new ImageIcon(new ImageIcon("src/controller/icon_small.png").getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
 
-        JLabel applicationName=new JLabel("ShoppingListGenerator");
+        JLabel applicationName=new JLabel(Localisator.getInstance().getString("application_name"));
         applicationName.setBorder(BorderFactory.createEmptyBorder(8,0,4,0));
         applicationName.setFont(new Font(applicationName.getFont().getFontName(), applicationName.getFont().getStyle(), 17));
 
-        JLabel version=new JLabel("Version 2021.1");
+        JLabel version=new JLabel(Localisator.getInstance().getString("version"));
         version.setBorder(BorderFactory.createEmptyBorder(4,0,5,0));
         version.setFont(new Font(version.getFont().getFontName(), version.getFont().getStyle(), 11));
         version.setForeground(Color.DARK_GRAY);
@@ -97,8 +98,8 @@ public class SettingsMenu extends JPopupMenu
         JPanel center=new JPanel(new GridBagLayout());
         center.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
 
-        center.add(SwingHelper.getLinkedJLabel(("Steven Solleder").toUpperCase(), "https://stevensolleder.de/"), SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
-        center.add(SwingHelper.getLinkedJLabel(("Isabell Waas").toUpperCase(), "https://github.com/isabellwaas"), SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
+        center.add(SwingHelper.getLinkedJLabel((Localisator.getInstance().getString("steven_solleder")).toUpperCase(), Localisator.getInstance().getString("steven_solleder_link")), SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
+        center.add(SwingHelper.getLinkedJLabel(Localisator.getInstance().getString("isabell_waas").toUpperCase(), Localisator.getInstance().getString("isabell_waas_link")), SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
 
         return center;
     }

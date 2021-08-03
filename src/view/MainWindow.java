@@ -1,5 +1,7 @@
 package view;
 
+import controller.Localisator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +15,7 @@ public final class MainWindow extends JFrame
     private JButton forwardButton;
     private JComponent currentContent;
 
-    public MainWindow (String windowTitle, JComponent content, Dimension minimumSize)
+    public MainWindow (String windowTitle, String contentTitle, JComponent content, Dimension minimumSize)
     {
         setTitle(windowTitle);
         setMinimumSize(minimumSize);
@@ -22,7 +24,7 @@ public final class MainWindow extends JFrame
 
         this.currentContent=content;
         setLayout(new BorderLayout());
-        add(createHeaderPanel(), BorderLayout.NORTH);
+        add(createHeaderPanel(contentTitle), BorderLayout.NORTH);
         add(content,BorderLayout.CENTER);
         add(createFooterPanel(),BorderLayout.SOUTH);
         setVisible(true);
@@ -71,11 +73,11 @@ public final class MainWindow extends JFrame
         forwardButton.setVisible(visible);
     }
 
-    private JPanel createHeaderPanel()
+    private JPanel createHeaderPanel(String contentTitle)
     {
-        currentTitle=new JLabel("Dishes");
+        currentTitle=new JLabel(contentTitle);
         currentTitle.setFont(new Font(currentTitle.getFont().getFontName(), currentTitle.getFont().getStyle(), 17));
-        settingsButton=new JButton("Settings");
+        settingsButton=new JButton(Localisator.getInstance().getString("settings"));
 
         JPanel headerPanel=new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel,BoxLayout.X_AXIS));
@@ -89,9 +91,9 @@ public final class MainWindow extends JFrame
 
     private JPanel createFooterPanel()
     {
-        backButton=new JButton("Back");
+        backButton=new JButton(Localisator.getInstance().getString("back"));
         backButton.setPreferredSize(new Dimension(100, backButton.getPreferredSize().height));
-        forwardButton=new JButton("Forward");
+        forwardButton=new JButton(Localisator.getInstance().getString("forward"));
         forwardButton.setPreferredSize(new Dimension(100, forwardButton.getPreferredSize().height));
 
         JPanel footerPanel=new JPanel();

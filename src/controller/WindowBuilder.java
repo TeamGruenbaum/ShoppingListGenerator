@@ -47,7 +47,7 @@ public class WindowBuilder
         contents.add(new Pair<>(resultWindowContentProvider.getTitle(), resultWindowContentProvider.getContent()));
 
         currentContentIndex=0;
-        window=new MainWindow("ShoppingListGenerator",contents.get(currentContentIndex).getValue(), new Dimension(400, 400));
+        window=new MainWindow("ShoppingListGenerator",dishWindowContentProvider.getTitle() ,contents.get(currentContentIndex).getValue(), new Dimension(400, 400));
         window.setBackVisible(false);
 
         settingsMenu=new SettingsMenu(window);
@@ -87,13 +87,13 @@ public class WindowBuilder
                 JPopupMenu lastActionsMenu=new JPopupMenu();
                 String shoppinglist = resultWindowContentProvider.getContent().getText();
 
-                JMenuItem copyMenuItem=new JMenuItem("Copy to Clipboard");
+                JMenuItem copyMenuItem=new JMenuItem(Localisator.getInstance().getString("copy_to_clipboard"));
                 copyMenuItem.addActionListener((event)->
                 {
                     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(shoppinglist), null);
                 });
 
-                JMenuItem saveMenuItem=new JMenuItem("Save on your Computer");
+                JMenuItem saveMenuItem=new JMenuItem(Localisator.getInstance().getString("save_on_computer"));
                 saveMenuItem.addActionListener((event)->
                 {
                     JFileChooser fileChooser = new JFileChooser();
@@ -105,7 +105,7 @@ public class WindowBuilder
                         }
                         catch (Exception ex)
                         {
-                            JOptionPane.showMessageDialog(new JFrame(), "The file could not be saved.", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("saving_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 });
@@ -173,7 +173,7 @@ public class WindowBuilder
         storeIngredientsPair.getValue().sort(Comparator.comparingInt(Ingredient::getShelf));
 
         int currentShelfNumber=storeIngredientsPair.getValue().get(0).getShelf();
-        shoppingList+="# "+storeIngredientsPair.getKey()+"\n## Regal "+currentShelfNumber;
+        shoppingList+="# "+storeIngredientsPair.getKey()+"\n## "+Localisator.getInstance().getString("shelf")+" "+currentShelfNumber;
 
         for(int index=0; index<storeIngredientsPair.getValue().size(); index++)
         {
@@ -184,7 +184,7 @@ public class WindowBuilder
             else
             {
                 currentShelfNumber=storeIngredientsPair.getValue().get(index).getShelf();
-                shoppingList+="\n\n## Regal "+currentShelfNumber;
+                shoppingList+="\n\n## "+Localisator.getInstance().getString("shelf")+" "+currentShelfNumber;
                 index--;
             }
         }

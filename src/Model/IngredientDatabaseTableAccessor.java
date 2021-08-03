@@ -1,6 +1,7 @@
 package model;
 
 import controller.DatabaseConnection;
+import controller.Localisator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,7 +25,11 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
         if(!(connection.getMetaData().getTables(null, null, "Ingredients", null).next()))
         {
             statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key , name text not null, store text not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
-            statement.execute("INSERT INTO Ingredients(name, store, shelf) VALUES ('Bolognese Sauce', 'Kaufland', 4), ('Grated Cheese', 'Lidl', 2), ('Lemonade', 'Kaufland', 5), ('Noodles', 'Kaufland', 4), ('Parmesan', 'Kaufland', 2), ('Pizza Dough', 'Kaufland', 3), ('Tomato Paste', 'Lidl', 4), ('Broccoli', 'Lidl', 0)");
+
+            Localisator localisator=Localisator.getInstance();
+            String kaufland= localisator.getString("kaufland");
+            String lidl=localisator.getString("lidl");
+            statement.execute("INSERT INTO Ingredients(name, store, shelf) VALUES ('"+localisator.getString("bolognese_sauce")+"', '"+kaufland+"', 4), ('"+localisator.getString("grated_cheese")+"', '"+lidl+"', 2), ('"+localisator.getString("lemonade")+"', '"+kaufland+"', 5), ('"+localisator.getString("noodles")+"', '"+kaufland+"', 4), ('"+localisator.getString("parmesan")+"', '"+kaufland+"', 2), ('"+localisator.getString("pizza_dough")+"', '"+kaufland+"', 3), ('"+localisator.getString("tomato_paste")+"', '"+lidl+"', 4), ('"+localisator.getString("broccoli")+"', '"+lidl+"', 0)");
         }
     }
 
@@ -75,19 +80,5 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
         PreparedStatement deleteFromIngredients=connection.prepareStatement("DELETE FROM Ingredients WHERE id=?");
         deleteFromIngredients.setInt(1, id);
         deleteFromIngredients.execute();
-    }
-
-    public static void main(String[] args) throws SQLException, ClassNotFoundException
-    {
-        DatabaseTableAccessor<Ingredient> dta=new IngredientDatabaseTableAccessor();
-        //dta.add(new Ingredient(-1, "Kiwi", "EDEKA", 1));
-
-        System.out.println(dta.getAll());
-
-        dta.update(new Ingredient(4, "Litschi", "EDEKA", 4));
-
-        System.out.println(dta.getAll());
-
-        dta.remove(1);
     }
 }
