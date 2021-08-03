@@ -1,37 +1,35 @@
 package controller;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import view.SettingsMenu;
+import com.formdev.flatlaf.IntelliJTheme;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.prefs.Preferences;
 
-public class ThemeSetter
+public class Themer
 {
     Preferences preferences;
 
 
-    public ThemeSetter()
+    public Themer()
     {
-        preferences = Preferences.userNodeForPackage(ThemeSetter.class);
+        preferences = Preferences.userNodeForPackage(Themer.class);
     }
 
     public void applyCurrentThemeSetting()
     {
         try
         {
-            if(preferences.getInt("app_theme", Theme.LIGHT.getValue())==Theme.LIGHT.getValue())
-            {
-                System.setProperty("apple.awt.application.appearance", "NSAppearanceNameDarkAqua");
-                UIManager.setLookAndFeel(new FlatDarkLaf());
-            }
-            else
+            if(preferences.getInt("app_theme", Theme.LIGHT.ordinal())==Theme.LIGHT.ordinal())
             {
                 System.setProperty("apple.awt.application.appearance", "NSAppearanceNameAqua");
                 UIManager.setLookAndFeel(new FlatLightLaf());
+            }
+            else
+            {
+                System.setProperty("apple.awt.application.appearance", "NSAppearanceNameDarkAqua");
+                UIManager.setLookAndFeel(new FlatDarkLaf());
             }
         }
         catch (UnsupportedLookAndFeelException e)
@@ -42,13 +40,18 @@ public class ThemeSetter
 
     public void switchThemeSetting()
     {
-        if(preferences.getInt("app_theme", Theme.LIGHT.getValue())==Theme.LIGHT.getValue())
+        if(preferences.getInt("app_theme", Theme.LIGHT.ordinal())==Theme.LIGHT.ordinal())
         {
-            preferences.putInt("app_theme", Theme.DARK.getValue());
+            preferences.putInt("app_theme", Theme.DARK.ordinal());
         }
         else
         {
-            preferences.putInt("app_theme", Theme.LIGHT.getValue());
+            preferences.putInt("app_theme", Theme.LIGHT.ordinal());
         }
+    }
+
+    public Theme getCurrentTheme()
+    {
+        return Theme.values()[preferences.getInt("app_theme", Theme.LIGHT.ordinal())];
     }
 }

@@ -1,2 +1,6 @@
-package controller;public enum Theme {
+package controller;
+
+public enum Theme
+{
+    LIGHT, DARK;
 }
