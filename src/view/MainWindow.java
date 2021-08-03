@@ -102,34 +102,4 @@ public final class MainWindow extends JFrame
 
         return footerPanel;
     }
-
-    //ONLY FOR TESTING
-    /*public static void main(String[] args)
-    {
-        DefaultListModel<Ingredient> dlm=new DefaultListModel<>();
-        dlm.addElement(new Ingredient("Eier", "Edeka", 1));
-        dlm.addElement(new Ingredient("Tomaten", "Edeka", 1));
-        dlm.addElement(new Ingredient("Toast", "Edeka", 2));
-        dlm.addElement(new Ingredient("Tee", "Edeka", 4));
-        ListContentPanel lcp=new ListContentPanel(dlm);
-        lcp.addMenuItem("Change", new BiConsumer()
-        {
-            @Override
-            public void accept(Object o, Object o2)
-            {
-                System.out.println("Change");
-            }
-        });
-        lcp.addMenuItem("Remove", new BiConsumer()
-        {
-            @Override
-            public void accept(Object o, Object o2)
-            {
-                System.out.println("Remove " + o2);
-            }
-        });
-        new MainWindow("ShoppingListGenerator", lcp, new Dimension(600,600),new Dimension(800,800));
-
-        new MainWindow("Test", new TextContentPanel("Shopping List\nRegal 1\n-Tomaten\n-Bananen\n-Kiwis\n\nRegal 2\n-Eier\n-Toast\n-Käse"), new Dimension(400,400),new Dimension(600,600));
-    }*/
 }
