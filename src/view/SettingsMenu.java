@@ -19,25 +19,25 @@ public class SettingsMenu extends JPopupMenu
 
     public SettingsMenu(MainWindow window)
     {
-        aboutMenuItem=new JMenuItem("About ShoppingListGenerator");
+        aboutMenuItem=new JMenuItem(Localisator.getInstance().getString("about")+" "+Localisator.getInstance().getString("application_name"));
         aboutMenuItem.addActionListener((aboutEvent)->getAboutDialog(window));
 
-        appearanceMenuItem=new JMenuItem("Switch application theme");
+        appearanceMenuItem=new JMenuItem(Localisator.getInstance().getString("switch_application_theme"));
         appearanceMenuItem.addActionListener((actionEvent) ->
         {
             new Themer().switchThemeSetting();
 
-            JOptionPane.showMessageDialog(null, "Please restart the application, so the new settings can be applied");
+            JOptionPane.showMessageDialog(null, Localisator.getInstance().getString("please_restart_application"));
         });
 
-        resetMenuItem=new JMenuItem("Reset application");
+        resetMenuItem=new JMenuItem(Localisator.getInstance().getString("reset_application"));
         resetMenuItem.addActionListener((aboutEvent)->
         {
             ResourceBundle resourceBundle=ResourceBundle.getBundle("resources.strings");
             PathHelper pathHelper=new PathHelper();
             new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
 
-            JOptionPane.showMessageDialog(window, "Please restart the application");
+            JOptionPane.showMessageDialog(window, Localisator.getInstance().getString("please_restart_application"));
             System.exit(0);
         });
 
@@ -53,7 +53,7 @@ public class SettingsMenu extends JPopupMenu
 
     public JDialog getAboutDialog(MainWindow window)
     {
-        JDialog aboutDialog=new JDialog(window, "About", Dialog.ModalityType.APPLICATION_MODAL);
+        JDialog aboutDialog=new JDialog(window, Localisator.getInstance().getString("about"), Dialog.ModalityType.APPLICATION_MODAL);
         aboutDialog.setBounds(132, 132, 300, 300);
         aboutDialog.setLocationRelativeTo(null);
         aboutDialog.setMinimumSize(new Dimension(300, 300));
