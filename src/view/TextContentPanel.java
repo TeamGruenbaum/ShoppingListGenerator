@@ -8,6 +8,7 @@ public class TextContentPanel extends JPanel
     private JTextArea text;
 
 
+
     public TextContentPanel()
     {
         this.text=new JTextArea();
@@ -29,5 +30,6 @@ public class TextContentPanel extends JPanel
     public void setText(String text)
     {
         this.text.setText(text);
+        this.text.setCaretPosition(0);
     }
 }
