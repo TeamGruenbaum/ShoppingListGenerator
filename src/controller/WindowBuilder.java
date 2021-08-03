@@ -50,6 +50,8 @@ public class WindowBuilder
         window=new MainWindow("ShoppingListGenerator",contents.get(currentContentIndex).getValue(), new Dimension(400, 400));
         window.setBackVisible(false);
 
+        settingsMenu=new SettingsMenu(window);
+
         setSettingsFunctionality();
         setForwardFunctionality();
         setBackwardFunctionality();
@@ -58,7 +60,7 @@ public class WindowBuilder
 
         try
         {
-            Image taskImage= ImageIO.read(getClass().getResource("Icon.png"));
+            Image taskImage= ImageIO.read(getClass().getResource("../resources/icon.png"));
             Taskbar.getTaskbar().setIconImage(taskImage);
             window.setIconImage(taskImage);
         }
@@ -72,7 +74,7 @@ public class WindowBuilder
     {
         window.onSettingsClick((JButton settingsButton) ->
         {
-            settingsMenu=new SettingsMenu(window, settingsButton);
+            settingsMenu.showMenuAt(settingsButton);
         });
     }
 
