@@ -10,10 +10,12 @@ import view.ListContentPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class DishWindowContentProvider implements WindowContentProvider<ListContentPanel<Dish>>
@@ -36,10 +38,13 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         catch (ClassNotFoundException classNotFoundException)
         {
             JOptionPane.showMessageDialog(new JFrame(), "Could not find JDBC class.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
         catch (SQLException sqlException)
         {
             JOptionPane.showMessageDialog(new JFrame(), "Could not connect to database.", "Error", JOptionPane.ERROR_MESSAGE);
+            PathHelper pathHelper=new PathHelper();
+            new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
             sqlException.printStackTrace();
         }
 
