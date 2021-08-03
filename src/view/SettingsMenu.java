@@ -1,26 +1,52 @@
 package view;
 
 import controller.SwingHelper;
+import controller.Themer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.ResourceBundle;
 
 public class SettingsMenu extends JPopupMenu
 {
     private JMenuItem aboutMenuItem;
     private JMenuItem appearanceMenuItem;
+    private JMenuItem resetMenuItem;
 
-    public SettingsMenu(MainWindow window, JButton settingsButton)
+
+    public SettingsMenu(MainWindow window)
     {
         aboutMenuItem=new JMenuItem("About ShoppingListGenerator");
         aboutMenuItem.addActionListener((aboutEvent)->getAboutDialog(window));
 
-        appearanceMenuItem=new JMenuItem("Change Appearance");
+        appearanceMenuItem=new JMenuItem("Switch application theme");
+        appearanceMenuItem.addActionListener((actionEvent) ->
+        {
+            new Themer().switchThemeSetting();
+
+            JOptionPane.showMessageDialog(null, "Please restart the application, so the new settings can be applied");
+        });
+
+        resetMenuItem=new JMenuItem("Reset application");
+        resetMenuItem.addActionListener((aboutEvent)->
+        {
+            ResourceBundle resourceBundle=ResourceBundle.getBundle("resources.strings");
+            String path=System.getProperty("user.home")+(System.getProperty("os.name").contains("Windows")?"\\"+resourceBundle.getString("application_name")+"\\test.txt":"/"+resourceBundle.getString("application_name"))+"/test.txt";
+            new File(path).delete();
+
+            JOptionPane.showMessageDialog(window, "Please restart the application");
+            System.exit(0);
+        });
 
         add(aboutMenuItem);
         add(appearanceMenuItem);
+        add(resetMenuItem);
+    }
 
-        show(settingsButton, settingsButton.getWidth()/2, settingsButton.getHeight()/2);
+    public void showMenuAt(Component invoker)
+    {
+        show(invoker, invoker.getWidth()/2, invoker.getHeight()/2);
     }
 
     public JDialog getAboutDialog(MainWindow window)
@@ -47,7 +73,7 @@ public class SettingsMenu extends JPopupMenu
         JPanel header=new JPanel(new GridBagLayout());
         header.setBorder(BorderFactory.createEmptyBorder(8, 0, 5, 0));
 
-        ImageIcon imageIcon=new ImageIcon(new ImageIcon("src/controller/Icon_klein.png").getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
+        ImageIcon imageIcon=new ImageIcon(new ImageIcon("src/controller/icon_small.png").getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
 
         JLabel applicationName=new JLabel("ShoppingListGenerator");
         applicationName.setBorder(BorderFactory.createEmptyBorder(8,0,4,0));
