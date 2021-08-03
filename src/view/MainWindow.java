@@ -46,9 +46,9 @@ public final class MainWindow extends JFrame
         currentContent=content;
     }
 
-    public void onSettingsClick(Runnable action)
+    public void onSettingsClick(Consumer<JButton> action)
     {
-        settingsButton.addActionListener((ActionEvent event)->action.run());
+        settingsButton.addActionListener((ActionEvent event)->action.accept(settingsButton));
     }
 
     public void onBackClick(Consumer<JButton> action)
