@@ -1,5 +1,6 @@
 package view;
 
+import controller.PathHelper;
 import controller.SwingHelper;
 import controller.Themer;
 
@@ -32,8 +33,8 @@ public class SettingsMenu extends JPopupMenu
         resetMenuItem.addActionListener((aboutEvent)->
         {
             ResourceBundle resourceBundle=ResourceBundle.getBundle("resources.strings");
-            String path=System.getProperty("user.home")+(System.getProperty("os.name").contains("Windows")?"\\"+resourceBundle.getString("application_name")+"\\test.txt":"/"+resourceBundle.getString("application_name"))+"/test.txt";
-            new File(path).delete();
+            PathHelper pathHelper=new PathHelper();
+            new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
 
             JOptionPane.showMessageDialog(window, "Please restart the application");
             System.exit(0);

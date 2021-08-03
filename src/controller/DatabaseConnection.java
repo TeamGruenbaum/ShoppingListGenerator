@@ -15,7 +15,8 @@ public final class DatabaseConnection
     {
         if(connection==null)
         {
-            connection=DriverManager.getConnection("jdbc:sqlite:Database.db");
+            PathHelper pathHelper=new PathHelper();
+            connection=DriverManager.getConnection("jdbc:sqlite:"+pathHelper.getSavePath()+pathHelper.getDatabaseName());
         }
         return connection;
     }
