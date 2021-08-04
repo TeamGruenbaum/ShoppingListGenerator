@@ -138,6 +138,7 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
         JPanel headerPanel=new JPanel();
         headerPanel.add(addButton);
         headerPanel.add(sortButton);
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 
         return headerPanel;
     }

@@ -5,12 +5,12 @@ import controller.PathHelper;
 import controller.SwingHelper;
 import controller.Themer;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ResourceBundle;
+
+
 
 public class SettingsMenu extends JPopupMenu
 {
@@ -29,7 +29,7 @@ public class SettingsMenu extends JPopupMenu
         {
             new Themer().switchThemeSetting();
 
-            JOptionPane.showMessageDialog(null, Localisator.getInstance().getString("please_restart_application"));
+            JOptionPane.showMessageDialog(null, Localisator.getInstance().getString("please_restart_application"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
         });
 
         resetMenuItem=new JMenuItem(Localisator.getInstance().getString("reset_application"));
@@ -39,7 +39,7 @@ public class SettingsMenu extends JPopupMenu
             PathHelper pathHelper=new PathHelper();
             new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
 
-            JOptionPane.showMessageDialog(window, Localisator.getInstance().getString("please_restart_application"));
+            JOptionPane.showMessageDialog(window, Localisator.getInstance().getString("please_restart_application"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         });
 
