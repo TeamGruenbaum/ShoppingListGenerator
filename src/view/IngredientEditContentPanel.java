@@ -2,46 +2,59 @@ package view;
 
 import controller.Localisator;
 import controller.SwingHelper;
-import model.Ingredient;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class IngredientEditContentPanel extends JPanel
+public final class IngredientEditContentPanel extends JPanel
 {
-    private JTextField name;
-    private JTextField store;
-    private JSpinner shelf;
+    private JTextField nameField;
+    private JTextField storeField;
+    private JSpinner shelfField;
 
-    public IngredientEditContentPanel(Ingredient ingredient)
+    public IngredientEditContentPanel()
     {
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        this.name=new JTextField(ingredient.getName());
+        this.nameField =new JTextField();
         add(new JLabel(Localisator.getInstance().getString("name")+":"), SwingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.name, SwingHelper.getGridBagConstraints(1, 0, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(this.nameField, SwingHelper.getGridBagConstraints(1, 0, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
 
-        this.store=new JTextField(ingredient.getStore());
+        this.storeField =new JTextField();
         add(new JLabel(Localisator.getInstance().getString("shelf")+":"), SwingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.store, SwingHelper.getGridBagConstraints(1, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(this.storeField, SwingHelper.getGridBagConstraints(1, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
 
-        this.shelf=new JSpinner(new SpinnerNumberModel(ingredient.getShelf(),0,100,1));
+        this.shelfField =new JSpinner(new SpinnerNumberModel(0,0,100,1));
         add(new JLabel(Localisator.getInstance().getString("store")+":"), SwingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.shelf, SwingHelper.getGridBagConstraints(1, 2, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
-
+        add(this.shelfField, SwingHelper.getGridBagConstraints(1, 2, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
     }
 
 
-    public String getIngredientName() {
-        return name.getText();
+    public String getNameFieldValue() {
+        return nameField.getText();
     }
 
-    public String getStore() {
-        return store.getText();
+    public void setNameFieldValue(String newValue) {
+        nameField.setText(newValue);
     }
 
-    public int getShelf() {
-        return (Integer) shelf.getModel().getValue();
+
+    public String getStoreFieldValue() {
+        return storeField.getText();
     }
+
+    public void setStoreFieldValue(String newValue) {
+         storeField.setText(newValue);
+    }
+
+
+    public int getShelfFieldValue() {
+        return (Integer) shelfField.getModel().getValue();
+    }
+
+    public void setShelfFieldValue(int newValue) {
+        shelfField.getModel().setValue(newValue);
+    }
+
 }

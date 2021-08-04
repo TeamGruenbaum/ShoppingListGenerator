@@ -1,15 +1,15 @@
-package controller;
+package view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.formdev.flatlaf.IntelliJTheme;
+import controller.Localisator;
 
 import javax.swing.*;
 import java.util.prefs.Preferences;
 
-public class Themer
+public final class Themer
 {
-    Preferences preferences;
+    private Preferences preferences;
 
 
     public Themer()

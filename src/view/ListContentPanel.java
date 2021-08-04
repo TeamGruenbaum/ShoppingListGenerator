@@ -1,8 +1,8 @@
 package view;
 
-import controller.Identifiable;
 import controller.Localisator;
 import controller.SimpleListModel;
+import model.Identifiable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,20 +19,22 @@ import java.util.stream.Collectors;
 
 
 
-public class ListContentPanel<T extends Identifiable> extends JPanel
+public final class ListContentPanel<T extends Identifiable> extends JPanel
 {
-    private JList<T> jList;
+    private JList<T> list;
     private List<T> elements;
     private int lastClickedListItemIndex;
+
     private JButton addButton;
     private JButton sortButton;
+
     private JPopupMenu contextMenu;
 
 
 
     public ListContentPanel()
     {
-        jList=new JList<>();
+        list=new JList<>();
         setElements(new ArrayList<>());
 
         contextMenu=new JPopupMenu();
@@ -42,52 +44,38 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
         add(createContentPanel(),BorderLayout.CENTER);
     }
 
-    public void setElements(List<T> elements)
+
+    public void setElements(List<T> newValues)
     {
-        List<Integer> selectedBeforeSorting= jList.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
-        jList.clearSelection();
+        List<Integer> selectedBeforeSorting= list.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
+        list.clearSelection();
 
-        this.jList.setModel(new SimpleListModel<>(elements));
-        this.elements = elements;
+        this.list.setModel(new SimpleListModel<>(newValues));
+        this.elements = newValues;
 
-        for(int i = 0; i< jList.getModel().getSize(); i++)
+        for(int i = 0; i< list.getModel().getSize(); i++)
         {
-            if(selectedBeforeSorting.contains(jList.getModel().getElementAt(i).getId()))
+            if(selectedBeforeSorting.contains(list.getModel().getElementAt(i).getId()))
             {
-                jList.setSelectedIndex(i);
+                list.setSelectedIndex(i);
             }
         }
     }
 
     public void sortElements(Comparator<T> comparator)
     {
-        List<Integer> selectedBeforeSorting= jList.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
-        jList.clearSelection();
+        List<Integer> selectedBeforeSorting= list.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
+        list.clearSelection();
 
         elements.sort(comparator);
 
         setElements(elements);
 
-        for(int i = 0; i< jList.getModel().getSize(); i++)
+        for(int i = 0; i< list.getModel().getSize(); i++)
         {
-            if(selectedBeforeSorting.contains(jList.getModel().getElementAt(i).getId()))
+            if(selectedBeforeSorting.contains(list.getModel().getElementAt(i).getId()))
             {
-                jList.setSelectedIndex(i);
-            }
-        }
-    }
-
-    public void setSelectedItems(List<T> items)
-    {
-        jList.clearSelection();
-
-        List<Integer> ids=items.stream().map((item) -> item.getId()).collect(Collectors.toList());
-
-        for(int i = 0; i< jList.getModel().getSize(); i++)
-        {
-            if(ids.contains(jList.getModel().getElementAt(i).getId()))
-            {
-                jList.setSelectedIndex(i);
+                list.setSelectedIndex(i);
             }
         }
     }
@@ -97,20 +85,36 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
         return elements.get(index);
     }
 
+
+    public void setSelectedItems(List<T> newValues)
+    {
+        list.clearSelection();
+
+        List<Integer> ids=newValues.stream().map((item) -> item.getId()).collect(Collectors.toList());
+
+        for(int i = 0; i< list.getModel().getSize(); i++)
+        {
+            if(ids.contains(list.getModel().getElementAt(i).getId()))
+            {
+                list.setSelectedIndex(i);
+            }
+        }
+    }
+
     public List<T> getUnmodifiableSelectedItems()
     {
-        return Collections.unmodifiableList(jList.getSelectedValuesList());
+        return Collections.unmodifiableList(list.getSelectedValuesList());
     }
 
 
-    public void onSortClick(Consumer<ListContentPanel<T>> action)
+    public void onSortButtonClick(Consumer<ListContentPanel<T>> newAction)
     {
-        sortButton.addActionListener((ActionEvent event)->action.accept(this));
+        sortButton.addActionListener((ActionEvent event)->newAction.accept(this));
     }
 
-    public void onAddClick(Consumer<ListContentPanel<T>> action)
+    public void onAddButtonClick(Consumer<ListContentPanel<T>> newAction)
     {
-        addButton.addActionListener((ActionEvent event)->action.accept(this));
+        addButton.addActionListener((ActionEvent event)->newAction.accept(this));
     }
 
 
@@ -120,11 +124,6 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
         menuItem.addActionListener((ActionEvent event)->action.accept(this, lastClickedListItemIndex));
 
         contextMenu.add(menuItem);
-    }
-
-    public int getMenuSize()
-    {
-        return contextMenu.getSubElements().length;
     }
 
 
@@ -145,20 +144,20 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
 
     private JScrollPane createContentPanel()
     {
-        jList =new JList<T>();
-        jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        list =new JList<T>();
+        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setListSelectionModel();
         setListMouseListener();
 
         JScrollPane contentPanel=new JScrollPane();
-        contentPanel.setViewportView(jList);
+        contentPanel.setViewportView(list);
 
         return contentPanel;
     }
 
     private void setListSelectionModel()
     {
-        jList.setSelectionModel(new DefaultListSelectionModel()
+        list.setSelectionModel(new DefaultListSelectionModel()
         {
             @Override
             public void setSelectionInterval(int index0, int index1) {
@@ -174,14 +173,14 @@ public class ListContentPanel<T extends Identifiable> extends JPanel
 
     private void setListMouseListener()
     {
-        jList.addMouseListener((new MouseListener()
+        list.addMouseListener((new MouseListener()
         {
             @Override
             public void mouseClicked(MouseEvent event)
             {
                 if(SwingUtilities.isRightMouseButton(event))
                 {
-                    lastClickedListItemIndex= jList.locationToIndex(event.getPoint());
+                    lastClickedListItemIndex= list.locationToIndex(event.getPoint());
                     contextMenu.show(event.getComponent(), event.getX(), event.getY());
                 }
             }

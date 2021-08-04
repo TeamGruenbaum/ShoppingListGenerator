@@ -3,19 +3,19 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextContentPanel extends JPanel
+public final class TextContentPanel extends JPanel
 {
-    private JTextArea text;
+    private JTextArea textArea;
 
 
 
     public TextContentPanel()
     {
-        this.text=new JTextArea();
-        this.text.setEditable(false);
+        this.textArea =new JTextArea();
+        this.textArea.setEditable(false);
         setLayout(new BorderLayout());
 
-        JScrollPane scrollPane=new JScrollPane(this.text);
+        JScrollPane scrollPane=new JScrollPane(this.textArea);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         add(scrollPane, BorderLayout.CENTER);
     }
@@ -23,12 +23,12 @@ public class TextContentPanel extends JPanel
 
     public String getText()
     {
-        return this.text.getText();
+        return this.textArea.getText();
     }
 
-    public void setText(String text)
+    public void setText(String newValue)
     {
-        this.text.setText(text);
-        this.text.setCaretPosition(0);
+        this.textArea.setText(newValue);
+        this.textArea.setCaretPosition(0);
     }
 }

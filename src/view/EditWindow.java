@@ -9,10 +9,11 @@ import java.util.function.Consumer;
 public final class EditWindow<T extends JComponent> extends JDialog
 {
     private T content;
+
     private JButton quitButton;
     private JButton applyButton;
 
-    public EditWindow(String windowTitle, T content, Dimension size)
+    public EditWindow(String windowTitle, Dimension size)
     {
         setTitle(windowTitle);
 
@@ -23,27 +24,26 @@ public final class EditWindow<T extends JComponent> extends JDialog
 
         setLayout(new BorderLayout());
 
-        this.content = content;
         add(content, BorderLayout.CENTER);
         add(createFooterPanel(), BorderLayout.SOUTH);
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
-    public void onQuitClick(Consumer<T> action)
+    public void onQuitButtonClick(Consumer<T> newAction)
     {
         quitButton.addActionListener((actionEvent)->
         {
-            action.accept(content);
+            newAction.accept(content);
             dispose();
         });
     }
 
-    public void onApplyClick(Consumer<T> action)
+    public void onApplyButtonClicl(Consumer<T> newAction)
     {
         applyButton.addActionListener((actionEvent)->
         {
-            action.accept(content);
+            newAction.accept(content);
             dispose();
         });
     }

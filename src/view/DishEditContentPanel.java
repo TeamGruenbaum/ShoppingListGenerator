@@ -1,6 +1,6 @@
 package view;
 
-import model.Dish;
+import controller.SimpleListModel;
 import model.Ingredient;
 
 import javax.swing.*;
@@ -11,30 +11,22 @@ import java.util.List;
 
 
 
-public class DishEditContentPanel extends JPanel
+public final class DishEditContentPanel extends JPanel
 {
-    private JTextField name;
-    private JList<Ingredient> ingredients;
-
-    private Dish dish;
+    private JTextField nameField;
+    private JList<Ingredient> list;
 
 
 
-    public DishEditContentPanel(Dish dish, ListModel<Ingredient> ingredientsSortableListModel)
+    public DishEditContentPanel()
     {
-        this.dish=dish;
-
-
         setLayout(new BorderLayout());
 
+        this.nameField =new JTextField();
+        add(this.nameField, BorderLayout.NORTH);
 
-        this.name=new JTextField(dish.getName());
-        add(this.name, BorderLayout.NORTH);
-
-
-        this.ingredients =new JList<>();
-        this.ingredients.setModel(ingredientsSortableListModel);
-        this.ingredients.setSelectionModel(new DefaultListSelectionModel()
+        this.list =new JList<>();
+        this.list.setSelectionModel(new DefaultListSelectionModel()
         {
             @Override
             public void setSelectionInterval(int index0, int index1)
@@ -49,30 +41,41 @@ public class DishEditContentPanel extends JPanel
             }
             }
         });
-        setSelectedIngredients();
         
-        add(new JScrollPane(this.ingredients), BorderLayout.CENTER);
+        add(new JScrollPane(this.list), BorderLayout.CENTER);
     }
 
-    public String getUpdatedName()
+
+    public String getNameFieldValue()
     {
-        return name.getText();
+        return nameField.getText();
     }
+
+    public void setNameFieldValue(String newValue)
+    {
+        nameField.setText(newValue);
+    }
+
+
+    public void setAllIngredients(List<Ingredient> newValues)
+    {
+        list.setModel(new SimpleListModel<>(newValues));
+    }
+
 
     public List<Ingredient> getUnmodifiableSelectedItems()
     {
-        return Collections.unmodifiableList(ingredients.getSelectedValuesList());
+        return Collections.unmodifiableList(list.getSelectedValuesList());
     }
 
-
-    private void setSelectedIngredients()
+    public void setSelectedIngredients(List<Ingredient> newValues)
     {
         List<Integer> indices=new ArrayList<>();
-        for (Ingredient ingredient:dish.getIngredients())
+        for (Ingredient ingredient:newValues)
         {
-            for (int j = 0; j < ingredients.getModel().getSize(); j++)
+            for (int j = 0; j < list.getModel().getSize(); j++)
             {
-                if(ingredient.getId()== ingredients.getModel().getElementAt(j).getId())
+                if(ingredient.getId()== list.getModel().getElementAt(j).getId())
                 {
                     indices.add(j);
                     break;
@@ -80,6 +83,6 @@ public class DishEditContentPanel extends JPanel
             }
         }
 
-        ingredients.setSelectedIndices(indices.stream().mapToInt(i -> i).toArray());
+        list.setSelectedIndices(indices.stream().mapToInt(i -> i).toArray());
     }
 }

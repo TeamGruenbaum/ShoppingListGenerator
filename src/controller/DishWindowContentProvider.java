@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ResourceBundle;
 
 
 public class DishWindowContentProvider implements WindowContentProvider<ListContentPanel<Dish>>
@@ -75,7 +74,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
 
     private void setSortFunctionality()
     {
-        content.onSortClick(listContentPanel ->
+        content.onSortButtonClick(listContentPanel ->
         {
             changeCurrentComparator();
             updateListModel();
@@ -84,12 +83,12 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
 
     private void setAddFunctionality()
     {
-        content.onAddClick((listContentPanel)->
+        content.onAddButtonClick((listContentPanel)->
         {
             Dish newDish=new Dish("", new ArrayList<Ingredient>());
 
             EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("add"), new DishEditContentPanel(newDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,400));
-            editWindow.onApplyClick((DishEditContentPanel dishEditContentPanel)->
+            editWindow.onApplyButtonClicl((DishEditContentPanel dishEditContentPanel)->
             {
                 if (updateDish(newDish, dishEditContentPanel, editWindow))
                 {
@@ -136,7 +135,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
     private void editDish(Dish currentDish)
     {
         EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new DishEditContentPanel(currentDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,400));
-        editWindow.onApplyClick((DishEditContentPanel dishEditContentPanel)->
+        editWindow.onApplyButtonClicl((DishEditContentPanel dishEditContentPanel)->
         {
             if(updateDish(currentDish, dishEditContentPanel, editWindow))
             {
@@ -158,7 +157,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
 
     private boolean updateDish(Dish dish, DishEditContentPanel dishEditContentPanel, EditWindow editWindow)
     {
-        String updatedName=dishEditContentPanel.getUpdatedName();
+        String updatedName=dishEditContentPanel.getNameFieldValue();
         List<Ingredient> ingredientList=dishEditContentPanel.getUnmodifiableSelectedItems();
 
         if(updatedName.isBlank() || ingredientList.isEmpty())

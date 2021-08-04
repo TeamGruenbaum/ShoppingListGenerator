@@ -3,7 +3,6 @@ package view;
 import controller.Localisator;
 import controller.PathHelper;
 import controller.SwingHelper;
-import controller.Themer;
 
 import javax.swing.*;
 import java.awt.*;

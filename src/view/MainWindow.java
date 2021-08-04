@@ -11,11 +11,15 @@ public final class MainWindow extends JFrame
 {
     private JLabel currentTitle;
     private JButton settingsButton;
-    private JButton backButton;
-    private JButton forwardButton;
+
     private JComponent currentContent;
 
-    public MainWindow (String windowTitle, String contentTitle, JComponent content, Dimension minimumSize)
+    private JButton backButton;
+    private JButton forwardButton;
+
+
+
+    public MainWindow (String windowTitle, JComponent content, Dimension minimumSize)
     {
         setTitle(windowTitle);
         setMinimumSize(minimumSize);
@@ -24,10 +28,9 @@ public final class MainWindow extends JFrame
 
         this.currentContent=content;
         setLayout(new BorderLayout());
-        add(createHeaderPanel(contentTitle), BorderLayout.NORTH);
+        add(createHeader(), BorderLayout.NORTH);
         add(content,BorderLayout.CENTER);
-        add(createFooterPanel(),BorderLayout.SOUTH);
-        setVisible(true);
+        add(createFooter(),BorderLayout.SOUTH);
     }
 
     public String getCurrentTitle()
@@ -35,47 +38,52 @@ public final class MainWindow extends JFrame
         return currentTitle.getText();
     }
 
-    public void setCurrentTitle(String text)
+    public void setCurrentTitle(String newValue)
     {
-        currentTitle.setText(text);
+        currentTitle.setText(newValue);
     }
 
-    public void setContent(JComponent content)
+
+    public void onSettingsButtonClick(Consumer<JButton> newAction)
+    {
+        settingsButton.addActionListener((ActionEvent event)->newAction.accept(settingsButton));
+    }
+
+
+    public void setContent(JComponent newValue)
     {
         remove(this.currentContent);
-        add(content,BorderLayout.CENTER);
+        add(newValue,BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
-        currentContent=content;
+        currentContent=newValue;
     }
 
-    public void onSettingsClick(Consumer<JButton> action)
-    {
-        settingsButton.addActionListener((ActionEvent event)->action.accept(settingsButton));
-    }
 
-    public void onBackClick(Consumer<JButton> action)
+    public void onBackClick(Consumer<JButton> newAction) //TODO
     {
-        backButton.addActionListener((ActionEvent event)->action.accept(backButton));
+        backButton.addActionListener((ActionEvent event)->newAction.accept(backButton));
     }
 
     public void setBackVisible(boolean visible)
     {
         backButton.setVisible(visible);
+    } //TODO
+
+
+    public void onForwardClick(Consumer<JButton> newAction) //TODO
+    {
+        forwardButton.addActionListener((ActionEvent event)->newAction.accept(forwardButton));
     }
 
-    public void onForwardClick(Consumer<JButton> action)
+    public void showWindow()
     {
-        forwardButton.addActionListener((ActionEvent event)->action.accept(forwardButton));
+        setVisible(true);
     }
 
-    public void setForwardVisible(boolean visible)
-    {
-        forwardButton.setVisible(visible);
-    }
 
-    private JPanel createHeaderPanel(String contentTitle)
+    private JPanel createHeader()
     {
-        currentTitle=new JLabel(contentTitle);
+        currentTitle=new JLabel();
         currentTitle.setFont(new Font(currentTitle.getFont().getFontName(), Font.BOLD, 17));
         settingsButton=new JButton(Localisator.getInstance().getString("settings"));
 
@@ -89,7 +97,7 @@ public final class MainWindow extends JFrame
         return headerPanel;
     }
 
-    private JPanel createFooterPanel()
+    private JPanel createFooter()
     {
         backButton=new JButton(Localisator.getInstance().getString("back"));
         backButton.setPreferredSize(new Dimension(100, backButton.getPreferredSize().height));

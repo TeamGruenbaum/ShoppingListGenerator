@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class IngredientWindowContentProvider implements WindowContentProvider<ListContentPanel<Ingredient>>
 {
@@ -65,7 +64,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
     private void setSortFunctionality()
     {
-        content.onSortClick(listContentPanel ->
+        content.onSortButtonClick(listContentPanel ->
         {
             changeCurrentComparator();
             updateListModel();
@@ -74,14 +73,14 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
     private void setAddFunctionality()
     {
-        content.onAddClick(listContentPanel ->
+        content.onAddButtonClick(listContentPanel ->
         {
             Ingredient emptyIngredient=new Ingredient("", "", 0);
 
             EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new IngredientEditContentPanel(emptyIngredient), new Dimension(300, 200));
-            editWindow.onApplyClick(ingredientEditContentPanel ->
+            editWindow.onApplyButtonClicl(ingredientEditContentPanel ->
             {
-                if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStore().isBlank())
+                if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStoreFieldValue().isBlank())
                 {
                     editWindow.dispose();
                     JOptionPane.showMessageDialog(editWindow, Localisator.getInstance().getString("all_fields_must_be_filled"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
@@ -90,7 +89,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                 {
                     try
                     {
-                        databaseTableAccessor.add(new Ingredient(ingredientEditContentPanel.getIngredientName(), ingredientEditContentPanel.getStore(), ingredientEditContentPanel.getShelf()));
+                        databaseTableAccessor.add(new Ingredient(ingredientEditContentPanel.getIngredientName(), ingredientEditContentPanel.getStoreFieldValue(), ingredientEditContentPanel.getShelfFieldValue()));
                         updateListModel();
                     } catch (SQLException throwables)
                     {
@@ -115,9 +114,9 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
             EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new IngredientEditContentPanel(ingredientToChange), new Dimension(300, 200));
 
-            editWindow.onApplyClick((ingredientEditContentPanel ->
+            editWindow.onApplyButtonClicl((ingredientEditContentPanel ->
             {
-                if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStore().isBlank())
+                if(ingredientEditContentPanel.getIngredientName().isBlank() || ingredientEditContentPanel.getStoreFieldValue().isBlank())
                 {
                     editWindow.dispose();
                     JOptionPane.showMessageDialog(editWindow, Localisator.getInstance().getString("all_fields_must_be_filled"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
@@ -127,8 +126,8 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                     try
                     {
                         ingredientToChange.setName(ingredientEditContentPanel.getIngredientName());
-                        ingredientToChange.setStore(ingredientEditContentPanel.getStore());
-                        ingredientToChange.setShelf(ingredientEditContentPanel.getShelf());
+                        ingredientToChange.setStore(ingredientEditContentPanel.getStoreFieldValue());
+                        ingredientToChange.setShelf(ingredientEditContentPanel.getShelfFieldValue());
 
                         databaseTableAccessor.update(ingredientToChange);
                         updateListModel();
