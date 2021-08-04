@@ -1,12 +1,14 @@
 package model;
 
-import controller.DatabaseConnection;
+
 import controller.Localisator;
 
 import java.sql.*;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+
 
 public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
 {
@@ -24,51 +26,54 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
         {
             statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key, name text unique not null)");
             statement.execute("CREATE TABLE IF NOT EXISTS IsNeededFor(dishID integer, ingredientID integer, CONSTRAINT primaryKey PRIMARY KEY (dishID, ingredientID))");
-            statement.execute("INSERT INTO Dishes(name) VALUES ('"+ Localisator.getInstance().getString("spaghetti") +"'), ('"+ Localisator.getInstance().getString("pizza")+"')");
+
+            Localisator localisator=new Localisator();
+            statement.execute("INSERT INTO Dishes(name) VALUES ('"+ localisator.getString("spaghetti") +"'), ('"+ localisator.getString("pizza")+"')");
             statement.execute("INSERT INTO IsNeededFor(dishID, ingredientID) VALUES (1, 1), (1, 4), (1, 5), (2, 2), (2, 6), (2, 7), (2, 8)");
         }
     }
+
 
     @Override
     public List<Dish> getAll() throws SQLException
     {
         ResultSet dishesResultSet=connection.createStatement().executeQuery("SELECT * FROM Dishes");
-        List<Dish> dishesList=new ArrayList<>();
+
+        List<Dish> allDishes=new ArrayList<>();
         while(dishesResultSet.next())
         {
-            dishesList.add(new Dish(dishesResultSet.getInt("id"), dishesResultSet.getString("name"), getIngredientsNeededForDish(dishesResultSet.getInt("id"))));
+            allDishes.add(new Dish(dishesResultSet.getInt("id"), dishesResultSet.getString("name"), getIngredientsNeededForDish(dishesResultSet.getInt("id"))));
         }
 
-        return dishesList;
+        return allDishes;
     }
 
     @Override
-    public int update(Dish item) throws SQLException
+    public int update(Dish element) throws SQLException
     {
-        if(item.getId()==-1) throw new SQLException("Invalid ID (-1)");
+        if(element.getId()==-1) throw new SQLException("Invalid ID (-1)");
 
-        removeFromIsNeededFor(item.getId());
-        addToIsNeededFor(item);
+        removeFromIsNeededFor(element.getId());
+        addToIsNeededFor(element.getId(), element.getUnmodifiableIngredients());
 
         PreparedStatement updateDishesStatement=connection.prepareStatement("UPDATE Dishes SET name=? WHERE id=?");
-        updateDishesStatement.setString(1, item.getName());
-        updateDishesStatement.setInt(2, item.getId());
+        updateDishesStatement.setString(1, element.getName());
+        updateDishesStatement.setInt(2, element.getId());
+
         return updateDishesStatement.executeUpdate();
     }
 
     @Override
-    public void add(Dish item) throws SQLException
+    public void add(Dish element) throws SQLException
     {
         PreparedStatement insertIntoDishesStatement=connection.prepareStatement("INSERT INTO Dishes(name) VALUES(?)");
-        insertIntoDishesStatement.setString(1, item.getName());
+        insertIntoDishesStatement.setString(1, element.getName());
         insertIntoDishesStatement.execute();
 
         PreparedStatement idQuery = connection.prepareStatement("SELECT id FROM Dishes WHERE name=?");
-        idQuery.setString(1, item.getName());
-        ResultSet dishIdResultSet = idQuery.executeQuery();
-        item.setId(dishIdResultSet.getInt("id"));
+        idQuery.setString(1, element.getName());
 
-        addToIsNeededFor(item);
+        addToIsNeededFor(idQuery.executeQuery().getInt("id"), element.getUnmodifiableIngredients());
     }
 
     @Override
@@ -81,10 +86,11 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
         deleteFromDishesStatement.execute();
     }
 
-    private List<Ingredient> getIngredientsNeededForDish(int dishID) throws SQLException
+
+    private List<Ingredient> getIngredientsNeededForDish(int dishId) throws SQLException
     {
         PreparedStatement joinStatement=connection.prepareStatement("SELECT i.id, i.name, i.shelf, i.store FROM Ingredients i JOIN IsNeededFor n ON i.id=n.ingredientID WHERE n.dishID=?;");
-        joinStatement.setInt(1,dishID);
+        joinStatement.setInt(1,dishId);
         ResultSet ingredientsResultSet=joinStatement.executeQuery();
 
         List<Ingredient> ingredientsList=new ArrayList<>();
@@ -96,21 +102,22 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
         return ingredientsList;
     }
 
-    private void addToIsNeededFor(Dish item) throws SQLException
+    private void addToIsNeededFor(int dishId, List<Ingredient> ingredients) throws SQLException
     {
         PreparedStatement insertIntoIsNeededForStatement=connection.prepareStatement("INSERT INTO IsNeededFor(dishID, IngredientID) VALUES(?,?)");
-        insertIntoIsNeededForStatement.setInt(1,item.getId());;
-        for (Ingredient ingredient:item.getIngredients())
+        insertIntoIsNeededForStatement.setInt(1,dishId);;
+
+        for (Ingredient ingredient:ingredients)
         {
             insertIntoIsNeededForStatement.setInt(2,ingredient.getId());
             insertIntoIsNeededForStatement.execute();
         }
     }
 
-    private void removeFromIsNeededFor(int id) throws SQLException
+    private void removeFromIsNeededFor(int dishId) throws SQLException
     {
         PreparedStatement deleteFromIsNeededForStatement=connection.prepareStatement("DELETE FROM IsNeededFor WHERE dishID=?");
-        deleteFromIsNeededForStatement.setInt(1, id);
+        deleteFromIsNeededForStatement.setInt(1, dishId);
         deleteFromIsNeededForStatement.execute();
     }
 }

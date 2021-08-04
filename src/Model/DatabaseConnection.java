@@ -1,9 +1,15 @@
-package controller;
+package model;
+
+
+import controller.PathHelper;
 
 import java.io.File;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+
 
 public final class DatabaseConnection
 {
@@ -11,6 +17,7 @@ public final class DatabaseConnection
     private Connection connection;
 
     private DatabaseConnection() {}
+
 
     public Connection getConnection() throws SQLException
     {

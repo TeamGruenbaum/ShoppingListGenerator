@@ -1,10 +1,10 @@
 package model;
 
-import controller.Identifiable;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+
 
 public class Dish implements Identifiable {
     private int id;
@@ -26,14 +26,10 @@ public class Dish implements Identifiable {
         this.ingredients=ingredients;
     }
 
+
     public int getId()
     {
         return id;
-    }
-
-    void setId(int id)
-    {
-        this.id=id;
     }
 
     public String getName()
@@ -41,14 +37,20 @@ public class Dish implements Identifiable {
         return name;
     }
 
-    public void setName(String name)
+    public void setName(String newValue)
     {
-        this.name = name;
+        this.name=newValue;
     }
 
-    public List<Ingredient> getIngredients()
+    public List<Ingredient> getUnmodifiableIngredients()
     {
-        return ingredients;
+        return Collections.unmodifiableList(ingredients);
+    }
+
+    public void setAllIngredients(List<Ingredient> newValues)
+    {
+        ingredients.clear();
+        ingredients.addAll(newValues);
     }
 
     @Override

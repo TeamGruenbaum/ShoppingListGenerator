@@ -1,9 +1,10 @@
 package model;
 
-import controller.DatabaseConnection;
+
 import controller.Localisator;
 
 import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import java.util.List;
 public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<Ingredient>
 {
     private Connection connection;
-
 
 
     public IngredientDatabaseTableAccessor() throws SQLException, ClassNotFoundException
@@ -26,12 +26,13 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
         {
             statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key , name text not null, store text not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
 
-            Localisator localisator=Localisator.getInstance();
+            Localisator localisator=new Localisator();
             String kaufland= localisator.getString("kaufland");
             String lidl=localisator.getString("lidl");
             statement.execute("INSERT INTO Ingredients(name, store, shelf) VALUES ('"+localisator.getString("bolognese_sauce")+"', '"+kaufland+"', 4), ('"+localisator.getString("grated_cheese")+"', '"+lidl+"', 2), ('"+localisator.getString("lemonade")+"', '"+kaufland+"', 5), ('"+localisator.getString("noodles")+"', '"+kaufland+"', 4), ('"+localisator.getString("parmesan")+"', '"+kaufland+"', 2), ('"+localisator.getString("pizza_dough")+"', '"+kaufland+"', 3), ('"+localisator.getString("tomato_paste")+"', '"+lidl+"', 4), ('"+localisator.getString("broccoli")+"', '"+lidl+"', 0)");
         }
     }
+
 
     @Override
     public List<Ingredient> getAll() throws SQLException

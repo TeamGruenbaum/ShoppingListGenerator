@@ -1,8 +1,5 @@
 package model;
 
-import controller.Identifiable;
-
-import java.io.Serializable;
 
 public class Ingredient implements Identifiable
 {
@@ -39,9 +36,9 @@ public class Ingredient implements Identifiable
         return name;
     }
 
-    public void setName(String name)
+    public void setName(String newValue)
     {
-        this.name = name;
+        this.name = newValue;
     }
 
     public String getStore()
@@ -49,9 +46,9 @@ public class Ingredient implements Identifiable
         return store;
     }
 
-    public void setStore(String store)
+    public void setStore(String newValue)
     {
-        this.store = store;
+        this.store = newValue;
     }
 
     public int getShelf()
@@ -59,9 +56,9 @@ public class Ingredient implements Identifiable
         return shelf;
     }
 
-    public void setShelf(int shelf)
+    public void setShelf(int newValue)
     {
-        this.shelf = shelf;
+        this.shelf = newValue;
     }
 
     @Override
