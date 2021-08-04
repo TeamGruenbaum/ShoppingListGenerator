@@ -56,10 +56,10 @@ public class SettingsMenu extends JPopupMenu
     public JDialog getAboutDialog(MainWindow window)
     {
         JDialog aboutDialog=new JDialog(window, Localisator.getInstance().getString("about"), Dialog.ModalityType.APPLICATION_MODAL);
-        aboutDialog.setBounds(132, 132, 280, 250);
-        aboutDialog.setLocationRelativeTo(null);
         aboutDialog.setMinimumSize(new Dimension(280, 250));
         aboutDialog.setMaximumSize(new Dimension(280, 250));
+        aboutDialog.setLocationRelativeTo(null);
+
 
         Container dialogContainer=aboutDialog.getContentPane();
         dialogContainer.setLayout(new BoxLayout(dialogContainer, BoxLayout.Y_AXIS));
