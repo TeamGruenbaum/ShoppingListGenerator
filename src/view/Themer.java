@@ -19,6 +19,8 @@ public final class Themer
 
     public void applyCurrentThemeSetting()
     {
+        Localisator localisator=new Localisator();
+
         try
         {
             if(preferences.getInt("app_theme", Theme.LIGHT.ordinal())==Theme.LIGHT.ordinal())
@@ -34,7 +36,7 @@ public final class Themer
         }
         catch (UnsupportedLookAndFeelException e)
         {
-            JOptionPane.showMessageDialog(null, Localisator.getInstance().getString("loadling_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, localisator.getString("loadling_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
         }
     }
 

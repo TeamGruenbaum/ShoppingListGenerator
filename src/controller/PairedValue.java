@@ -1,5 +1,6 @@
 package controller;
 
+
 public interface PairedValue<K,V>
 {
     K getKey();

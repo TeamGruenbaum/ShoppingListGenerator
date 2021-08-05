@@ -1,5 +1,6 @@
 package controller;
 
+
 import model.Ingredient;
 
 import java.util.ArrayList;
@@ -8,9 +9,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
+
 public class MarkdownListToShoppingListStringConverter implements Function<List<Ingredient>, String>
 {
     public MarkdownListToShoppingListStringConverter() {}
+
 
     @Override
     public String apply(List<Ingredient> elements)
@@ -35,6 +39,7 @@ public class MarkdownListToShoppingListStringConverter implements Function<List<
         return shoppingList;
     }
 
+
     private String addItemsOfStore(String shoppingList, List<Ingredient> ingredients, PairedValue<String, ArrayList<Ingredient>> storeIngredientsPair)
     {
         for(Ingredient ingredient:ingredients)
@@ -46,8 +51,10 @@ public class MarkdownListToShoppingListStringConverter implements Function<List<
         }
         storeIngredientsPair.getValue().sort(Comparator.comparingInt(Ingredient::getShelf));
 
+        Localisator localisator=new Localisator();
+
         int currentShelfNumber=storeIngredientsPair.getValue().get(0).getShelf();
-        shoppingList+="# "+storeIngredientsPair.getKey()+"\n## "+Localisator.getInstance().getString("shelf")+" "+currentShelfNumber;
+        shoppingList+="# "+storeIngredientsPair.getKey()+"\n## "+localisator.getString("shelf")+" "+currentShelfNumber;
 
         for(int index=0; index<storeIngredientsPair.getValue().size(); index++)
         {
@@ -58,10 +65,11 @@ public class MarkdownListToShoppingListStringConverter implements Function<List<
             else
             {
                 currentShelfNumber=storeIngredientsPair.getValue().get(index).getShelf();
-                shoppingList+="\n\n## "+Localisator.getInstance().getString("shelf")+" "+currentShelfNumber;
+                shoppingList+="\n\n## "+localisator.getString("shelf")+" "+currentShelfNumber;
                 index--;
             }
         }
+
         return shoppingList+"\n\n";
     }
 }

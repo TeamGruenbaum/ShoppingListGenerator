@@ -129,9 +129,11 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
 
     private JPanel createHeaderPanel()
     {
-        addButton=new JButton(Localisator.getInstance().getString("add"));
+        Localisator localisator=new Localisator();
+
+        addButton=new JButton(localisator.getString("add"));
         addButton.setPreferredSize(new Dimension(100, addButton.getPreferredSize().height));
-        sortButton=new JButton(Localisator.getInstance().getString("sort"));
+        sortButton=new JButton(localisator.getString("sort"));
         sortButton.setPreferredSize(new Dimension( 100, sortButton.getPreferredSize().height));
 
         JPanel headerPanel=new JPanel();

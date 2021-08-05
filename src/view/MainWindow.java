@@ -12,24 +12,25 @@ public final class MainWindow extends JFrame
     private JLabel currentTitle;
     private JButton settingsButton;
 
-    private JComponent currentContent;
+    private JComponent content;
 
     private JButton backButton;
     private JButton forwardButton;
 
+    private Localisator localisator;
 
 
-    public MainWindow (String windowTitle, JComponent content, Dimension minimumSize)
+    public MainWindow (String windowTitle, Dimension minimumSize)
     {
+        localisator=new Localisator();
+
         setTitle(windowTitle);
         setMinimumSize(minimumSize);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.currentContent=content;
         setLayout(new BorderLayout());
         add(createHeader(), BorderLayout.NORTH);
-        add(content,BorderLayout.CENTER);
         add(createFooter(),BorderLayout.SOUTH);
     }
 
@@ -52,10 +53,13 @@ public final class MainWindow extends JFrame
 
     public void setContent(JComponent newValue)
     {
-        remove(this.currentContent);
+        if(content!=null)
+        {
+            remove(this.content);
+        }
         add(newValue,BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
-        currentContent=newValue;
+        content =newValue;
     }
 
 
@@ -85,7 +89,7 @@ public final class MainWindow extends JFrame
     {
         currentTitle=new JLabel();
         currentTitle.setFont(new Font(currentTitle.getFont().getFontName(), Font.BOLD, 17));
-        settingsButton=new JButton(Localisator.getInstance().getString("settings"));
+        settingsButton=new JButton(localisator.getString("settings"));
 
         JPanel headerPanel=new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel,BoxLayout.X_AXIS));
@@ -99,9 +103,9 @@ public final class MainWindow extends JFrame
 
     private JPanel createFooter()
     {
-        backButton=new JButton(Localisator.getInstance().getString("back"));
+        backButton=new JButton(localisator.getString("back"));
         backButton.setPreferredSize(new Dimension(100, backButton.getPreferredSize().height));
-        forwardButton=new JButton(Localisator.getInstance().getString("forward"));
+        forwardButton=new JButton(localisator.getString("forward"));
         forwardButton.setPreferredSize(new Dimension(100, forwardButton.getPreferredSize().height));
 
         JPanel footerPanel=new JPanel();

@@ -1,5 +1,6 @@
 package controller;
 
+
 import model.*;
 import model.Dish;
 import model.Ingredient;
@@ -9,26 +10,33 @@ import view.EditWindow;
 import view.ListContentPanel;
 
 import javax.swing.*;
+
 import java.awt.*;
+
 import java.io.File;
+
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 
+
 public class DishWindowContentProvider implements WindowContentProvider<ListContentPanel<Dish>>
 {
     private ListContentPanel<Dish> content;
-    private List<Dish> sortableListModel;
     private DatabaseTableAccessor<Dish> dishDatabaseTableAccessor;
     private DatabaseTableAccessor<Ingredient> ingredientDatabaseTableAccessor;
     private List<Comparator<Dish>> comparators;
     private int currentComparatorIndex;
+    private Localisator localisator;
 
 
     public DishWindowContentProvider()
     {
+        localisator=new Localisator();
+
         try
         {
             ingredientDatabaseTableAccessor=new IngredientDatabaseTableAccessor();
@@ -36,14 +44,16 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         }
         catch (ClassNotFoundException classNotFoundException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("no_database_driver_available"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("no_database_driver_available"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
             System.exit(0);
         }
         catch (SQLException sqlException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("connection_to_database_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("connection_to_database_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+
             PathHelper pathHelper=new PathHelper();
             new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
+
             sqlException.printStackTrace();
         }
 
@@ -54,11 +64,12 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
 
         content=new ListContentPanel<>();
 
-        updateListModel();
-        setAddFunctionality();
         setSortFunctionality();
+        setAddFunctionality();
         setUpContextMenu();
+        refreshList();
     }
+
 
     @Override
     public ListContentPanel<Dish> getContent()
@@ -69,15 +80,16 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
     @Override
     public String getTitle()
     {
-        return Localisator.getInstance().getString("dishes");
+        return localisator.getString("dishes");
     }
+
 
     private void setSortFunctionality()
     {
         content.onSortButtonClick(listContentPanel ->
         {
             changeCurrentComparator();
-            updateListModel();
+            refreshList();
         });
     }
 
@@ -85,74 +97,98 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
     {
         content.onAddButtonClick((listContentPanel)->
         {
-            Dish newDish=new Dish("", new ArrayList<Ingredient>());
+            Dish newDish=new Dish("", new ArrayList<>());
 
-            EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("add"), new DishEditContentPanel(newDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,400));
-            editWindow.onApplyButtonClicl((DishEditContentPanel dishEditContentPanel)->
+            EditWindow<DishEditContentPanel> editWindow=new EditWindow(localisator.getString("add"), new Dimension(300,400));
+            DishEditContentPanel content=new DishEditContentPanel();
+            content.setNameFieldValue("");
+            try
+            {
+                content.setAllIngredients(ingredientDatabaseTableAccessor.getAll());
+            }
+            catch (SQLException sqlException)
+            {
+                editWindow.dispose();
+                JOptionPane.showMessageDialog(null, localisator.getString("loading_not_possible"));
+                sqlException.printStackTrace();
+            }
+            editWindow.setContent(content);
+            editWindow.onApplyButtonClick((DishEditContentPanel dishEditContentPanel)->
             {
                 if (updateDish(newDish, dishEditContentPanel, editWindow))
                 {
                     try
                     {
                         dishDatabaseTableAccessor.add(newDish);
-                        updateListModel();
+                        refreshList();
                     }
                     catch (SQLException sqlException)
                     {
                         editWindow.dispose();
-                        JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("adding_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), localisator.getString("adding_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                         sqlException.printStackTrace();
                     }
                 }
             });
-
             editWindow.showWindow();
         });
     }
 
     private void setUpContextMenu()
     {
-        content.addMenuItem(Localisator.getInstance().getString(("add")), (sortableListModel, lastClickedListItemIndex)->
+        content.addMenuItem(localisator.getString(("edit")), (sortableListModel, lastClickedListItemIndex)->
         {
-            editDish(sortableListModel.getElementAt(lastClickedListItemIndex));
+            Dish currentDish=sortableListModel.getElementAt(lastClickedListItemIndex);
+
+            EditWindow<DishEditContentPanel> editWindow=new EditWindow(localisator.getString("add"), new Dimension(300,400));
+            DishEditContentPanel content=new DishEditContentPanel();
+            content.setNameFieldValue(currentDish.getName());
+            try
+            {
+                content.setAllIngredients(ingredientDatabaseTableAccessor.getAll());
+            }
+            catch (SQLException sqlException)
+            {
+                editWindow.dispose();
+                JOptionPane.showMessageDialog(null, localisator.getString("loading_not_possible"));
+                sqlException.printStackTrace();
+            }
+            content.setSelectedIngredients(currentDish.getUnmodifiableIngredients());
+            editWindow.setContent(content);
+
+            editWindow.onApplyButtonClick((DishEditContentPanel dishEditContentPanel)->
+            {
+                if(updateDish(currentDish, dishEditContentPanel, editWindow))
+                {
+                    try
+                    {
+                        dishDatabaseTableAccessor.update(currentDish);
+                        refreshList();
+                    }
+                    catch (SQLException sqlException)
+                    {
+                        editWindow.dispose();
+                        JOptionPane.showMessageDialog(new JFrame(), localisator.getString("changing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+                        sqlException.printStackTrace();
+                    }
+                }
+            });
+            editWindow.showWindow();
         });
 
-        content.addMenuItem(Localisator.getInstance().getString("remove"), (sortableListModel, lastClickedListItemIndex)->
+        content.addMenuItem(localisator.getString("remove"), (sortableListModel, lastClickedListItemIndex)->
         {
             try
             {
                 dishDatabaseTableAccessor.remove(sortableListModel.getElementAt(lastClickedListItemIndex).getId());
-                updateListModel();
+                refreshList();
             }
             catch (SQLException sqlException)
             {
-                JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("removing_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(new JFrame(), localisator.getString("removing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                 sqlException.printStackTrace();
             }
         });
-    }
-
-    private void editDish(Dish currentDish)
-    {
-        EditWindow<DishEditContentPanel> editWindow=new EditWindow<>(Localisator.getInstance().getString("edit"), new DishEditContentPanel(currentDish, new SimpleListModel<>(getIngredientList())), new Dimension(300,400));
-        editWindow.onApplyButtonClicl((DishEditContentPanel dishEditContentPanel)->
-        {
-            if(updateDish(currentDish, dishEditContentPanel, editWindow))
-            {
-                try
-                {
-                    dishDatabaseTableAccessor.update(currentDish);
-                    updateListModel();
-                }
-                catch (SQLException sqlException)
-                {
-                    editWindow.dispose();
-                    JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("changing_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
-                    sqlException.printStackTrace();
-                }
-            }
-        });
-        editWindow.showWindow();
     }
 
     private boolean updateDish(Dish dish, DishEditContentPanel dishEditContentPanel, EditWindow editWindow)
@@ -163,42 +199,26 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         if(updatedName.isBlank() || ingredientList.isEmpty())
         {
             editWindow.dispose();
-            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("all_fields_must_be_filled"), Localisator.getInstance().getString("information"), JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("all_fields_must_be_filled"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
 
         dish.setName(updatedName);
-        dish.getIngredients().clear();
-        dish.getIngredients().addAll(ingredientList);
+        dish.setAllIngredients(ingredientList);
         return true;
     }
 
-    private List<Ingredient> getIngredientList()
-    {
-        try
-        {
-            return ingredientDatabaseTableAccessor.getAll();
-        }
-        catch (SQLException sqlException)
-        {
-            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("loading_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
-            sqlException.printStackTrace();
-            System.exit(0);
-            return null;
-        }
-    }
-
-    private void updateListModel()
+    private void refreshList()
     {
         try
         {
             content.setElements(dishDatabaseTableAccessor.getAll());
             content.sortElements(comparators.get(currentComparatorIndex));
         }
-        catch (SQLException throwables)
+        catch (SQLException sqlException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("changing_not_possible"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
-            throwables.printStackTrace();
+            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("changing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+            sqlException.printStackTrace();
             System.exit(0);
         }
     }

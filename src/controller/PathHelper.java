@@ -4,6 +4,9 @@ import java.util.ResourceBundle;
 
 public class PathHelper
 {
+    public PathHelper(){}
+
+
     public String getSavePath()
     {
         return System.getProperty("user.home")+(System.getProperty("os.name").contains("Windows")?"\\ShoppingListGenerator\\":"/ShoppingListGenerator/");

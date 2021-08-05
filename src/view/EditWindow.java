@@ -24,11 +24,28 @@ public final class EditWindow<T extends JComponent> extends JDialog
 
         setLayout(new BorderLayout());
 
-        add(content, BorderLayout.CENTER);
         add(createFooterPanel(), BorderLayout.SOUTH);
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
+
+
+    public T getContent()
+    {
+        return content;
+    }
+
+    public void setContent(T newValue)
+    {
+        if(this.content!=null)
+        {
+            remove(content);
+        }
+        add(newValue, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
+        this.content=newValue;
+    }
+
 
     public void onQuitButtonClick(Consumer<T> newAction)
     {
@@ -39,7 +56,7 @@ public final class EditWindow<T extends JComponent> extends JDialog
         });
     }
 
-    public void onApplyButtonClicl(Consumer<T> newAction)
+    public void onApplyButtonClick(Consumer<T> newAction)
     {
         applyButton.addActionListener((actionEvent)->
         {
@@ -56,12 +73,13 @@ public final class EditWindow<T extends JComponent> extends JDialog
 
     private JPanel createFooterPanel()
     {
-        quitButton=new JButton(Localisator.getInstance().getString("quit"));
+        Localisator localisator=new Localisator();
+        quitButton=new JButton(localisator.getString("quit"));
         quitButton.addActionListener((actionEvent)->dispose());
-        applyButton=new JButton(Localisator.getInstance().getString("apply"));
+        applyButton=new JButton(localisator.getString("apply"));
 
         JPanel footerPanel=new JPanel();
-        footerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
 
         footerPanel.add(quitButton, BorderLayout.WEST);
         footerPanel.add(applyButton, BorderLayout.EAST);

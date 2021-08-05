@@ -1,14 +1,13 @@
 package controller;
 
+
 import view.TextContentPanel;
 
-import java.util.List;
-import java.util.Optional;
+
 
 public class ResultWindowContentProvider implements WindowContentProvider<TextContentPanel>
 {
     TextContentPanel content;
-
 
 
     public ResultWindowContentProvider()
@@ -26,6 +25,6 @@ public class ResultWindowContentProvider implements WindowContentProvider<TextCo
     @Override
     public String getTitle()
     {
-        return Localisator.getInstance().getString("shopping_list");
+        return new Localisator().getString("shopping_list");
     }
 }

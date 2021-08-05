@@ -1,5 +1,6 @@
 package controller;
 
+
 public class Pair<K,V> implements PairedValue<K,V>
 {
     private K key;
@@ -11,6 +12,7 @@ public class Pair<K,V> implements PairedValue<K,V>
         this.key=key;
         this.value=value;
     }
+
 
     @Override
     public K getKey()

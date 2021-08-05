@@ -10,7 +10,10 @@ import java.net.URISyntaxException;
 
 public class SwingHelper
 {
-    public static GridBagConstraints getGridBagConstraints(int columnXPosition, int columnYPosition, int columnWidth, int columnHeight, double columnWeightX, double columnWeightY, int columnFill)
+    public SwingHelper(){}
+
+
+    public GridBagConstraints getGridBagConstraints(int columnXPosition, int columnYPosition, int columnWidth, int columnHeight, double columnWeightX, double columnWeightY, int columnFill)
     {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -25,7 +28,8 @@ public class SwingHelper
         return gridBagConstraints;
     }
 
-    public static JLabel getLinkedJLabel(String text, String uri)
+
+    public JLabel getLinkedJLabel(String text, String uri)
     {
         JLabel linkedLabel=new JLabel(text);
         linkedLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -41,7 +45,8 @@ public class SwingHelper
                 }
                 catch(IOException | URISyntaxException exception)
                 {
-                    JOptionPane.showMessageDialog(new JFrame(), Localisator.getInstance().getString("uri_can_not_be_opened"), Localisator.getInstance().getString("warning"), JOptionPane.WARNING_MESSAGE);
+                    Localisator localisator=new Localisator();
+                    JOptionPane.showMessageDialog(new JFrame(), localisator.getString("uri_can_not_be_opened"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                 }
             }
             @Override
