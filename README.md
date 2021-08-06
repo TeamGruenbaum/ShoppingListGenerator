@@ -17,21 +17,39 @@ When you want to generate your shopping list, you simply select the dishes for w
 After your selection **ShoppingListGenerator** creates a sorted shopping list for you.
 In the current version you can either save the list as a text file or copy it to your clipboard and paste it wherever you like.
 
-<p align="center">
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dishes.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/ingredients.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/add_ingredient.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/shopping_list.png" width="480" height="480" border=0>
-</p>
+<table>
+  <tr>
+    <th>Dishes</th>
+    <th>Ingredients</th>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dishes.png" alt="Dishes"/></td>
+    <td><img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/ingredients.png" alt="Ingredients"/></td>
+  </tr> 
+  <tr>
+    <th>Add Ingredient</th>
+    <th>Shopping List</th>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/add_ingredient.png" alt="Add Ingredient"/></td>
+    <td><img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/shopping_list.png" alt="Shopping List"/></td>
+  </tr> 
+</table>
 
 
 ## Themes
 **ShoppingListGenerator** has a light and a dark theme that can be switched in the settings menu.
 
-<p align="center">
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/light_theme.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" width="480" height="480" border=0>
-</p>
+<table>
+  <tr>
+    <th>Light Theme</th>
+    <th>Dark Theme</th>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/light_theme.png" alt="Light Theme"/></td>
+    <td><img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" alt="Dark Theme"/></td>
+  </tr> 
+</table>
 
 
 ## Developers
