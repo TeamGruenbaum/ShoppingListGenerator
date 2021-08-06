@@ -3,6 +3,8 @@ package controller;
 import model.DatabaseConnection;
 import model.Dish;
 import model.Ingredient;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import view.*;
 
 import javax.imageio.ImageIO;
@@ -12,6 +14,10 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +79,7 @@ public class WindowBuilder
         }
         aboutDialog.setIcon(iconsSmall);
         aboutDialog.setApplicationName(localisator.getString("application_name"));
-        aboutDialog.setVersion(localisator.getString("version"));
+        aboutDialog.setVersion(localisator.getString("version")+" "+localisator.getString("version_number"));
         aboutDialog.addDeveloper(localisator.getString("steven_solleder").toUpperCase(), localisator.getString("steven_solleder_link"));
         aboutDialog.addDeveloper(localisator.getString("isabell_waas").toUpperCase(), localisator.getString("isabell_waas_link"));
 
@@ -144,9 +150,54 @@ public class WindowBuilder
                 System.exit(0);
             });
 
-            settingsMenu.add(aboutMenuItem);
+            JMenuItem updateApplication=new JMenuItem(localisator.getString("search_for_updates"));
+            updateApplication.addActionListener((aboutEvent)->
+            {
+                try
+                {
+                    boolean newVersionAvailable=false;
+                    JSONObject latestRelease;
+                    latestRelease = new JSONObject(IOUtils.toString(new URL("https://api.github.com/repos/TeamGruenbaum/RingerModeNotification/releases/latest"), StandardCharsets.UTF_8));
+
+                    if(Integer.parseInt(localisator.getString("version_number").substring(0, 4))<Integer.parseInt(latestRelease.getString("tag_name").substring(0, 4)))
+                    {
+                        newVersionAvailable=true;
+                    }
+                    else
+                    {
+                        if(Integer.parseInt(localisator.getString("version_number").substring(5, 6))<Integer.parseInt(latestRelease.getString("tag_name").substring(5, 6)))
+                        {
+                            newVersionAvailable=true;
+                        }
+                    }
+
+                    if(newVersionAvailable)
+                    {
+                        JOptionPane.showMessageDialog(window, localisator.getString("newer_version_available"), localisator.getString("information"),JOptionPane.INFORMATION_MESSAGE);
+
+                        Desktop desktop;
+                        if(Desktop.isDesktopSupported() && (desktop=Desktop.getDesktop()).isSupported(Desktop.Action.BROWSE))
+                        {
+                            desktop.browse(new URI(latestRelease.getString("html_url")));
+                        }
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(window, localisator.getString("this_is_the_latest_version"), localisator.getString("information"),JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                catch (IOException | URISyntaxException exception)
+                {
+                    JOptionPane.showMessageDialog(window, localisator.getString("an_error_occurred"), localisator.getString("warning"),JOptionPane.WARNING_MESSAGE);
+                    exception.printStackTrace();
+                }
+            });
+
             settingsMenu.add(appearanceMenuItem);
+            settingsMenu.add(updateApplication);
             settingsMenu.add(resetMenuItem);
+            settingsMenu.add(aboutMenuItem);
+
 
             settingsMenu.show(settingsButton, settingsButton.getWidth()/2, settingsButton.getHeight()/2);
         });
