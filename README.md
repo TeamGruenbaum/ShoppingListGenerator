@@ -1,4 +1,4 @@
-<h1><img width="50" height="50" src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/src/resources/icon.png" alt="icon" /> ShoppingListGenerator</h1>
+<h1><img width="50" height="50" src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/src/resources/icon_frameless.png" alt="icon" /> ShoppingListGenerator</h1>
 
 ![Release](https://img.shields.io/badge/release-2021.1-9cf)
 ![Java](https://img.shields.io/badge/JAVA-1.8-9cf)
