@@ -4,8 +4,7 @@
 ![Java](https://img.shields.io/badge/JAVA-1.8-9cf)
 ![macOS](https://img.shields.io/badge/macOS-passing-blue)
 ![Windows](https://img.shields.io/badge/windows-passing-blue)
-[![Apache License 2](https://img.shields.io/badge/license-Apache%202-greene)](https://www.apache.org/licenses/LICENSE-2.0.txt)
-[![JSON License](https://img.shields.io/badge/license-JSON-greene)](https://raw.githubusercontent.com/stleary/JSON-java/master/LICENSE.txt)
+![Linux](https://img.shields.io/badge/linux-untested-blue)
 
 
 ## Introduction
