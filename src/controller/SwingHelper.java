@@ -51,7 +51,6 @@ public class SwingHelper
                     Desktop desktop;
                     if(Desktop.isDesktopSupported() && (desktop=Desktop.getDesktop()).isSupported(Desktop.Action.BROWSE))
                     {
-                        desktop=Desktop.getDesktop();
                         desktop.browse(new URI(uri));
                     }
                     else
