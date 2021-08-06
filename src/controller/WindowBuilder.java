@@ -21,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -67,17 +66,18 @@ public class WindowBuilder
 
         aboutDialog=new AboutDialog(window, new Dimension(280, 250));
 
-        Image iconsSmall= null;
+        Image iconSmall= null;
         try
         {
-            iconsSmall = ImageIO.read(getClass().getClassLoader().getResource("icon_small.png"));
+            iconSmall = ImageIO.read(getClass().getClassLoader().getResource("icon_small.png"));
         }
-        catch (IOException exception)
+        catch (IOException IOException)
         {
-            exception.printStackTrace();
+            IOException.printStackTrace();
             System.exit(0);
         }
-        aboutDialog.setIcon(iconsSmall);
+
+        aboutDialog.setIcon(iconSmall);
         aboutDialog.setApplicationName(localisator.getString("application_name"));
         aboutDialog.setVersion(localisator.getString("version")+" "+localisator.getString("version_number"));
         aboutDialog.addDeveloper(localisator.getString("steven_solleder").toUpperCase(), localisator.getString("steven_solleder_link"));
@@ -122,7 +122,7 @@ public class WindowBuilder
             JPopupMenu settingsMenu=new JPopupMenu();
 
             JMenuItem aboutMenuItem=new JMenuItem(localisator.getString("about")+" "+localisator.getString("application_name"));
-            aboutMenuItem.addActionListener((aboutEvent)->
+            aboutMenuItem.addActionListener((actionEvent)->
             {
                 aboutDialog.showDialog();
             });
@@ -136,12 +136,15 @@ public class WindowBuilder
             });
 
             JMenuItem resetMenuItem=new JMenuItem(localisator.getString("reset_application"));
-            resetMenuItem.addActionListener((aboutEvent)->
+            resetMenuItem.addActionListener((actionEvent)->
             {
                 PathHelper pathHelper=new PathHelper();
-                try {
+                try
+                {
                     DatabaseConnection.getInstance().getConnection().close();
-                } catch (SQLException sqlException) {
+                }
+                catch (SQLException sqlException)
+                {
                     sqlException.printStackTrace();
                 }
                 new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
@@ -193,11 +196,22 @@ public class WindowBuilder
                 }
             });
 
+            JMenuItem licensesMenuItem=new JMenuItem(localisator.getString("licenses"));
+            licensesMenuItem.addActionListener((actionEvent)->
+            {
+                LicensesDialog licensesDialog=new LicensesDialog(window, new Dimension(500, 400));
+
+                licensesDialog.addLicensePanel(localisator.getString("apache_license_libraries"), "apache_license.txt");
+                licensesDialog.addLicensePanel(localisator.getString("json_license_libraries"), "json_license.txt");
+
+                licensesDialog.showDialog();
+            });
+
+            settingsMenu.add(aboutMenuItem);
             settingsMenu.add(appearanceMenuItem);
             settingsMenu.add(updateApplication);
             settingsMenu.add(resetMenuItem);
-            settingsMenu.add(aboutMenuItem);
-
+            settingsMenu.add(licensesMenuItem);
 
             settingsMenu.show(settingsButton, settingsButton.getWidth()/2, settingsButton.getHeight()/2);
         });
