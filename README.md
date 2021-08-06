@@ -6,4 +6,4 @@ After your selection ShoppingListGenerator creates a shopping list for you that 
 
 Light Theme|Dark Theme
 :-------------------------:|:-------------------------:
-![](https://github.com/TeamGruenbaum/ShoppingListGenerator/screenshots/light_theme.png)|![](https://github.com/TeamGruenbaum/ShoppingListGenerator/screenshots/dark_theme.png?raw=true)
+![](https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/light_theme.png)|![](https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png)
