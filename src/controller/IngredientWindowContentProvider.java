@@ -10,6 +10,7 @@ import view.ListContentPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,14 +34,18 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         {
             ingredientDatabaseTableAccessor =new IngredientDatabaseTableAccessor();
         }
-        catch (SQLException sqlException)
-        {
-            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("connection_to_database_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
-            sqlException.printStackTrace();
-        }
         catch (ClassNotFoundException classNotFoundException)
         {
             JOptionPane.showMessageDialog(new JFrame(), localisator.getString("no_database_driver_available"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+        }
+        catch (SQLException sqlException)
+        {
+            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("connection_to_database_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+
+            PathHelper pathHelper=new PathHelper();
+            new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
+
+            sqlException.printStackTrace();
         }
 
         currentComparatorIndex=0;
