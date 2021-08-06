@@ -63,18 +63,18 @@ public final class MainWindow extends JFrame
     }
 
 
-    public void onBackClick(Consumer<JButton> newAction) //TODO
+    public void onBackButtonClick(Consumer<JButton> newAction)
     {
         backButton.addActionListener((ActionEvent event)->newAction.accept(backButton));
     }
 
-    public void setBackVisible(boolean visible)
+    public void setBackButtonVisible(boolean visible)
     {
         backButton.setVisible(visible);
-    } //TODO
+    }
 
 
-    public void onForwardClick(Consumer<JButton> newAction) //TODO
+    public void onForwardButtonClick(Consumer<JButton> newAction)
     {
         forwardButton.addActionListener((ActionEvent event)->newAction.accept(forwardButton));
     }

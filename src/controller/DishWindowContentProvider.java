@@ -5,6 +5,7 @@ import model.*;
 import model.Dish;
 import model.Ingredient;
 
+import org.apache.commons.lang.StringUtils;
 import view.DishEditContentPanel;
 import view.EditWindow;
 import view.ListContentPanel;
@@ -20,8 +21,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-
 
 public class DishWindowContentProvider implements WindowContentProvider<ListContentPanel<Dish>>
 {
@@ -60,7 +59,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         currentComparatorIndex=0;
 
         comparators=new ArrayList<>();
-        comparators.addAll(List.of(Comparator.comparing(dish -> dish.getName().toLowerCase())));
+        comparators.add(Comparator.comparing(dish -> dish.getName().toLowerCase()));
 
         content=new ListContentPanel<>();
 
@@ -196,7 +195,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         String updatedName=dishEditContentPanel.getNameFieldValue();
         List<Ingredient> ingredientList=dishEditContentPanel.getUnmodifiableSelectedItems();
 
-        if(updatedName.isBlank() || ingredientList.isEmpty())
+        if(StringUtils.isBlank(updatedName) || ingredientList.isEmpty())
         {
             editWindow.dispose();
             JOptionPane.showMessageDialog(new JFrame(), localisator.getString("all_fields_must_be_filled"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);

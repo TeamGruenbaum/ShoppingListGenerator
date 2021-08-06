@@ -13,6 +13,7 @@ public final class TextContentPanel extends JPanel
     {
         this.textArea =new JTextArea();
         this.textArea.setEditable(false);
+        this.textArea.setBorder(BorderFactory.createEmptyBorder(0, 11, 0, 0));
         setLayout(new BorderLayout());
 
         JScrollPane scrollPane=new JScrollPane(this.textArea);

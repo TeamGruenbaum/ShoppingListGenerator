@@ -7,6 +7,10 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import com.apple.eawt.Application;
 
 public class SwingHelper
 {
@@ -31,6 +35,8 @@ public class SwingHelper
 
     public JLabel getLinkedJLabel(String text, String uri)
     {
+        Localisator localisator=new Localisator();
+
         JLabel linkedLabel=new JLabel(text);
         linkedLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         linkedLabel.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
@@ -41,11 +47,21 @@ public class SwingHelper
             {
                 try
                 {
-                    Desktop.getDesktop().browse(new URI(uri));
+
+                    Desktop desktop;
+                    if(Desktop.isDesktopSupported() && (desktop=Desktop.getDesktop()).isSupported(Desktop.Action.BROWSE))
+                    {
+                        desktop=Desktop.getDesktop();
+                        desktop.browse(new URI(uri));
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(new JFrame(), localisator.getString("uri_can_not_be_opened"));
+                    }
                 }
                 catch(IOException | URISyntaxException exception)
                 {
-                    Localisator localisator=new Localisator();
+
                     JOptionPane.showMessageDialog(new JFrame(), localisator.getString("uri_can_not_be_opened"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                 }
             }

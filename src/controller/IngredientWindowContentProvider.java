@@ -3,6 +3,7 @@ package controller;
 import model.DatabaseTableAccessor;
 import model.IngredientDatabaseTableAccessor;
 import model.Ingredient;
+import org.apache.commons.lang.StringUtils;
 import view.EditWindow;
 import view.IngredientEditContentPanel;
 import view.ListContentPanel;
@@ -45,7 +46,9 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         currentComparatorIndex=0;
 
         comparators=new ArrayList<>();
-        comparators.addAll(List.of(Comparator.comparing(ingredient -> ingredient.getName().toLowerCase()), Comparator.comparing(ingredient -> ingredient.getStore().toLowerCase()), Comparator.comparing(Ingredient::getShelf)));
+        comparators.add(Comparator.comparing(ingredient -> ingredient.getName().toLowerCase()));
+        comparators.add(Comparator.comparing(ingredient -> ingredient.getStore().toLowerCase()));
+        comparators.add(Comparator.comparing(Ingredient::getShelf));
 
         content=new ListContentPanel<>();
 
@@ -89,7 +92,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
             editWindow.onApplyButtonClick(ingredientEditContentPanel ->
             {
-                if(ingredientEditContentPanel.getNameFieldValue().isBlank() || ingredientEditContentPanel.getStoreFieldValue().isBlank())
+                if(StringUtils.isBlank(ingredientEditContentPanel.getNameFieldValue()) || StringUtils.isBlank(ingredientEditContentPanel.getStoreFieldValue()))
                 {
                     editWindow.dispose();
                     JOptionPane.showMessageDialog(editWindow, localisator.getString("all_fields_must_be_filled"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
@@ -127,9 +130,9 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             editWindow.setContent(content);
 
 
-            editWindow.onApplyButtonClick((ingredientEditContentPanel ->
+            editWindow.onApplyButtonClick((ingredientEditContentPanel) ->
             {
-                if(ingredientEditContentPanel.getNameFieldValue().isBlank() || ingredientEditContentPanel.getStoreFieldValue().isBlank())
+                if(StringUtils.isBlank(ingredientEditContentPanel.getNameFieldValue()) || StringUtils.isBlank(ingredientEditContentPanel.getStoreFieldValue()))
                 {
                     editWindow.dispose();
                     JOptionPane.showMessageDialog(editWindow, localisator.getString("all_fields_must_be_filled"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
@@ -152,7 +155,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                         throwables.printStackTrace();
                     }
                 }
-            }));
+            });
 
             editWindow.showWindow();
         });

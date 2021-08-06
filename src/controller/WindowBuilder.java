@@ -1,5 +1,6 @@
 package controller;
 
+import model.DatabaseConnection;
 import model.Dish;
 import model.Ingredient;
 import view.*;
@@ -11,11 +12,14 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import com.apple.eawt.*;
 
 public class WindowBuilder
 {
@@ -51,12 +55,23 @@ public class WindowBuilder
         window=new MainWindow("ShoppingListGenerator", new Dimension(500, 500));
         window.setContent(dishWindowContentProvider.getContent());
         window.setCurrentTitle(dishWindowContentProvider.getTitle());
-        window.setBackVisible(false);
+        window.setBackButtonVisible(false);
 
         listToShoppingListStringConverter=new MarkdownListToShoppingListStringConverter();
 
         aboutDialog=new AboutDialog(window, new Dimension(280, 250));
-        aboutDialog.setIcon(new ImageIcon("src/resources/icon_small.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+
+        Image iconsSmall= null;
+        try
+        {
+            iconsSmall = ImageIO.read(getClass().getClassLoader().getResource("icon_small.png"));
+        }
+        catch (IOException exception)
+        {
+            exception.printStackTrace();
+            System.exit(0);
+        }
+        aboutDialog.setIcon(iconsSmall);
         aboutDialog.setApplicationName(localisator.getString("application_name"));
         aboutDialog.setVersion(localisator.getString("version"));
         aboutDialog.addDeveloper(localisator.getString("steven_solleder").toUpperCase(), localisator.getString("steven_solleder_link"));
@@ -66,18 +81,30 @@ public class WindowBuilder
         setForwardFunctionality();
         setBackwardFunctionality();
 
-        Desktop.getDesktop().setAboutHandler((e)->{aboutDialog.showDialog();});
-
+        Image icon= null;
         try
         {
-            Image taskImage= ImageIO.read(getClass().getResource("../resources/icon.png"));
-            Taskbar.getTaskbar().setIconImage(taskImage);
-            window.setIconImage(taskImage);
+            icon = ImageIO.read(getClass().getClassLoader().getResource("icon.png"));
         }
         catch (IOException exception)
         {
             exception.printStackTrace();
+            System.exit(0);
         }
+
+        if(System.getProperty("os.name").toLowerCase().contains("mac"))
+        {
+            Application application=Application.getApplication();
+            application.setAboutHandler((e)->
+            {
+                aboutDialog.showDialog();
+            });
+
+            application.setDockIconImage(icon);
+        }
+
+        window.setIconImage(icon);
+
 
         window.showWindow();
     }
@@ -105,8 +132,12 @@ public class WindowBuilder
             JMenuItem resetMenuItem=new JMenuItem(localisator.getString("reset_application"));
             resetMenuItem.addActionListener((aboutEvent)->
             {
-                ResourceBundle resourceBundle=ResourceBundle.getBundle("resources.strings");
                 PathHelper pathHelper=new PathHelper();
+                try {
+                    DatabaseConnection.getInstance().getConnection().close();
+                } catch (SQLException sqlException) {
+                    sqlException.printStackTrace();
+                }
                 new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
 
                 JOptionPane.showMessageDialog(window, localisator.getString("please_restart_application"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
@@ -123,7 +154,7 @@ public class WindowBuilder
 
     private void setForwardFunctionality()
     {
-        window.onForwardClick((JButton forwardButton) ->
+        window.onForwardButtonClick((JButton forwardButton) ->
         {
             if(currentContentIndex+1>contents.size()-1)
             {
@@ -173,22 +204,22 @@ public class WindowBuilder
                 }
             }
 
-            window.setBackVisible(true);
+            window.setBackButtonVisible(true);
         });
     }
 
 
     private void setBackwardFunctionality()
     {
-        window.onBackClick((JButton backButton)->
+        window.onBackButtonClick((JButton backButton)->
         {
             if(currentContentIndex--==1)
             {
-                window.setBackVisible(false);
+                window.setBackButtonVisible(false);
             }
             else
             {
-                window.setBackVisible(true);
+                window.setBackButtonVisible(true);
             }
             updateWindowContent();
         });
