@@ -17,10 +17,10 @@ After your selection **ShoppingListGenerator** creates a shopping list sorted by
 In the current version you can either save the list as a text file or copy it to your clipboard and paste it wherever you like.
 
 <p align="center">
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dishes.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/ingredients.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/add_ingredient.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/shopping_list.png" width="480" height="480" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dishes.png" width="450" height="450" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/ingredients.png" width="450" height="450" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/add_ingredient.png" width="450" height="450" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/shopping_list.png" width="450" height="450" border=0>
 </p>
 
 
@@ -28,8 +28,8 @@ In the current version you can either save the list as a text file or copy it to
 **ShoppingListGenerator** has a light and a dark theme that can be switched in the settings menu.
 
 <p align="center">
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/light_theme.png" width="480" height="480" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" width="480" height="480" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/light_theme.png" width="450" height="450" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" width="450" height="450" border=0>
 </p>
 
 
