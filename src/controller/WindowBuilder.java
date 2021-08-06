@@ -157,7 +157,7 @@ public class WindowBuilder
                 {
                     boolean newVersionAvailable=false;
                     JSONObject latestRelease;
-                    latestRelease = new JSONObject(IOUtils.toString(new URL("https://api.github.com/repos/TeamGruenbaum/RingerModeNotification/releases/latest"), StandardCharsets.UTF_8));
+                    latestRelease = new JSONObject(IOUtils.toString(new URL("https://api.github.com/repos/TeamGruenbaum/ShoppingListGenerator/releases/latest"), StandardCharsets.UTF_8));
 
                     if(Integer.parseInt(localisator.getString("version_number").substring(0, 4))<Integer.parseInt(latestRelease.getString("tag_name").substring(0, 4)))
                     {
