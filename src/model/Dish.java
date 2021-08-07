@@ -1,15 +1,19 @@
 package model;
 
 
+
 import java.util.Collections;
 import java.util.List;
 
 
 
-public class Dish implements Identifiable {
+public class Dish implements Identifiable
+{
     private int id;
+
     private String name;
     private List<Ingredient> ingredients;
+
 
 
     public Dish(String name, List<Ingredient> ingredients)
@@ -32,6 +36,7 @@ public class Dish implements Identifiable {
         return id;
     }
 
+
     public String getName()
     {
         return name;
@@ -42,16 +47,18 @@ public class Dish implements Identifiable {
         this.name=newValue;
     }
 
-    public List<Ingredient> getUnmodifiableIngredients()
-    {
-        return Collections.unmodifiableList(ingredients);
-    }
 
     public void setAllIngredients(List<Ingredient> newValues)
     {
         ingredients.clear();
         ingredients.addAll(newValues);
     }
+
+    public List<Ingredient> getUnmodifiableIngredients()
+    {
+        return Collections.unmodifiableList(ingredients);
+    }
+
 
     @Override
     public String toString()

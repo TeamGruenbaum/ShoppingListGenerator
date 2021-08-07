@@ -1,12 +1,15 @@
 package model;
 
 
+
 public class Ingredient implements Identifiable
 {
     private int id;
+
     private String name;
     private String store;
     private int shelf;
+
 
 
     public Ingredient(String name, String store, int shelf)
@@ -30,6 +33,7 @@ public class Ingredient implements Identifiable
     {
         return id;
     }
+
 
     public String getName()
     {
@@ -60,6 +64,7 @@ public class Ingredient implements Identifiable
     {
         this.shelf = newValue;
     }
+
 
     @Override
     public String toString()

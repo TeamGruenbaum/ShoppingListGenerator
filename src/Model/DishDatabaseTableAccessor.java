@@ -1,6 +1,7 @@
 package model;
 
 
+
 import controller.Localisator;
 
 import java.sql.*;
@@ -15,9 +16,11 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
     private Connection connection;
 
 
+
     public DishDatabaseTableAccessor() throws SQLException, ClassNotFoundException
     {
         Class.forName("org.sqlite.JDBC");
+
         connection=DatabaseConnection.getInstance().getConnection();
 
         Statement statement=connection.createStatement();
@@ -38,22 +41,24 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
     public List<Dish> getAll() throws SQLException
     {
         ResultSet dishesResultSet=connection.createStatement().executeQuery("SELECT * FROM Dishes");
-
         List<Dish> allDishes=new ArrayList<>();
         while(dishesResultSet.next())
         {
             allDishes.add(new Dish(dishesResultSet.getInt("id"), dishesResultSet.getString("name"), getIngredientsNeededForDish(dishesResultSet.getInt("id"))));
         }
-
         return allDishes;
     }
 
     @Override
     public int update(Dish element) throws SQLException
     {
-        if(element.getId()==-1) throw new SQLException("Invalid ID (-1)");
+        if(element.getId()==-1)
+        {
+            throw new SQLException("Invalid ID (-1)");
+        }
 
         removeFromIsNeededFor(element.getId());
+
         addToIsNeededFor(element.getId(), element.getUnmodifiableIngredients());
 
         PreparedStatement updateDishesStatement=connection.prepareStatement("UPDATE Dishes SET name=? WHERE id=?");

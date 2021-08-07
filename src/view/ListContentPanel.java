@@ -1,5 +1,7 @@
 package view;
 
+
+
 import controller.Localisator;
 import controller.SimpleListModel;
 import model.Identifiable;
@@ -40,6 +42,7 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
         contextMenu=new JPopupMenu();
 
         setLayout(new BorderLayout());
+
         add(createHeaderPanel(),BorderLayout.NORTH);
         add(createContentPanel(),BorderLayout.CENTER);
     }
@@ -47,10 +50,12 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
 
     public void setElements(List<T> newValues)
     {
-        List<Integer> selectedBeforeSorting= list.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
+        List<Integer> selectedBeforeSorting=list.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
+
         list.clearSelection();
 
         this.list.setModel(new SimpleListModel<>(newValues));
+
         this.elements = newValues;
 
         for(int i = 0; i< list.getModel().getSize(); i++)
@@ -65,6 +70,7 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
     public void sortElements(Comparator<T> comparator)
     {
         List<Integer> selectedBeforeSorting= list.getSelectedValuesList().stream().map(Identifiable::getId).collect(Collectors.toList());
+
         list.clearSelection();
 
         elements.sort(comparator);
@@ -133,6 +139,7 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
 
         addButton=new JButton(localisator.getString("add"));
         addButton.setPreferredSize(new Dimension(100, addButton.getPreferredSize().height));
+
         sortButton=new JButton(localisator.getString("sort"));
         sortButton.setPreferredSize(new Dimension( 100, sortButton.getPreferredSize().height));
 
@@ -148,7 +155,9 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
     {
         list =new JList<T>();
         list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
         setListSelectionModel();
+
         setListMouseListener();
 
         JScrollPane contentPanel=new JScrollPane();
@@ -162,11 +171,14 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
         list.setSelectionModel(new DefaultListSelectionModel()
         {
             @Override
-            public void setSelectionInterval(int index0, int index1) {
-                if(super.isSelectedIndex(index0)) {
+            public void setSelectionInterval(int index0, int index1)
+            {
+                if(super.isSelectedIndex(index0))
+                {
                     super.removeSelectionInterval(index0, index1);
                 }
-                else {
+                else
+                {
                     super.addSelectionInterval(index0, index1);
                 }
             }
@@ -188,13 +200,13 @@ public final class ListContentPanel<T extends Identifiable> extends JPanel
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e){}
             @Override
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e){}
             @Override
-            public void mouseEntered(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e){}
             @Override
-            public void mouseExited(MouseEvent e) {}
+            public void mouseExited(MouseEvent e){}
         }));
     }
 }

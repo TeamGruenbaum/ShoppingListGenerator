@@ -1,11 +1,15 @@
 package view;
 
+
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.Localisator;
 
 import javax.swing.*;
 import java.util.prefs.Preferences;
+
+
 
 public final class Themer
 {
@@ -16,6 +20,7 @@ public final class Themer
     {
         preferences = Preferences.userNodeForPackage(Themer.class);
     }
+
 
     public void applyCurrentThemeSetting()
     {

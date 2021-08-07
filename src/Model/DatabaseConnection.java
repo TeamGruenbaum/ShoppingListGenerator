@@ -1,6 +1,7 @@
 package model;
 
 
+
 import controller.PathHelper;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public final class DatabaseConnection
     private static DatabaseConnection instance;
     private Connection connection;
 
-    private DatabaseConnection() {}
+    private DatabaseConnection(){}
 
 
     public Connection getConnection() throws SQLException
@@ -35,6 +36,7 @@ public final class DatabaseConnection
         }
         return connection;
     }
+
 
     public static DatabaseConnection getInstance()
     {

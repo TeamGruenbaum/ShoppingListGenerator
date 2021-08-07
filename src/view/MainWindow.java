@@ -1,11 +1,15 @@
 package view;
 
+
+
 import controller.Localisator;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.function.Consumer;
+
+
 
 public final class MainWindow extends JFrame
 {
@@ -20,6 +24,7 @@ public final class MainWindow extends JFrame
     private Localisator localisator;
 
 
+
     public MainWindow (String windowTitle, Dimension minimumSize)
     {
         localisator=new Localisator();
@@ -28,11 +33,12 @@ public final class MainWindow extends JFrame
         setMinimumSize(minimumSize);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         setLayout(new BorderLayout());
+
         add(createHeader(), BorderLayout.NORTH);
         add(createFooter(),BorderLayout.SOUTH);
     }
+
 
     public String getCurrentTitle()
     {
@@ -79,6 +85,7 @@ public final class MainWindow extends JFrame
         forwardButton.addActionListener((ActionEvent event)->newAction.accept(forwardButton));
     }
 
+
     public void showWindow()
     {
         setVisible(true);
@@ -89,6 +96,7 @@ public final class MainWindow extends JFrame
     {
         currentTitle=new JLabel();
         currentTitle.setFont(new Font(currentTitle.getFont().getFontName(), Font.BOLD, 17));
+
         settingsButton=new JButton(localisator.getString("settings"));
 
         JPanel headerPanel=new JPanel();
@@ -105,6 +113,7 @@ public final class MainWindow extends JFrame
     {
         backButton=new JButton(localisator.getString("back"));
         backButton.setPreferredSize(new Dimension(100, backButton.getPreferredSize().height));
+
         forwardButton=new JButton(localisator.getString("forward"));
         forwardButton.setPreferredSize(new Dimension(100, forwardButton.getPreferredSize().height));
 

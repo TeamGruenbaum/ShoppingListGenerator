@@ -1,6 +1,7 @@
 package model;
 
 
+
 import controller.Localisator;
 
 import java.sql.*;
@@ -15,9 +16,11 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
     private Connection connection;
 
 
+
     public IngredientDatabaseTableAccessor() throws SQLException, ClassNotFoundException
     {
         Class.forName("org.sqlite.JDBC");
+
         connection=DatabaseConnection.getInstance().getConnection();
 
         Statement statement=connection.createStatement();
@@ -51,13 +54,17 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
     @Override
     public int update(Ingredient item) throws SQLException
     {
-        if(item.getId()==-1) throw new SQLException("Invalid ID (-1)");
+        if(item.getId()==-1)
+        {
+            throw new SQLException("Invalid ID (-1)");
+        }
 
         PreparedStatement updateStatement=connection.prepareStatement("UPDATE Ingredients SET name=?, store=?, shelf=? WHERE id=?");
         updateStatement.setString(1, item.getName());
         updateStatement.setString(2, item.getStore());
         updateStatement.setInt(3, item.getShelf());
         updateStatement.setInt(4, item.getId());
+
         return updateStatement.executeUpdate();
     }
 
