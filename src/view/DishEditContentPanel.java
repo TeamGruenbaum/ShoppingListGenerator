@@ -3,8 +3,7 @@ package view;
 
 
 import controller.SimpleListModel;
-
-import model.Ingredient;
+import model2.Ingredient;
 
 import javax.swing.*;
 

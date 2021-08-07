@@ -1,8 +1,8 @@
 package controller;
 
-import model.DatabaseConnection;
-import model.Dish;
-import model.Ingredient;
+import model2.DatabaseConnection;
+import model2.Dish;
+import model2.Ingredient;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import view.*;

@@ -1,9 +1,7 @@
 package controller;
 
 
-import model.*;
-import model.Dish;
-import model.Ingredient;
+import model2.*;
 
 import org.apache.commons.lang.StringUtils;
 import view.DishEditContentPanel;
