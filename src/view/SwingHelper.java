@@ -1,5 +1,7 @@
 package controller;
 
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -7,10 +9,8 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 
-import com.apple.eawt.Application;
+
 
 public class SwingHelper
 {
@@ -20,7 +20,6 @@ public class SwingHelper
     public GridBagConstraints getGridBagConstraints(int columnXPosition, int columnYPosition, int columnWidth, int columnHeight, double columnWeightX, double columnWeightY, int columnFill)
     {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
-
         gridBagConstraints.gridx = columnXPosition;
         gridBagConstraints.gridy = columnYPosition;
         gridBagConstraints.gridwidth = columnWidth;
@@ -47,9 +46,8 @@ public class SwingHelper
             {
                 try
                 {
-
                     Desktop desktop;
-                    if(Desktop.isDesktopSupported() && (desktop=Desktop.getDesktop()).isSupported(Desktop.Action.BROWSE))
+                    if(Desktop.isDesktopSupported()&&(desktop=Desktop.getDesktop()).isSupported(Desktop.Action.BROWSE))
                     {
                         desktop.browse(new URI(uri));
                     }
@@ -60,7 +58,6 @@ public class SwingHelper
                 }
                 catch(IOException | URISyntaxException exception)
                 {
-
                     JOptionPane.showMessageDialog(new JFrame(), localisator.getString("uri_can_not_be_opened"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                 }
             }
@@ -73,6 +70,7 @@ public class SwingHelper
             @Override
             public void mouseExited(MouseEvent e){}
         });
+
         return linkedLabel;
     }
 }
