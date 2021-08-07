@@ -1,13 +1,17 @@
 package view;
 
 
+
 import controller.Localisator;
 import controller.SwingHelper;
 
 import javax.swing.*;
+
 import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 public final class AboutDialog extends JDialog
@@ -16,9 +20,11 @@ public final class AboutDialog extends JDialog
     private JLabel applicationName;
     private JLabel version;
     private List<JLabel> developers;
-    private SwingHelper swingHelper;
     private Container dialogContainer;
     private JPanel center;
+
+    private SwingHelper swingHelper;
+
 
 
     public AboutDialog(Window owner, Dimension size)
@@ -32,9 +38,8 @@ public final class AboutDialog extends JDialog
         developers=new ArrayList<>();
         swingHelper=new SwingHelper();
 
-        dialogContainer = getContentPane();
+        dialogContainer=getContentPane();
         dialogContainer.setLayout(new BoxLayout(dialogContainer, BoxLayout.Y_AXIS));
-
         dialogContainer.add(createHeader());
     }
 
@@ -54,10 +59,12 @@ public final class AboutDialog extends JDialog
         version.setText(newValue);
     }
 
+
     public void addDeveloper(String name, String uri)
     {
         developers.add(swingHelper.getLinkedJLabel(name, uri));
     }
+
 
     public void showDialog()
     {
@@ -67,8 +74,10 @@ public final class AboutDialog extends JDialog
         }
         center=createCenter();
         dialogContainer.add(center);
+
         this.setVisible(true);
     }
+
 
     private JPanel createHeader()
     {
@@ -98,11 +107,10 @@ public final class AboutDialog extends JDialog
         JPanel center=new JPanel(new GridBagLayout());
         center.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
-
-        int i=0;
+        int columnYPosition=0;
         for(JLabel developer:developers)
         {
-            center.add(developer, new SwingHelper().getGridBagConstraints(0, i++, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
+            center.add(developer, new SwingHelper().getGridBagConstraints(0, columnYPosition++, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
         }
 
         return center;

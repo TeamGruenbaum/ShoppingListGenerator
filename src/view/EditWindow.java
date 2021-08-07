@@ -1,10 +1,16 @@
 package view;
 
+
+
 import controller.Localisator;
 
 import javax.swing.*;
+
 import java.awt.*;
+
 import java.util.function.Consumer;
+
+
 
 public final class EditWindow<T extends JComponent> extends JDialog
 {
@@ -13,18 +19,18 @@ public final class EditWindow<T extends JComponent> extends JDialog
     private JButton quitButton;
     private JButton applyButton;
 
+
+
     public EditWindow(String windowTitle, Dimension size)
     {
         setTitle(windowTitle);
 
         setMinimumSize(size);
         setMaximumSize(size);
-
         setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
-
-        add(createFooterPanel(), BorderLayout.SOUTH);
+        add(createFooter(), BorderLayout.SOUTH);
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -42,8 +48,9 @@ public final class EditWindow<T extends JComponent> extends JDialog
             remove(content);
         }
         add(newValue, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
         this.content=newValue;
+
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
 
@@ -65,17 +72,21 @@ public final class EditWindow<T extends JComponent> extends JDialog
         });
     }
 
+
     public void showWindow()
     {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setVisible(true);
     }
 
-    private JPanel createFooterPanel()
+
+    private JPanel createFooter()
     {
         Localisator localisator=new Localisator();
+
         quitButton=new JButton(localisator.getString("quit"));
         quitButton.addActionListener((actionEvent)->dispose());
+
         applyButton=new JButton(localisator.getString("apply"));
 
         JPanel footerPanel=new JPanel();

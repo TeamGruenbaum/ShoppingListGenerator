@@ -1,10 +1,15 @@
 package view;
 
+
+
 import controller.SimpleListModel;
+
 import model.Ingredient;
 
 import javax.swing.*;
+
 import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,26 +27,25 @@ public final class DishEditContentPanel extends JPanel
     {
         setLayout(new BorderLayout());
 
-        this.nameField =new JTextField();
+        this.nameField=new JTextField();
         add(this.nameField, BorderLayout.NORTH);
 
-        this.list =new JList<>();
+        this.list=new JList<>();
         this.list.setSelectionModel(new DefaultListSelectionModel()
         {
             @Override
             public void setSelectionInterval(int index0, int index1)
             {
-            if(super.isSelectedIndex(index0))
-            {
-                super.removeSelectionInterval(index0, index1);
-            }
-            else
-            {
-                super.addSelectionInterval(index0, index1);
-            }
+                if(super.isSelectedIndex(index0))
+                {
+                    super.removeSelectionInterval(index0, index1);
+                }
+                else
+                {
+                    super.addSelectionInterval(index0, index1);
+                }
             }
         });
-        
         add(new JScrollPane(this.list), BorderLayout.CENTER);
     }
 
@@ -73,16 +77,15 @@ public final class DishEditContentPanel extends JPanel
         List<Integer> indices=new ArrayList<>();
         for (Ingredient ingredient:newValues)
         {
-            for (int j = 0; j < list.getModel().getSize(); j++)
+            for (int index=0; index<list.getModel().getSize(); index++)
             {
-                if(ingredient.getId()== list.getModel().getElementAt(j).getId())
+                if(ingredient.getId()==list.getModel().getElementAt(index).getId())
                 {
-                    indices.add(j);
+                    indices.add(index);
                     break;
                 }
             }
         }
-
         list.setSelectedIndices(indices.stream().mapToInt(i -> i).toArray());
     }
 }
