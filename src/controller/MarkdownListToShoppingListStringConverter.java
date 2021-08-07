@@ -1,6 +1,7 @@
 package controller;
 
 
+
 import model.Ingredient;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class MarkdownListToShoppingListStringConverter implements Function<List<
         String shoppingList="";
 
         List<PairedValue<String, ArrayList<Ingredient>>> ingredientsAndStores=new ArrayList<>();
-        for(String storeName:elements.stream().map(ingredient -> ingredient.getStore()).collect(Collectors.toList()))
+        for(String storeName:elements.stream().map(ingredient->ingredient.getStore()).collect(Collectors.toList()))
         {
             if(!(ingredientsAndStores.stream().map(pair->pair.getKey()).anyMatch(item->item.equals(storeName))))
             {
