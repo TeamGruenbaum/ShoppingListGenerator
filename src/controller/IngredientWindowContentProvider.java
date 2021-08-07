@@ -88,7 +88,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
     {
         content.onAddButtonClick(listContentPanel ->
         {
-            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>(localisator.getString("edit"), new Dimension(300, 200));
+            EditWindow<IngredientEditContentPanel> editWindow=new EditWindow<>(localisator.getString("add"), new Dimension(300, 200));
             IngredientEditContentPanel content=new IngredientEditContentPanel();
             content.setNameFieldValue("");
             content.setStoreFieldValue("");
