@@ -1,27 +1,39 @@
 package controller;
 
+
+
 import model.DatabaseTableAccessor;
 import model.IngredientDatabaseTableAccessor;
 import model.Ingredient;
+
 import org.apache.commons.lang.StringUtils;
+
 import view.EditWindow;
 import view.IngredientEditContentPanel;
 import view.ListContentPanel;
 
 import javax.swing.*;
+
 import java.awt.*;
+
 import java.io.File;
+
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+
 
 public class IngredientWindowContentProvider implements WindowContentProvider<ListContentPanel<Ingredient>>
 {
     private ListContentPanel<Ingredient> content;
     private DatabaseTableAccessor<Ingredient> ingredientDatabaseTableAccessor;
+
     private List<Comparator<Ingredient>> comparators;
     private int currentComparatorIndex;
+
     private Localisator localisator;
 
 
@@ -49,10 +61,9 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         }
 
         currentComparatorIndex=0;
-
         comparators=new ArrayList<>();
-        comparators.add(Comparator.comparing(ingredient -> ingredient.getName().toLowerCase()));
-        comparators.add(Comparator.comparing(ingredient -> ingredient.getStore().toLowerCase()));
+        comparators.add(Comparator.comparing(ingredient->ingredient.getName().toLowerCase()));
+        comparators.add(Comparator.comparing(ingredient->ingredient.getStore().toLowerCase()));
         comparators.add(Comparator.comparing(Ingredient::getShelf));
 
         content=new ListContentPanel<>();
@@ -62,6 +73,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
         setAddFunctionality();
         setUpContextMenu();
     }
+
 
     @Override
     public ListContentPanel<Ingredient> getContent()
@@ -74,6 +86,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
     {
         return localisator.getString("ingredients");
     }
+
 
     private void setSortFunctionality()
     {
@@ -134,7 +147,6 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             content.setShelfSpinnerValue(ingredientToChange.getShelf());
             editWindow.setContent(content);
 
-
             editWindow.onApplyButtonClick((ingredientEditContentPanel) ->
             {
                 if(StringUtils.isBlank(ingredientEditContentPanel.getNameFieldValue()) || StringUtils.isBlank(ingredientEditContentPanel.getStoreFieldValue()))
@@ -167,10 +179,10 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
         content.addMenuItem(localisator.getString("remove"), (sortableListModel, index)->
         {
-            Ingredient currentChoosenIngredient=sortableListModel.getElementAt(index);
+            Ingredient currentChosenIngredient=sortableListModel.getElementAt(index);
             try
             {
-                ingredientDatabaseTableAccessor.remove(currentChoosenIngredient.getId());
+                ingredientDatabaseTableAccessor.remove(currentChosenIngredient.getId());
                 refreshList();
             }
             catch (SQLException throwables)
@@ -180,6 +192,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             }
         });
     }
+
 
     private void refreshList()
     {

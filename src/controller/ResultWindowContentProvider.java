@@ -1,13 +1,15 @@
 package controller;
 
 
+
 import view.TextContentPanel;
 
 
 
 public class ResultWindowContentProvider implements WindowContentProvider<TextContentPanel>
 {
-    TextContentPanel content;
+    private TextContentPanel content;
+
 
 
     public ResultWindowContentProvider()

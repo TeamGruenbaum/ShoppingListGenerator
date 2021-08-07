@@ -1,9 +1,11 @@
 package controller;
 
 
+
 import model.*;
 
 import org.apache.commons.lang.StringUtils;
+
 import view.DishEditContentPanel;
 import view.EditWindow;
 import view.ListContentPanel;
@@ -20,14 +22,19 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+
+
 public class DishWindowContentProvider implements WindowContentProvider<ListContentPanel<Dish>>
 {
     private ListContentPanel<Dish> content;
     private DatabaseTableAccessor<Dish> dishDatabaseTableAccessor;
     private DatabaseTableAccessor<Ingredient> ingredientDatabaseTableAccessor;
+
     private List<Comparator<Dish>> comparators;
     private int currentComparatorIndex;
+
     private Localisator localisator;
+
 
 
     public DishWindowContentProvider()
@@ -55,9 +62,8 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         }
 
         currentComparatorIndex=0;
-
         comparators=new ArrayList<>();
-        comparators.add(Comparator.comparing(dish -> dish.getName().toLowerCase()));
+        comparators.add(Comparator.comparing(dish->dish.getName().toLowerCase()));
 
         content=new ListContentPanel<>();
 
@@ -188,6 +194,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         });
     }
 
+
     private boolean updateDish(Dish dish, DishEditContentPanel dishEditContentPanel, EditWindow editWindow)
     {
         String updatedName=dishEditContentPanel.getNameFieldValue();
@@ -204,6 +211,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         dish.setAllIngredients(ingredientList);
         return true;
     }
+
 
     private void refreshList()
     {
