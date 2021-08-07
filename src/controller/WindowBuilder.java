@@ -189,7 +189,7 @@ public class WindowBuilder
     {
         window.onBackButtonClick((JButton backButton)->
         {
-            window.setBackButtonVisible(currentContentIndex-- != 1);
+            window.setBackButtonVisible(currentContentIndex--!= 1);
             updateWindowContent();
         });
     }
