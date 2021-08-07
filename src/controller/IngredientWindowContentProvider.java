@@ -32,19 +32,15 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
 
         try
         {
-            ingredientDatabaseTableAccessor =new IngredientDatabaseTableAccessor();
+            ingredientDatabaseTableAccessor=new IngredientDatabaseTableAccessor();
         }
         catch (ClassNotFoundException classNotFoundException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("no_database_driver_available"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, localisator.getString("no_database_driver_available")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
         }
         catch (SQLException sqlException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("connection_to_database_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
-
-            PathHelper pathHelper=new PathHelper();
-            new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
-
+            JOptionPane.showMessageDialog(null, localisator.getString("connection_to_database_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
             sqlException.printStackTrace();
         }
 
@@ -108,11 +104,19 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                     {
                         ingredientDatabaseTableAccessor.add(new Ingredient(ingredientEditContentPanel.getNameFieldValue(), ingredientEditContentPanel.getStoreFieldValue(), ingredientEditContentPanel.getShelfSpinnerValue()));
                         refreshList();
-                    } catch (SQLException throwables)
+                    } catch (SQLException sqlException)
                     {
                         editWindow.dispose();
-                        JOptionPane.showMessageDialog(new JFrame(), localisator.getString("element_already_available"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
-                        throwables.printStackTrace();
+                        if(sqlException.getMessage().contains("UNIQUE"))
+                        {
+                            JOptionPane.showMessageDialog(null, localisator.getString("element_already_available"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, localisator.getString("adding_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                        sqlException.printStackTrace();
                     }
                 }
             });
@@ -145,7 +149,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                 else
                 {
                     try
-                    {
+                    { //TODO
                         ingredientToChange.setName(ingredientEditContentPanel.getNameFieldValue());
                         ingredientToChange.setStore(ingredientEditContentPanel.getStoreFieldValue());
                         ingredientToChange.setShelf(ingredientEditContentPanel.getShelfSpinnerValue());
@@ -153,11 +157,18 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                         ingredientDatabaseTableAccessor.update(ingredientToChange);
                         refreshList();
                     }
-                    catch (SQLException throwables)
+                    catch (SQLException sqlException)
                     {
                         editWindow.dispose();
-                        JOptionPane.showMessageDialog(new JFrame(), localisator.getString("element_already_available"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
-                        throwables.printStackTrace();
+                        if(sqlException.getMessage().contains("UNIQUE"))
+                        {
+                            JOptionPane.showMessageDialog(null, localisator.getString("element_already_available"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, localisator.getString("adding_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        sqlException.printStackTrace();
                     }
                 }
             });
@@ -173,10 +184,10 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                 ingredientDatabaseTableAccessor.remove(currentChoosenIngredient.getId());
                 refreshList();
             }
-            catch (SQLException throwables)
+            catch (SQLException sqlException)
             {
-                JOptionPane.showMessageDialog(new JFrame(), localisator.getString("removing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
-                throwables.printStackTrace();
+                JOptionPane.showMessageDialog(null, localisator.getString("removing_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+                sqlException.printStackTrace();
             }
         });
     }
@@ -188,11 +199,10 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             content.setElements(ingredientDatabaseTableAccessor.getAll());
             content.sortElements(comparators.get(currentComparatorIndex));
         }
-        catch (SQLException throwables)
+        catch (SQLException sqlException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("changing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
-            throwables.printStackTrace();
-            System.exit(0);
+            JOptionPane.showMessageDialog(null, localisator.getString("changing_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+            sqlException.printStackTrace();
         }
     }
 

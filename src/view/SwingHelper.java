@@ -1,6 +1,8 @@
-package controller;
+package view;
 
 
+
+import controller.Localisator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +33,6 @@ public class SwingHelper
         return gridBagConstraints;
     }
 
-
     public JLabel getLinkedJLabel(String text, String uri)
     {
         Localisator localisator=new Localisator();
@@ -59,6 +60,7 @@ public class SwingHelper
                 catch(IOException | URISyntaxException exception)
                 {
                     JOptionPane.showMessageDialog(new JFrame(), localisator.getString("uri_can_not_be_opened"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+                    exception.printStackTrace();
                 }
             }
             @Override

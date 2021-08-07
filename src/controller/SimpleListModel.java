@@ -1,6 +1,7 @@
 package controller;
 
 
+
 import javax.swing.*;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class SimpleListModel<T> extends AbstractListModel<T>
 {
     List<T> elements;
+
 
 
     public SimpleListModel(List<T> elements)

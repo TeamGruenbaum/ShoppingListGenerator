@@ -12,8 +12,6 @@ import javax.swing.*;
 
 import java.awt.*;
 
-import java.io.File;
-
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -39,18 +37,14 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
             ingredientDatabaseTableAccessor=new IngredientDatabaseTableAccessor();
             dishDatabaseTableAccessor=new DishDatabaseTableAccessor();
         }
-        catch (ClassNotFoundException classNotFoundException)
+        catch(ClassNotFoundException classNotFoundException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("no_database_driver_available"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
-            System.exit(0);
+            JOptionPane.showMessageDialog(null, localisator.getString("no_database_driver_available")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+            classNotFoundException.printStackTrace();
         }
         catch (SQLException sqlException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("connection_to_database_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
-
-            PathHelper pathHelper=new PathHelper();
-            new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
-
+            JOptionPane.showMessageDialog(null, localisator.getString("connection_to_database_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
             sqlException.printStackTrace();
         }
 
@@ -103,26 +97,33 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
             {
                 content.setAllIngredients(ingredientDatabaseTableAccessor.getAll());
             }
-            catch (SQLException sqlException)
+            catch(SQLException sqlException)
             {
                 editWindow.dispose();
-                JOptionPane.showMessageDialog(null, localisator.getString("loading_not_possible"));
+                JOptionPane.showMessageDialog(null, localisator.getString("loading_not_possible")+"\n"+localisator.getString("error_solution"));
                 sqlException.printStackTrace();
             }
             editWindow.setContent(content);
             editWindow.onApplyButtonClick((DishEditContentPanel dishEditContentPanel)->
             {
-                if (updateDish(newDish, dishEditContentPanel, editWindow))
+                if(updateDish(newDish, dishEditContentPanel, editWindow))
                 {
                     try
                     {
                         dishDatabaseTableAccessor.add(newDish);
                         refreshList();
                     }
-                    catch (SQLException sqlException)
+                    catch(SQLException sqlException)
                     {
                         editWindow.dispose();
-                        JOptionPane.showMessageDialog(new JFrame(), localisator.getString("adding_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+                        if(sqlException.getMessage().contains("UNIQUE"))
+                        {
+                            JOptionPane.showMessageDialog(null, localisator.getString("element_already_available"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, localisator.getString("adding_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
+                        }
                         sqlException.printStackTrace();
                     }
                 }
@@ -144,10 +145,10 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
             {
                 content.setAllIngredients(ingredientDatabaseTableAccessor.getAll());
             }
-            catch (SQLException sqlException)
+            catch(SQLException sqlException)
             {
                 editWindow.dispose();
-                JOptionPane.showMessageDialog(null, localisator.getString("loading_not_possible"));
+                JOptionPane.showMessageDialog(null, localisator.getString("loading_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                 sqlException.printStackTrace();
             }
             content.setSelectedIngredients(currentDish.getUnmodifiableIngredients());
@@ -165,7 +166,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
                     catch (SQLException sqlException)
                     {
                         editWindow.dispose();
-                        JOptionPane.showMessageDialog(new JFrame(), localisator.getString("changing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, localisator.getString("changing_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                         sqlException.printStackTrace();
                     }
                 }
@@ -182,7 +183,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
             }
             catch (SQLException sqlException)
             {
-                JOptionPane.showMessageDialog(new JFrame(), localisator.getString("removing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, localisator.getString("removing_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
                 sqlException.printStackTrace();
             }
         });
@@ -214,9 +215,8 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         }
         catch (SQLException sqlException)
         {
-            JOptionPane.showMessageDialog(new JFrame(), localisator.getString("changing_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, localisator.getString("changing_not_possible")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
             sqlException.printStackTrace();
-            System.exit(0);
         }
     }
 

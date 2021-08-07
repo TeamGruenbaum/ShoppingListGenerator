@@ -39,9 +39,10 @@ public final class Themer
                 UIManager.setLookAndFeel(new FlatDarkLaf());
             }
         }
-        catch (UnsupportedLookAndFeelException e)
+        catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException)
         {
             JOptionPane.showMessageDialog(null, localisator.getString("loadling_not_possible"), localisator.getString("warning"), JOptionPane.WARNING_MESSAGE);
+            unsupportedLookAndFeelException.printStackTrace();
         }
     }
 
