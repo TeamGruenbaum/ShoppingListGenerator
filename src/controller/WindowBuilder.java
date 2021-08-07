@@ -14,15 +14,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 
+//Only for the macOS build
+//import java.awt.desktop.AboutEvent;
+//import java.awt.desktop.AboutHandler;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.apple.eawt.*;
 
 
 
@@ -97,13 +99,13 @@ public class WindowBuilder
             ioException.printStackTrace();
         }
 
-        if(System.getProperty("os.name").toLowerCase().contains("mac"))
+        //Only for the macOS build
+        /*Desktop desktop;
+        if(Desktop.isDesktopSupported()&&(desktop=Desktop.getDesktop()).isSupported(Desktop.Action.APP_ABOUT))
         {
-            Application application=Application.getApplication();
-            application.setAboutHandler((e)->aboutDialog.showDialog());
+            desktop.setAboutHandler((e)-> aboutDialog.showDialog());
+        }*/
 
-            application.setDockIconImage(icon);
-        }
 
         window.setIconImage(icon);
 
@@ -187,14 +189,7 @@ public class WindowBuilder
     {
         window.onBackButtonClick((JButton backButton)->
         {
-            if(currentContentIndex--==1)
-            {
-                window.setBackButtonVisible(false);
-            }
-            else
-            {
-                window.setBackButtonVisible(true);
-            }
+            window.setBackButtonVisible(currentContentIndex-- != 1);
             updateWindowContent();
         });
     }
