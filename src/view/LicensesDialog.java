@@ -1,6 +1,7 @@
 package view;
 
 
+
 import controller.Localisator;
 import controller.SwingHelper;
 
@@ -18,9 +19,11 @@ import java.util.List;
 public class LicensesDialog extends JDialog
 {
     private List<JPanel> licenses;
-    private JScrollPane center;
-    private SwingHelper swingHelper;
     private Container dialogContainer;
+    private JScrollPane center;
+
+    private SwingHelper swingHelper;
+
 
 
     public LicensesDialog(Window owner, Dimension size)
@@ -48,33 +51,6 @@ public class LicensesDialog extends JDialog
         dialogContainer.add(center);
 
         this.setVisible(true);
-    }
-
-    private JScrollPane createCenter()
-    {
-        JPanel scrollContainer=new JPanel();
-        scrollContainer.setLayout(new GridBagLayout());
-
-        int gridBagLayoutIndex=0;
-        for(int i=0; i<licenses.size(); i++)
-        {
-            if(i != 0)
-            {
-                JSeparator jSeparator=new JSeparator(JSeparator.HORIZONTAL);
-                jSeparator.setBorder(BorderFactory.createEmptyBorder(40, 10, 10, 10));
-                scrollContainer.add(jSeparator, swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
-            }
-            scrollContainer.add(licenses.get(i), swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
-        }
-
-        JScrollPane scrollPane=new JScrollPane(scrollContainer);
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                scrollPane.getViewport().setViewPosition(new Point(0,0));
-            }
-        });
-
-        return scrollPane;
     }
 
     public void addLicensePanel(String libraries, String filePath)
@@ -105,5 +81,29 @@ public class LicensesDialog extends JDialog
         license.add(licensePane);
 
         licenses.add(license);
+    }
+
+
+    private JScrollPane createCenter()
+    {
+        JPanel scrollContainer=new JPanel();
+        scrollContainer.setLayout(new GridBagLayout());
+
+        int gridBagLayoutIndex=0;
+        for(int i=0; i<licenses.size(); i++)
+        {
+            if(i != 0)
+            {
+                JSeparator jSeparator=new JSeparator(JSeparator.HORIZONTAL);
+                jSeparator.setBorder(BorderFactory.createEmptyBorder(40, 10, 10, 10));
+                scrollContainer.add(jSeparator, swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+            }
+            scrollContainer.add(licenses.get(i), swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+        }
+
+        JScrollPane scrollPane=new JScrollPane(scrollContainer);
+        javax.swing.SwingUtilities.invokeLater(()->scrollPane.getViewport().setViewPosition(new Point(0,0)));
+
+        return scrollPane;
     }
 }

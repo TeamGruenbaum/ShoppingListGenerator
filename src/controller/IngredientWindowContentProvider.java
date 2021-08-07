@@ -92,7 +92,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             IngredientEditContentPanel content=new IngredientEditContentPanel();
             content.setNameFieldValue("");
             content.setStoreFieldValue("");
-            content.setShelfFieldValue(0);
+            content.setShelfSpinnerValue(0);
             editWindow.setContent(content);
 
             editWindow.onApplyButtonClick(ingredientEditContentPanel ->
@@ -106,7 +106,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                 {
                     try
                     {
-                        ingredientDatabaseTableAccessor.add(new Ingredient(ingredientEditContentPanel.getNameFieldValue(), ingredientEditContentPanel.getStoreFieldValue(), ingredientEditContentPanel.getShelfFieldValue()));
+                        ingredientDatabaseTableAccessor.add(new Ingredient(ingredientEditContentPanel.getNameFieldValue(), ingredientEditContentPanel.getStoreFieldValue(), ingredientEditContentPanel.getShelfSpinnerValue()));
                         refreshList();
                     } catch (SQLException throwables)
                     {
@@ -131,7 +131,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
             IngredientEditContentPanel content=new IngredientEditContentPanel();
             content.setNameFieldValue(ingredientToChange.getName());
             content.setStoreFieldValue(ingredientToChange.getStore());
-            content.setShelfFieldValue(ingredientToChange.getShelf());
+            content.setShelfSpinnerValue(ingredientToChange.getShelf());
             editWindow.setContent(content);
 
 
@@ -148,7 +148,7 @@ public class IngredientWindowContentProvider implements WindowContentProvider<Li
                     {
                         ingredientToChange.setName(ingredientEditContentPanel.getNameFieldValue());
                         ingredientToChange.setStore(ingredientEditContentPanel.getStoreFieldValue());
-                        ingredientToChange.setShelf(ingredientEditContentPanel.getShelfFieldValue());
+                        ingredientToChange.setShelf(ingredientEditContentPanel.getShelfSpinnerValue());
 
                         ingredientDatabaseTableAccessor.update(ingredientToChange);
                         refreshList();
