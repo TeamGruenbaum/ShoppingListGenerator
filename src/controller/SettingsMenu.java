@@ -111,7 +111,7 @@ public class SettingsMenu extends JPopupMenu
             }
             catch (IOException | URISyntaxException exception)
             {
-                JOptionPane.showMessageDialog(ownerWindow, localisator.getString("an_error_occurred")+"\n"+localisator.getString("error_solution"), localisator.getString("warning"),JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(ownerWindow, localisator.getString("an_error_occurred"), localisator.getString("warning"),JOptionPane.WARNING_MESSAGE);
                 exception.printStackTrace();
             }
         });
