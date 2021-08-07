@@ -1,7 +1,7 @@
 package controller;
 
 
-import model2.Ingredient;
+import model.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Comparator;

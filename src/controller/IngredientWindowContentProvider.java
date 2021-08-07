@@ -1,8 +1,8 @@
 package controller;
 
-import model2.DatabaseTableAccessor;
-import model2.IngredientDatabaseTableAccessor;
-import model2.Ingredient;
+import model.DatabaseTableAccessor;
+import model.IngredientDatabaseTableAccessor;
+import model.Ingredient;
 import org.apache.commons.lang.StringUtils;
 import view.EditWindow;
 import view.IngredientEditContentPanel;

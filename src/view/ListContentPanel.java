@@ -4,7 +4,7 @@ package view;
 
 import controller.Localisator;
 import controller.SimpleListModel;
-import model2.Identifiable;
+import model.Identifiable;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,7 +1,7 @@
 package controller;
 
 
-import model2.*;
+import model.*;
 
 import org.apache.commons.lang.StringUtils;
 import view.DishEditContentPanel;
