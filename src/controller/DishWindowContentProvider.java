@@ -96,7 +96,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         {
             Dish newDish=new Dish("", new ArrayList<>());
 
-            EditWindow<DishEditContentPanel> editWindow=new EditWindow(localisator.getString("add"), new Dimension(300,400));
+            EditWindow<DishEditContentPanel> editWindow=new EditWindow(localisator.getString("add"), new Dimension(300,450));
             DishEditContentPanel content=new DishEditContentPanel();
             content.setNameFieldValue("");
             try
@@ -144,7 +144,7 @@ public class DishWindowContentProvider implements WindowContentProvider<ListCont
         {
             Dish currentDish=sortableListModel.getElementAt(lastClickedListItemIndex);
 
-            EditWindow<DishEditContentPanel> editWindow=new EditWindow(localisator.getString("add"), new Dimension(300,400));
+            EditWindow<DishEditContentPanel> editWindow=new EditWindow(localisator.getString("add"), new Dimension(300,450));
             DishEditContentPanel content=new DishEditContentPanel();
             content.setNameFieldValue(currentDish.getName());
             try

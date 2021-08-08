@@ -95,9 +95,9 @@ public class LicensesDialog extends JDialog
             {
                 JSeparator jSeparator=new JSeparator(JSeparator.HORIZONTAL);
                 jSeparator.setBorder(BorderFactory.createEmptyBorder(40, 10, 10, 10));
-                scrollContainer.add(jSeparator, swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+                scrollContainer.add(jSeparator, swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL, 10));
             }
-            scrollContainer.add(licenses.get(i), swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+            scrollContainer.add(licenses.get(i), swingHelper.getGridBagConstraints(0, gridBagLayoutIndex++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL, 10));
         }
 
         JScrollPane scrollPane=new JScrollPane(scrollContainer);

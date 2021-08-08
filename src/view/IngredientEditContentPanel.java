@@ -27,16 +27,16 @@ public final class IngredientEditContentPanel extends JPanel
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         this.nameField=new JTextField();
-        add(new JLabel(localisator.getString("name")+":"), swingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.nameField, swingHelper.getGridBagConstraints(1, 0, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(new JLabel(localisator.getString("name")+":"), swingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 1, GridBagConstraints.SOUTHWEST, 16));
+        add(this.nameField, swingHelper.getGridBagConstraints(0, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL, 10));
 
         this.storeField=new JTextField();
-        add(new JLabel(localisator.getString("shelf")+":"), swingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.storeField, swingHelper.getGridBagConstraints(1, 1, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(new JLabel(localisator.getString("shelf")+":"), swingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL, 16));
+        add(this.storeField, swingHelper.getGridBagConstraints(0, 3, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL, 10));
 
         this.shelfSpinner =new JSpinner(new SpinnerNumberModel(0,0,100,1));
-        add(new JLabel(localisator.getString("store")+":"), swingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL));
-        add(this.shelfSpinner, swingHelper.getGridBagConstraints(1, 2, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL));
+        add(new JLabel(localisator.getString("store")+":"), swingHelper.getGridBagConstraints(0, 4, 1, 1, 0.1, 1, GridBagConstraints.HORIZONTAL, 16));
+        add(this.shelfSpinner, swingHelper.getGridBagConstraints(0, 5, 1, 1, 1, 0.9, GridBagConstraints.HORIZONTAL, 10));
     }
 
 

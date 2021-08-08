@@ -19,7 +19,7 @@ public class SwingHelper
     public SwingHelper(){}
 
 
-    public GridBagConstraints getGridBagConstraints(int columnXPosition, int columnYPosition, int columnWidth, int columnHeight, double columnWeightX, double columnWeightY, int columnFill)
+    public GridBagConstraints getGridBagConstraints(int columnXPosition, int columnYPosition, int columnWidth, int columnHeight, double columnWeightX, double columnWeightY, int columnFill, int columnAnchor)
     {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = columnXPosition;
@@ -29,6 +29,7 @@ public class SwingHelper
         gridBagConstraints.weightx=columnWeightX;
         gridBagConstraints.weighty=columnWeightY;
         gridBagConstraints.fill = columnFill;
+        gridBagConstraints.anchor=columnAnchor;
 
         return gridBagConstraints;
     }

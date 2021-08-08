@@ -2,6 +2,7 @@ package view;
 
 
 
+import controller.Localisator;
 import controller.SimpleListModel;
 import model.Ingredient;
 
@@ -24,11 +25,17 @@ public final class DishEditContentPanel extends JPanel
 
     public DishEditContentPanel()
     {
-        setLayout(new BorderLayout());
+        Localisator localisator=new Localisator();
+        SwingHelper swingHelper=new SwingHelper();
+
+        setLayout(new GridBagLayout());
+        setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
         this.nameField=new JTextField();
-        add(this.nameField, BorderLayout.NORTH);
+        add(new JLabel(localisator.getString("name")+":"), swingHelper.getGridBagConstraints(0, 0, 1, 1, 1, 0.1, GridBagConstraints.HORIZONTAL, 16));
+        add(this.nameField, swingHelper.getGridBagConstraints(0, 1, 1, 1, 1, 0.1, GridBagConstraints.HORIZONTAL, 10));
 
+        add(new JLabel(localisator.getString("ingredients")+":"), swingHelper.getGridBagConstraints(0, 2, 1, 1, 1, 0.1, GridBagConstraints.BOTH, 16));
         this.list=new JList<>();
         this.list.setSelectionModel(new DefaultListSelectionModel()
         {
@@ -45,7 +52,7 @@ public final class DishEditContentPanel extends JPanel
                 }
             }
         });
-        add(new JScrollPane(this.list), BorderLayout.CENTER);
+        add(new JScrollPane(this.list), swingHelper.getGridBagConstraints(0, 3, 1, 1, 1, 1, GridBagConstraints.BOTH, 10));
     }
 
 

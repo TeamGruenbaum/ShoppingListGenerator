@@ -94,9 +94,9 @@ public final class AboutDialog extends JDialog
         version.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         version.setFont(new Font(version.getFont().getFontName(), version.getFont().getStyle(), 11));
 
-        header.add(icon, swingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
-        header.add(applicationName, swingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
-        header.add(version, swingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
+        header.add(icon, swingHelper.getGridBagConstraints(0, 0, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL, 10));
+        header.add(applicationName, swingHelper.getGridBagConstraints(0, 1, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL, 10));
+        header.add(version, swingHelper.getGridBagConstraints(0, 2, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL, 10));
 
         return header;
     }
@@ -109,7 +109,7 @@ public final class AboutDialog extends JDialog
         int columnYPosition=0;
         for(JLabel developer:developers)
         {
-            center.add(developer, new SwingHelper().getGridBagConstraints(0, columnYPosition++, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL));
+            center.add(developer, new SwingHelper().getGridBagConstraints(0, columnYPosition++, 1, 1, 0.1, 0, GridBagConstraints.VERTICAL, 10));
         }
 
         return center;
