@@ -48,7 +48,7 @@ public class SettingsMenu extends JPopupMenu
         JMenuItem aboutMenuItem=new JMenuItem(localisator.getString("about")+" "+localisator.getString("application_name"));
         aboutMenuItem.addActionListener((actionEvent)->this.aboutDialog.showDialog());
 
-        JMenuItem appearanceMenuItem=new JMenuItem(localisator.getString("switch_application_theme"));
+        JMenuItem appearanceMenuItem=new JMenuItem(localisator.getString("switch_theme"));
         appearanceMenuItem.addActionListener((actionEvent) ->
         {
             new Themer().switchThemeSetting();
@@ -56,7 +56,7 @@ public class SettingsMenu extends JPopupMenu
             JOptionPane.showMessageDialog(null, localisator.getString("please_restart_application"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
         });
 
-        JMenuItem resetMenuItem=new JMenuItem(localisator.getString("reset_application"));
+        JMenuItem resetMenuItem=new JMenuItem(localisator.getString("reset_data"));
         resetMenuItem.addActionListener((actionEvent)->
         {
             PathHelper pathHelper=new PathHelper();
