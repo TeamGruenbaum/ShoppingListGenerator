@@ -25,6 +25,7 @@ hs_err_pid*
 
 ##JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 /.idea/
+/out/
 
 ##macOS
 #General
