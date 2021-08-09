@@ -32,6 +32,10 @@ In the current version you can either save the list as a text file or copy it to
 </p>
 
 
+## Class Diagram
+You can find our class diagram on [Lucidchart](https://lucid.app/documents/view/fb1e46fa-e208-44f8-9e81-75c39e409ab8).
+<br> <br>
+
 ## Developers
 Developed by the members of TeamGruenbaum organization:
 - [Steven Solleder](https://stevensolleder.de/)
