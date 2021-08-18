@@ -1,10 +1,11 @@
 # ShoppingListGenerator
 
 ![Release](https://img.shields.io/badge/release-2021.1-9cf)
-![Java](https://img.shields.io/badge/JAVA-1.8-9cf)
+![Java](https://img.shields.io/badge/Java-1.8-9cf)
+![Java Swing](https://img.shields.io/badge/Java%20Swing-1.8-9cf)
 ![macOS](https://img.shields.io/badge/macOS-passing-blue)
-![Windows](https://img.shields.io/badge/windows-passing-blue)
-![Linux](https://img.shields.io/badge/linux-untested-blue)
+![Windows](https://img.shields.io/badge/Windows-passing-blue)
+![Linux](https://img.shields.io/badge/Linux-untested-blue)
 
 
 ## Introduction
@@ -15,11 +16,13 @@ Now when you want to generate your shopping list, you simply select the dishes f
 After your selection **ShoppingListGenerator** creates a shopping list sorted by stores and shelfes for you.
 In the current version you can either save the list as a text file or copy it to your clipboard and paste it wherever you like.
 
+It is written in Java 8 with the Java Swing framework.
+
 <p align="center">
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dishes.png" width="400" height="400" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/ingredients.png" width="400" height="400" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/add_ingredient.png" width="400" height="400" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/shopping_list.png" width="400" height="400" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dishes.png" width="45%" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/ingredients.png" width="45%" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/add_ingredient.png" width="45%" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/shopping_list.png" width="45%" border=0>
 </p>
 
 
@@ -27,8 +30,8 @@ In the current version you can either save the list as a text file or copy it to
 **ShoppingListGenerator** has a light and a dark theme that can be switched in the settings menu.
 
 <p align="center">
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/light_theme.png" width="400" height="400" border=0>
-<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" width="400" height="400" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/light_theme.png" width="45%" border=0>
+<img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" width="45%" border=0>
 </p>
 
 
@@ -36,10 +39,13 @@ In the current version you can either save the list as a text file or copy it to
 You can find our class diagram on [Lucidchart](https://lucid.app/documents/view/fb1e46fa-e208-44f8-9e81-75c39e409ab8).
 <br> <br>
 
-## Developers
-Developed by the members of TeamGruenbaum organization:
-- [Steven Solleder](https://stevensolleder.de/)
-- [Isabell Waas](https://github.com/isabellwaas)
+## Libraries
+Following libraries were used:
+- [CommonsLang](https://github.com/apache/commons-lang)
+- [CommonsIO](https://commons.apache.org/proper/commons-io/)
+- [FlatLaf](https://github.com/JFormDesigner/FlatLaf)
+- [JSON-java](https://github.com/stleary/JSON-java)
+- [SQLite JDBC Driver](https://github.com/xerial/sqlite-jdbc)
 <br>
 
 ## Get in contact
