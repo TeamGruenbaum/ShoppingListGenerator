@@ -40,7 +40,6 @@ You can find our class diagram on [Lucidchart](https://lucid.app/documents/view/
 <br> <br>
 
 ## Libraries
-Following libraries were used:
 - [CommonsLang](https://github.com/apache/commons-lang)
 - [CommonsIO](https://commons.apache.org/proper/commons-io/)
 - [FlatLaf](https://github.com/JFormDesigner/FlatLaf)
