@@ -20,8 +20,10 @@ public final class DatabaseConnection
     private DatabaseConnection(){}
 
 
-    public Connection getConnection() throws SQLException
+    public Connection getConnection() throws SQLException, ClassNotFoundException
     {
+        Class.forName("org.sqlite.JDBC");
+
         if(connection==null)
         {
             PathHelper pathHelper=new PathHelper();

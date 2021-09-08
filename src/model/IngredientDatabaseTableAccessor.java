@@ -19,15 +19,13 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
 
     public IngredientDatabaseTableAccessor() throws SQLException, ClassNotFoundException
     {
-        Class.forName("org.sqlite.JDBC");
-
         connection=DatabaseConnection.getInstance().getConnection();
 
         Statement statement=connection.createStatement();
 
         if(!(connection.getMetaData().getTables(null, null, "Ingredients", null).next()))
         {
-            statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key , name text not null, store text not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
+            statement.execute("CREATE TABLE IF NOT EXISTS Ingredients(id integer primary key, name varchar(64) not null, store varchar(64) not null, shelf integer not null, CONSTRAINT uniqueIngredient UNIQUE(name, store, shelf))");
 
             Localisator localisator=new Localisator();
             String kaufland= localisator.getString("kaufland");
@@ -81,9 +79,9 @@ public class IngredientDatabaseTableAccessor implements DatabaseTableAccessor<In
     @Override
     public void remove(int id) throws SQLException
     {
-        PreparedStatement deleteFromIsNeededForStatment=connection.prepareStatement("DELETE FROM IsNeededFor WHERE ingredientID=?");
-        deleteFromIsNeededForStatment.setInt(1, id);
-        deleteFromIsNeededForStatment.execute();
+        PreparedStatement deleteFromIsNeededForStatement=connection.prepareStatement("DELETE FROM IsNeededFor WHERE ingredientID=?");
+        deleteFromIsNeededForStatement.setInt(1, id);
+        deleteFromIsNeededForStatement.execute();
 
         PreparedStatement deleteFromIngredients=connection.prepareStatement("DELETE FROM Ingredients WHERE id=?");
         deleteFromIngredients.setInt(1, id);

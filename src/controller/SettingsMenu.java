@@ -64,13 +64,14 @@ public class SettingsMenu extends JPopupMenu
             {
                 DatabaseConnection.getInstance().getConnection().close();
             }
-            catch (SQLException sqlException)
+            catch (SQLException|ClassNotFoundException sqlException)
             {
                 sqlException.printStackTrace();
             }
+
             new File(pathHelper.getSavePath()+pathHelper.getDatabaseName()).delete();
 
-            JOptionPane.showMessageDialog(ownerWindow, localisator.getString("please_restart_application"), localisator.getString("information"), JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
         });
 
         JMenuItem updateApplication=new JMenuItem(localisator.getString("search_for_updates"));

@@ -19,15 +19,13 @@ public class DishDatabaseTableAccessor implements DatabaseTableAccessor<Dish>
 
     public DishDatabaseTableAccessor() throws SQLException, ClassNotFoundException
     {
-        Class.forName("org.sqlite.JDBC");
-
         connection=DatabaseConnection.getInstance().getConnection();
 
         Statement statement=connection.createStatement();
 
         if(!(connection.getMetaData().getTables(null, null, "Dishes", null).next()))
         {
-            statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key, name text unique not null)");
+            statement.execute("CREATE TABLE IF NOT EXISTS Dishes(id integer primary key, name varchar(64) unique not null)");
             statement.execute("CREATE TABLE IF NOT EXISTS IsNeededFor(dishID integer, ingredientID integer, CONSTRAINT primaryKey PRIMARY KEY (dishID, ingredientID))");
 
             Localisator localisator=new Localisator();
