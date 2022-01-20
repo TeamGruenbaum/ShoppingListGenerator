@@ -1,8 +1,8 @@
 # ShoppingListGenerator
 
 ![Release](https://img.shields.io/badge/Release-2021.1-9cf)
-![Java](https://img.shields.io/badge/Java-1.8-9cf)
-![Java Swing](https://img.shields.io/badge/Java%20Swing-1.8-9cf)
+![Java](https://img.shields.io/badge/Java-1.11-9cf)
+![Java Swing](https://img.shields.io/badge/Java%20Swing-1.11-9cf)
 ![macOS](https://img.shields.io/badge/macOS-passing-blue)
 ![Windows](https://img.shields.io/badge/Windows-passing-blue)
 ![Linux](https://img.shields.io/badge/Linux-untested-blue)
@@ -16,7 +16,7 @@ Now when you want to generate your shopping list, you simply select the dishes f
 After your selection **ShoppingListGenerator** creates a shopping list sorted by stores and shelfes for you.
 In the current version you can either save the list as a text file or copy it to your clipboard and paste it wherever you like.
 
-It is written in Java 8 with the Java Swing framework.
+It is written in Java 11 with the Java Swing framework.
 
 <p align="center">
 <img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dishes.png" width="45%" border=0>
