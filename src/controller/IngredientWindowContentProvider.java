@@ -6,7 +6,7 @@ import model.DatabaseTableAccessor;
 import model.IngredientDatabaseTableAccessor;
 import model.Ingredient;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import view.EditWindow;
 import view.IngredientEditContentPanel;

@@ -2,7 +2,6 @@ package controller;
 
 
 
-import com.apple.eawt.Application;
 import model.Dish;
 import model.Ingredient;
 
@@ -12,7 +11,11 @@ import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
-import java.awt.*;
+import java.awt.Toolkit;
+import java.awt.Desktop;
+import java.awt.Taskbar;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.datatransfer.StringSelection;
 
 import java.io.FileWriter;
@@ -96,16 +99,12 @@ public class WindowBuilder
             ioException.printStackTrace();
         }
 
-        if(System.getProperty("os.name").toLowerCase().contains("mac"))
+        Desktop.getDesktop().setAboutHandler((e)->
         {
-            Application application=Application.getApplication();
-            application.setAboutHandler((e)->
-            {
-                aboutDialog.showDialog();
-            });
+            aboutDialog.showDialog();
+        });
 
-            application.setDockIconImage(icon);
-        }
+        Taskbar.getTaskbar().setIconImage(icon);
 
         window.setIconImage(icon);
 
