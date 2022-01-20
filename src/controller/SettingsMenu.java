@@ -83,15 +83,22 @@ public class SettingsMenu extends JPopupMenu
                 JSONObject latestRelease;
                 latestRelease = new JSONObject(IOUtils.toString(new URL("https://api.github.com/repos/TeamGruenbaum/ShoppingListGenerator/releases/latest"), StandardCharsets.UTF_8));
 
-                if(Integer.parseInt(localisator.getString("version_number").substring(0, 4))<Integer.parseInt(latestRelease.getString("tag_name").substring(0, 4)))
+                if(Integer.parseInt(localisator.getString("version_number").substring(0, 1))<Integer.parseInt(latestRelease.getString("tag_name").substring(0, 1)))
                 {
                     newVersionAvailable=true;
                 }
                 else
                 {
-                    if(Integer.parseInt(localisator.getString("version_number").substring(5, 6))<Integer.parseInt(latestRelease.getString("tag_name").substring(5, 6)))
+                    if(Integer.parseInt(localisator.getString("version_number").substring(2, 3))<Integer.parseInt(latestRelease.getString("tag_name").substring(2, 3)))
                     {
                         newVersionAvailable=true;
+                    }
+                    else
+                    {
+                        if(Integer.parseInt(localisator.getString("version_number").substring(4, 5))<Integer.parseInt(latestRelease.getString("tag_name").substring(4, 5)))
+                        {
+                            newVersionAvailable=true;
+                        }
                     }
                 }
 
