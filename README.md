@@ -38,10 +38,12 @@ You can find our class diagram on [Lucidchart](https://lucid.app/documents/view/
 
 ## Testing
 The application was tested manually on the operating system macOS.
+<br><br>
 
 ## Developers
 - [Steven Solleder](https://github.com/stevensolleder): Mainly responsible for architecture, equally responsible for implementation
 - [Isabell Waas](https://github.com/isabellwaas): Equally responsible for implementation
+<br><br>
 
 ## Libraries
 - [CommonsLang 3.12.0](https://github.com/apache/commons-lang)
