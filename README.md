@@ -37,7 +37,7 @@ You can find our class diagram on [Lucidchart](https://lucid.app/documents/view/
 <br> <br>
 
 ## Testing
-The application was tested manually on the operating system macOS.
+The application was tested manually on the operating system macOS. We could not find any bugs, but there stil may be some.
 <br><br>
 
 ## Developers
