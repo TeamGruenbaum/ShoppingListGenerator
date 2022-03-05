@@ -2,7 +2,7 @@
 
 ![Release](https://img.shields.io/badge/Release-0.1.1-9cf)
 ![Java](https://img.shields.io/badge/Java-1.11-9cf)
-![Java Swing](https://img.shields.io/badge/Java%20Swing-1.8-9cf)
+![Java Swing](https://img.shields.io/badge/Java%20Swing-1.11-9cf)
 ![macOS](https://img.shields.io/badge/macOS-passing-blue)
 
 
