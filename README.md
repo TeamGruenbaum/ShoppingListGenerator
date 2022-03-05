@@ -4,8 +4,6 @@
 ![Java](https://img.shields.io/badge/Java-1.11-9cf)
 ![Java Swing](https://img.shields.io/badge/Java%20Swing-1.8-9cf)
 ![macOS](https://img.shields.io/badge/macOS-passing-blue)
-![Windows](https://img.shields.io/badge/Windows-passing-blue)
-![Linux](https://img.shields.io/badge/Linux-untested-blue)
 
 
 ## Introduction
@@ -34,10 +32,16 @@ It is written in Java 11 with the Java Swing framework.
 <img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" width="45%" border=0>
 </p>
 
-
 ## Class Diagram
 You can find our class diagram on [Lucidchart](https://lucid.app/documents/view/fb1e46fa-e208-44f8-9e81-75c39e409ab8).
 <br> <br>
+
+## Testing
+The application was tested manually on the operating system macOS.
+
+## Developers
+- [Steven Solleder](https://github.com/stevensolleder): Mainly responsible for architecture, equally responsible for implementation
+- [Isabell Waas](https://github.com/isabellwaas): Equally responsible for implementation
 
 ## Libraries
 - [CommonsLang 3.12.0](https://github.com/apache/commons-lang)
