@@ -32,10 +32,6 @@ It is written in Java 11 with the Java Swing framework.
 <img src="https://github.com/TeamGruenbaum/ShoppingListGenerator/blob/master/screenshots/dark_theme.png" width="45%" border=0>
 </p>
 
-## Class Diagram
-You can find our class diagram on [Lucidchart](https://lucid.app/documents/view/fb1e46fa-e208-44f8-9e81-75c39e409ab8).
-<br> <br>
-
 ## Testing
 The application was tested manually on the operating system macOS. We could not find any bugs, but there still may be some.
 <br><br>
