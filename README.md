@@ -38,7 +38,7 @@ The application was tested manually on the operating system macOS. We could not 
 
 ## Developers
 - [Steven Solleder](https://github.com/stevensolleder): Mainly responsible for architecture, equally responsible for implementation
-- [Isabell Waas](https://github.com/isabellwaas): Equally responsible for implementation
+- [Isabell Waas](https://github.com/isabellwaas): Contributed to architecture, equally responsible for implementation
 <br><br>
 
 ## Libraries
